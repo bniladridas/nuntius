@@ -11,7 +11,7 @@ Ruby interface to Google's Gemini AI models.
 <br>
 
 ```ruby
-gem install friday_gemini_ai
+gem install nuntius-rb
 ```
 
 <br>
@@ -21,7 +21,7 @@ Or in Gemfile:
 <br>
 
 ```ruby
-gem 'friday_gemini_ai', require: 'vesper'
+gem 'nuntius-rb', require: 'vesper'
 ```
 
 <br>

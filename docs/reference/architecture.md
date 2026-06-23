@@ -36,7 +36,7 @@ vesper/
 ├── .gitignore            # Git ignore rules
 ├── Gemfile               # Dependencies
 ├── README.md             # Main documentation
-└── friday_gemini_ai.gemspec     # Gem specification
+└── nuntius-rb.gemspec     # Gem specification
 ```
 
 <br>

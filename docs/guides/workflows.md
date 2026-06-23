@@ -30,7 +30,7 @@ Run the same core checks locally before opening a pull request:
 ```bash
 bundle exec ruby test/runner.rb
 bundle exec rubocop
-gem build friday_gemini_ai.gemspec
+gem build nuntius-rb.gemspec
 ```
 
 <br>

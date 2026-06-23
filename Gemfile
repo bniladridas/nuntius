@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in friday_gemini_ai.gemspec
+# Specify your gem's dependencies in nuntius-rb.gemspec
 gemspec
 
 # Additional dependencies

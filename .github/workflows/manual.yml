@@ -68,9 +68,9 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
-      - name: Update version in gemspec
+      - name: Update version
         run: |
-          sed -i "s/spec\.version\s*=\s*['\"][^'\"]*['\"]/spec.version = '${{ inputs.version }}'/" *.gemspec
+          sed -i "" "s/VERSION = ['\"][^'\"]*['\"]/VERSION = '${{ inputs.version }}'/" lib/core/version.rb
 
       - name: Build gem
         run: gem build *.gemspec
@@ -115,7 +115,7 @@ jobs:
       - name: Check if version exists on RubyGems
         id: check-rubygems
         run: |
-          if gem list -r -e friday_gemini_ai | grep -q "${{ inputs.version }}"; then
+          if gem list -r -e nuntius-rb | grep -q "${{ inputs.version }}"; then
             echo "exists=true" >> $GITHUB_OUTPUT
             echo "Version ${{ inputs.version }} already exists on RubyGems"
           else
@@ -150,8 +150,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git tag -a "v${{ inputs.version }}" -m "Release version ${{ inputs.version }}"
-          git push origin "v${{ inputs.version }}"
+          git tag -a "nuntius-rb/v${{ inputs.version }}" -m "Release version ${{ inputs.version }}"
+          git push origin "nuntius-rb/v${{ inputs.version }}"
 
   release:
     name: Release
@@ -173,9 +173,9 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          if [ -f "CHANGELOG.md" ]; then
+          if [ -f "docs/CHANGELOG.md" ]; then
             # Extract changelog for this version
-            awk '/^## \[?v?${{ inputs.version }}\]?/{flag=1; next} /^## \[?v?[0-9]/{flag=0} flag' CHANGELOG.md > release_notes.md
+            awk '/^## \[?v?${{ inputs.version }}\]?/{flag=1; next} /^## \[?v?[0-9]/{flag=0} flag' docs/CHANGELOG.md > release_notes.md
           else
             echo "Release ${{ inputs.version }}" > release_notes.md
             echo "" >> release_notes.md
@@ -192,6 +192,6 @@ jobs:
           body_path: release_notes.md
           files: "*.gem"
           draft: false
-          prerelease: false
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

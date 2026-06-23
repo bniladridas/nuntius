@@ -42,7 +42,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          branch="release-please--branches--main--components--friday_gemini_ai"
+          branch="release-please--branches--main--components--nuntius-rb"
           pr_number="$(gh pr list \
             --repo "$REPO" \
             --state open \

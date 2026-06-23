@@ -3,7 +3,7 @@
 
 <br>
 
-[![Gem](https://img.shields.io/gem/v/friday_gemini_ai?style=flat-square&label=gem)](https://rubygems.org/gems/friday_gemini_ai)
+[![Gem](https://img.shields.io/gem/v/nuntius-rb?style=flat-square&label=gem)](https://rubygems.org/gems/nuntius-rb)
 ![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.3-cc342d?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-2f4858?style=flat-square)](LICENSE)
 ![Tests](https://img.shields.io/badge/tests-passing-2e7d32?style=flat-square)
@@ -19,7 +19,7 @@ Ruby client for Gemini `generateContent`. Includes a CLI and a PR review app.
 <br>
 
 ```bash
-gem install friday_gemini_ai
+gem install nuntius-rb
 ```
 
 <br>
@@ -29,12 +29,12 @@ With Bundler:
 <br>
 
 ```ruby
-gem 'friday_gemini_ai', require: 'vesper'
+gem 'nuntius-rb', require: 'vesper'
 ```
 
 <br>
 
-The package is published as `friday_gemini_ai`. The runtime entrypoint is `vesper`.
+The package is published as `nuntius-rb`. The runtime entrypoint is `vesper`.
 
 <br>
 
@@ -215,7 +215,7 @@ GEMINI_API_KEY=your_api_key_here
 ```bash
 bundle exec rake test          # Run tests
 bundle exec rake docs          # Build API docs
-gem build friday_gemini_ai.gemspec
+gem build nuntius-rb.gemspec
 ```
 
 <br>

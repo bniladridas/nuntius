@@ -3,8 +3,8 @@
   "tag-separator": "/",
   "packages": {
     ".": {
-      "package-name": "friday_gemini_ai",
-      "component": "friday_gemini_ai",
+      "package-name": "nuntius-rb",
+      "component": "nuntius-rb",
       "changelog-path": "docs/CHANGELOG.md",
       "release-type": "ruby",
       "extra-files": [

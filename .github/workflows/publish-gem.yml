@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish (e.g., 1.5.0)'
+        description: 'Version to publish (e.g., 1.0.0.pre)'
         required: true
         type: string
       skip_tests:
@@ -141,7 +141,7 @@ jobs:
       - name: Check if version exists on RubyGems
         id: check-rubygems
         run: |
-          if gem list -r -e friday_gemini_ai | grep -q "${{ inputs.version }}"; then
+          if gem list -r -e nuntius-rb | grep -q "${{ inputs.version }}"; then
             echo "exists=true" >> $GITHUB_OUTPUT
             echo "Version ${{ inputs.version }} already exists on RubyGems"
           else

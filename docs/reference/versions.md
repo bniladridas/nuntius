@@ -2,20 +2,20 @@
 
 <br>
 
-The gem is currently `1.7.0`.
+The gem is currently `1.0.0.pre`.
 
 <br>
 
-The published gem name is `friday_gemini_ai`. The runtime entrypoint is `vesper`.
+The published gem name is `nuntius-rb`. The runtime entrypoint is `vesper`.
 
 <br>
 
-Gem releases use tags such as `friday_gemini_ai/v1.7.0`. The Vesper Review app is deployed from `main` and is identified by its build commit rather than a gem release tag.
+Gem releases use tags such as `nuntius-rb/v1.0.0-pre`. The Vesper Review app is deployed from `main` and is identified by its build commit rather than a gem release tag.
 
 <br>
 
 ```ruby
-gem 'friday_gemini_ai', require: 'vesper'
+gem 'nuntius-rb', require: 'vesper'
 ```
 
 <br>
@@ -105,7 +105,7 @@ Build locally before publishing:
 <br>
 
 ```bash
-gem build friday_gemini_ai.gemspec
+gem build nuntius-rb.gemspec
 ```
 
 <br>
@@ -115,5 +115,5 @@ Install the built gem when you need a local package check:
 <br>
 
 ```bash
-gem install friday_gemini_ai-*.gem
+gem install nuntius-rb-*.gem
 ```

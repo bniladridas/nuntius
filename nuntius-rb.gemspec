@@ -1,5 +1,5 @@
 Gem::Specification.new do |spec|
-  spec.name        = 'friday_gemini_ai'
+  spec.name        = 'nuntius-rb'
   spec.version     = File.read(File.expand_path('lib/core/version.rb', __dir__)).match(/VERSION = ['"](.*)['"]/)[1]
   spec.authors     = ['Niladri Das']
   spec.email       = ['bniladridas@gmail.com']

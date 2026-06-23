@@ -35,7 +35,7 @@ Run the gem build check:
 <br>
 
 ```bash
-gem build friday_gemini_ai.gemspec
+gem build nuntius-rb.gemspec
 ```
 
 <br>

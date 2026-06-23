@@ -24,7 +24,7 @@ Install the gem:
 <br>
 
 ```bash
-gem install friday_gemini_ai
+gem install nuntius-rb
 ```
 
 <br>
@@ -34,7 +34,7 @@ Or add to Gemfile:
 <br>
 
 ```ruby
-gem 'friday_gemini_ai', require: 'vesper'
+gem 'nuntius-rb', require: 'vesper'
 ```
 
 <br>

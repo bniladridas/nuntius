@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    friday_gemini_ai (1.7.0)
+    nuntius-rb (1.0.0.pre)
       httparty (>= 0.21, < 0.25)
       logger
 
@@ -97,13 +97,13 @@ DEPENDENCIES
   bigdecimal (~> 4.0)
   bundler-audit (~> 0.9)
   dotenv (~> 3.2)
-  friday_gemini_ai!
   github-markup (~> 6.0)
   httparty (>= 0.21, < 0.25)
   logger
   minitest (~> 5.0)
   minitest-reporters (= 1.8.0)
   mocha (~> 3.0)
+  nuntius-rb!
   rake (~> 13.4.2)
   redcarpet (~> 3.6)
   rubocop (~> 1.87.0)

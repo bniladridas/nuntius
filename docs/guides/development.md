@@ -183,14 +183,14 @@ GeminiAI::Client.logger.level = Logger::DEBUG
 
 Build the gem locally:
 ```bash
-gem build friday_gemini_ai.gemspec
+gem build nuntius-rb.gemspec
 ```
 
 <br>
 
 Install the built gem:
 ```bash
-gem install friday_gemini_ai-*.gem
+gem install nuntius-rb-*.gem
 ```
 
 <br>

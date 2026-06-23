@@ -15,11 +15,11 @@ Keep this file short. Store facts that must survive into the next session.
 
 <br>
 
-This repo publishes the `friday_gemini_ai` gem. Runtime code is required with `vesper`. The GitHub App is `Vesper Review`.
+This repo publishes the `nuntius-rb` gem. Runtime code is required with `vesper`. The GitHub App is `Vesper Review`.
 
 <br>
 
-Gem releases use tags like `friday_gemini_ai/v1.7.1`. The app deploys from `main`; app behavior is commit-based, not gem-tag based.
+Gem releases use tags like `nuntius-rb/v1.7.1`. The app deploys from `main`; app behavior is commit-based, not gem-tag based.
 
 <br>
 

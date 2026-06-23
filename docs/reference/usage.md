@@ -11,7 +11,7 @@
 <br>
 
 ```bash
-gem install friday_gemini_ai
+gem install nuntius-rb
 ```
 
 <br>

@@ -467,7 +467,7 @@ chmod +x bin/gemini
 **Solutions**:
 1. **Install gem**:
    ```bash
-   gem install friday_gemini_ai
+   gem install nuntius-rb
    ```
 
 <br>

@@ -15,7 +15,7 @@ Install the gem:
 <br>
 
 ```bash
-gem install friday_gemini_ai
+gem install nuntius-rb
 ```
 
 <br>
@@ -68,7 +68,7 @@ puts response
 
 <br>
 
-- [RubyGems](https://rubygems.org/gems/friday_gemini_ai)
+- [RubyGems](https://rubygems.org/gems/nuntius-rb)
 - [Issues](https://github.com/bniladridas/vesper/issues)
 - [Discussions](https://github.com/bniladridas/vesper/discussions)
 - [`Security`](https://github.com/bniladridas/vesper/blob/main/.github/SECURITY.md)
