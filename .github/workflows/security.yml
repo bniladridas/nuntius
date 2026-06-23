@@ -38,7 +38,7 @@ jobs:
       - name: Configure Git and checkout code
         run: |
           # Configure Git safe directories
-          for dir in /__w/vesper /__w/vesper/vesper /github/workspace; do
+          for dir in /__w/nuntius /__w/nuntius/nuntius /github/workspace; do
             git config --global --add safe.directory "$dir" || true
           done
 
