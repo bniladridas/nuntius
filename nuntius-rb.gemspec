@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.email       = ['bniladridas@gmail.com']
   spec.summary     = "A Ruby gem for interacting with Google's Gemini AI models"
   spec.description = "Provides text generation with Google's Gemini AI models"
-  spec.homepage    = 'https://github.com/bniladridas/vesper'
+  spec.homepage    = 'https://github.com/bniladridas/nuntius'
   spec.license     = 'MIT'
   spec.required_ruby_version = '>= 3.3.0'
 

@@ -405,7 +405,7 @@ class TestClient < Minitest::Test
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
           'User-Agent' => 'Ruby',
-          'X-Goog-Api-Client' => %r{vesper_ruby_gem/\d+\.\d+\.\d+}
+          'X-Goog-Api-Client' => %r{nuntius_ruby_gem/\d+\.\d+\.\d+}
         },
         body: {
           contents: [{
@@ -593,7 +593,7 @@ class TestClient < Minitest::Test
           'Content-Type' => 'application/json',
           'Accept' => '*/*',
           'User-Agent' => 'Ruby',
-          'X-Goog-Api-Client' => %r{vesper_ruby_gem/\d+\.\d+\.\d+}
+          'X-Goog-Api-Client' => %r{nuntius_ruby_gem/\d+\.\d+\.\d+}
         }
       )
       .to_return(
@@ -647,7 +647,7 @@ class TestClient < Minitest::Test
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'User-Agent' => 'Ruby',
-          'X-Goog-Api-Client' => %r{vesper_ruby_gem/\d+\.\d+\.\d+}
+          'X-Goog-Api-Client' => %r{nuntius_ruby_gem/\d+\.\d+\.\d+}
         }
       )
       .to_return(
@@ -698,7 +698,7 @@ class TestClient < Minitest::Test
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
           'User-Agent' => 'Ruby',
-          'X-Goog-Api-Client' => 'vesper_ruby_gem/0.1.0'
+          'X-Goog-Api-Client' => 'nuntius_ruby_gem/0.1.0'
         },
         body: {
           contents: [
@@ -785,7 +785,7 @@ class TestClient < Minitest::Test
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
           'User-Agent' => 'Ruby',
-          'X-Goog-Api-Client' => 'vesper_ruby_gem/0.1.0'
+          'X-Goog-Api-Client' => 'nuntius_ruby_gem/0.1.0'
         },
         body: expected_body.to_json
       )

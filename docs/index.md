@@ -69,7 +69,7 @@ puts response
 <br>
 
 - [RubyGems](https://rubygems.org/gems/nuntius-rb)
-- [Issues](https://github.com/bniladridas/vesper/issues)
-- [Discussions](https://github.com/bniladridas/vesper/discussions)
-- [`Security`](https://github.com/bniladridas/vesper/blob/main/.github/SECURITY.md)
-- [`License`](https://github.com/bniladridas/vesper/blob/main/LICENSE)
+- [Issues](https://github.com/bniladridas/nuntius/issues)
+- [Discussions](https://github.com/bniladridas/nuntius/discussions)
+- [`Security`](https://github.com/bniladridas/nuntius/blob/main/.github/SECURITY.md)
+- [`License`](https://github.com/bniladridas/nuntius/blob/main/LICENSE)

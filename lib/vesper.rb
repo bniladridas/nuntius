@@ -3,5 +3,5 @@
 
 # frozen_string_literal: true
 
-# Main entry point for the vesper gem
+# Main entry point for the nuntius-rb gem
 require_relative 'gemini'

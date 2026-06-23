@@ -18,8 +18,8 @@ Additional resources, links, and references for Vesper.
 
 <br>
 
-# Vesper Documentation
-- [GitHub Repository](https://github.com/bniladridas/vesper) - Source code and issues
+# Nuntius Documentation
+- [GitHub Repository](https://github.com/bniladridas/nuntius) - Source code and issues
 - [RubyGems](https://rubygems.org/gems/nuntius-rb) - Gem installation and versions
 - [`API Reference`](../reference/api.md) - Complete method documentation
 - [`Usage Guide`](../reference/usage.md) - Comprehensive examples
@@ -326,8 +326,8 @@ messages = [
 # Development Setup
 ```bash
 # Clone repository
-git clone https://github.com/bniladridas/vesper.git
-cd vesper
+git clone https://github.com/bniladridas/nuntius.git
+cd nuntius
 
 # Install dependencies
 bundle install

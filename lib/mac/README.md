@@ -2,7 +2,7 @@
 
 <br>
 
-This module provides macOS-specific utilities for the vesper gem.
+This module provides macOS-specific utilities for the nuntius-rb gem.
 
 <br>
 

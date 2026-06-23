@@ -2,7 +2,7 @@
 
 <br>
 
-This guide covers the setup and development of the Vesper Ruby gem.
+This guide covers the setup and development of the nuntius-rb gem.
 
 <br>
 
@@ -28,8 +28,8 @@ The project tracks maintained Ruby branches for local development and CI. Do not
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/bniladridas/vesper.git
-   cd vesper
+   git clone https://github.com/bniladridas/nuntius.git
+   cd nuntius
    ```
 
 <br>

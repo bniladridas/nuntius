@@ -219,7 +219,7 @@ module GeminiAI
           body: body.to_json,
           headers: {
             'Content-Type' => 'application/json',
-            'x-goog-api-client' => 'vesper_ruby_gem/0.1.0'
+            'x-goog-api-client' => 'nuntius_ruby_gem/0.1.0'
           },
           timeout: 30
         )

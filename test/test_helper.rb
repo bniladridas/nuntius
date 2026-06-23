@@ -157,7 +157,7 @@ module Minitest
           'Content-Type' => 'application/json',
           'Accept' => '*/*',
           'User-Agent' => 'Ruby',
-          'X-Goog-Api-Client' => %r{vesper_ruby_gem/\d+\.\d+\.\d+}
+          'X-Goog-Api-Client' => %r{nuntius_ruby_gem/\d+\.\d+\.\d+}
         }
       )
     end

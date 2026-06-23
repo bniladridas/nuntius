@@ -2,7 +2,7 @@
 
 Security reports should be handled privately.
 
-Do not open a public issue for a vulnerability. Use [GitHub Security Advisories](https://github.com/palmshed/vesper/security/advisories/new).
+Do not open a public issue for a vulnerability. Use [GitHub Security Advisories](https://github.com/bniladridas/nuntius/security/advisories/new).
 
 If that is not available, contact the maintainer through GitHub with enough context to start triage.
 
