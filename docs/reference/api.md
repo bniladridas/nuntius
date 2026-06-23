@@ -11,7 +11,7 @@ Ruby interface to Google's Gemini AI models.
 <br>
 
 ```ruby
-gem install nuntius-rb
+gem install nuntius-rb --pre
 ```
 
 <br>

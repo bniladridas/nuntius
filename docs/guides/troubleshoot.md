@@ -467,7 +467,7 @@ chmod +x bin/gemini
 **Solutions**:
 1. **Install gem**:
    ```bash
-   gem install nuntius-rb
+   gem install nuntius-rb --pre
    ```
 
 <br>
