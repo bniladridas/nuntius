@@ -25,6 +25,6 @@ jobs:
             test
             ci
             build
-            deps
             deps-dev
+            deps
           requireScope: false
