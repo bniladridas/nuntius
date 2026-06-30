@@ -21,7 +21,7 @@ Describe the issue or request.
 
 <br>
 
-For bugs, include reproduction steps, expected behavior, actual behavior, Ruby version, Vesper version, and operating system.
+For bugs, include reproduction steps, expected behavior, actual behavior, Ruby version, Nuntius version, and operating system.
 
 <br>
 

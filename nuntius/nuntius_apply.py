@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 """
-Vesper Apply Module
-Handles user-approved application of code suggestions, committed as Vesper.
+Nuntius Apply Module
+Handles user-approved application of code suggestions, committed as Nuntius.
 """
 
 import logging
@@ -17,20 +17,20 @@ try:
 except ImportError:
     pass
 
-# Assuming these are imported from vesper
-# from vesper.vesper import setup_environment_webhook, get_pr_details_webhook, analyze_with_gemini, parse_code_suggestions, apply_suggestions_to_pr
+# Assuming these are imported from nuntius
+# from nuntius.nuntius import setup_environment_webhook, get_pr_details_webhook, analyze_with_gemini, parse_code_suggestions, apply_suggestions_to_pr
 
 
 def handle_apply_comment(installation_id, repo_name, pr_number, commenter_login=None):
     """
-    Handle /apply comment on PR: re-analyze and apply suggestions as Vesper.
+    Handle /apply comment on PR: re-analyze and apply suggestions as Nuntius.
     """
     if not flask_available:
         logging.error("Flask not available for webhook mode")
         return {"error": "Flask not installed"}, 500
 
     try:
-        from vesper.vesper import (
+        from nuntius.nuntius import (
             analyze_with_gemini,
             apply_suggestions_to_pr,
             build_pr_details_from_pr,
@@ -75,11 +75,11 @@ def handle_apply_comment(installation_id, repo_name, pr_number, commenter_login=
         if suggestions:
             apply_suggestions_to_pr(repo, pr, suggestions)
             # Post confirmation comment
-            pr.create_issue_comment("Vesper: Applied\n\n🙂 Applied code suggestions from Vesper analysis.")
+            pr.create_issue_comment("Nuntius: Applied\n\n🙂 Applied code suggestions from Nuntius analysis.")
             logging.info(f"Applied suggestions to PR #{pr_number} via /apply")
         else:
             # No suggestions
-            pr.create_issue_comment("Vesper: No suggestions\n\n😴 No code suggestions were found to apply.")
+            pr.create_issue_comment("Nuntius: No suggestions\n\n😴 No code suggestions were found to apply.")
         return jsonify({"status": "applied"})
     except Exception as e:
         logging.error(f"Error handling apply comment: {str(e)}")

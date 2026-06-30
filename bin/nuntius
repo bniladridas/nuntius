@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 
-# CLI interface for GeminiAI gem
+# CLI interface for Nuntius gem
 require_relative '../config/environment'
 
 def show_help
   puts <<~HELP
-    GeminiAI CLI Tool
+    Nuntius CLI Tool
 
     Usage:
-      gemini [command] [options]
+      nuntius [command] [options]
 
     Commands:
       generate <prompt>     Generate text from prompt
@@ -17,26 +17,26 @@ def show_help
       help                  Show this help message
 
     Examples:
-      gemini generate "Write a haiku about Ruby"
-      gemini chat
-      gemini test
+      nuntius generate "Write a haiku about Ruby"
+      nuntius chat
+      nuntius test
   HELP
 end
 
 def generate_text(prompt)
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text(prompt)
   puts response
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   puts "Error: #{e.message}"
   exit 1
 end
 
 def interactive_chat
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   messages = []
 
-  puts "GeminiAI Chat Session (type 'exit' to quit)"
+  puts "Nuntius Chat Session (type 'exit' to quit)"
   puts "=" * 40
 
   loop do
@@ -50,7 +50,7 @@ def interactive_chat
       response = client.chat(messages)
       puts "AI: #{response}"
       messages << { role: 'model', content: response }
-    rescue GeminiAI::Error => e
+    rescue Nuntius::Error => e
       puts "Error: #{e.message}"
     end
   end
@@ -59,14 +59,14 @@ def interactive_chat
 end
 
 def test_connection
-  puts "Testing GeminiAI connection..."
+  puts "Testing Nuntius connection..."
 
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text("Say 'Connection successful!'")
 
   puts "[SUCCESS] Test successful!"
   puts "Response: #{response}"
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   puts "[ERROR] Test failed: #{e.message}"
   exit 1
 end
@@ -78,7 +78,7 @@ when 'generate'
     generate_text(ARGV[1])
   else
     puts "Error: Please provide a prompt"
-    puts "Usage: gemini generate \"Your prompt here\""
+    puts "Usage: nuntius generate \"Your prompt here\""
     exit 1
   end
 when 'chat'

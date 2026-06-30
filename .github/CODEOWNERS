@@ -4,8 +4,8 @@
 # Core library files
 /lib/ @bniladridas
 
-# Vesper automation files
-/vesper/ @bniladridas
+# Nuntius automation files
+/nuntius/ @bniladridas
 
 # CI/CD and workflows
 /.github/ @bniladridas

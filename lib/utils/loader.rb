@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
-module GeminiAI
+module Nuntius
   module Utils
     # Utility class for loading environment variables from .env files
     class Loader

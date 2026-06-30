@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 """
-RAG (Retrieval Augmented Generation) module for Vesper.
+RAG (Retrieval Augmented Generation) module for Nuntius.
 Fetches current context from various sources to supplement AI knowledge.
 """
 
@@ -216,7 +216,7 @@ def fetch_weather(location):
 def fetch_reddit_discussions(query):
     """Fetch Reddit discussions using Reddit API."""
     try:
-        headers = {"User-Agent": "Vesper/1.0"}
+        headers = {"User-Agent": "Nuntius/1.0"}
         resp = requests.get(
             "https://www.reddit.com/search.json",
             params={"q": query, "limit": 5, "sort": "relevance"},

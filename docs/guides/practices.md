@@ -2,7 +2,7 @@
 
 <br>
 
-Comprehensive guides for getting the most out of Vesper.
+Comprehensive guides for getting the most out of Nuntius.
 
 <br>
 
@@ -25,7 +25,7 @@ Comprehensive guides for getting the most out of Vesper.
 export GEMINI_API_KEY="your_api_key_here"
 
 # In your Ruby code
-client = GeminiAI::Client.new  # Automatically uses ENV['GEMINI_API_KEY']
+client = Nuntius::Client.new  # Automatically uses ENV['GEMINI_API_KEY']
 ```
 
 <br>
@@ -37,8 +37,8 @@ client = GeminiAI::Client.new  # Automatically uses ENV['GEMINI_API_KEY']
 GEMINI_API_KEY=your_api_key_here
 
 # Load in your application
-GeminiAI.load_env
-client = GeminiAI::Client.new
+Nuntius.load_env
+client = Nuntius::Client.new
 ```
 
 <br>
@@ -86,7 +86,7 @@ response = client.generate_text(safe_input)
 ```ruby
 class RateLimitedClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @requests = []
   end
 
@@ -119,7 +119,7 @@ end
 ```ruby
 class CachedGeminiClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @cache = {}
   end
 
@@ -143,7 +143,7 @@ require 'redis'
 
 class RedisGeminiClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @redis = Redis.new
   end
 
@@ -172,7 +172,7 @@ end
 # Sequential Processing
 ```ruby
 def process_prompts(prompts)
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   results = []
 
   prompts.each_with_index do |prompt, index|
@@ -183,7 +183,7 @@ def process_prompts(prompts)
       # Add delay to respect rate limits
       sleep(1) if index < prompts.length - 1
 
-    rescue GeminiAI::Error => e
+    rescue Nuntius::Error => e
       results << { index: index, prompt: prompt, error: e.message }
     end
   end
@@ -199,7 +199,7 @@ end
 require 'concurrent-ruby'
 
 def process_prompts_parallel(prompts, max_threads: 5)
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   executor = Concurrent::ThreadPoolExecutor.new(
     min_threads: 1,
     max_threads: max_threads,
@@ -211,7 +211,7 @@ def process_prompts_parallel(prompts, max_threads: 5)
       begin
         response = client.generate_text(prompt)
         { index: index, prompt: prompt, response: response }
-      rescue GeminiAI::Error => e
+      rescue Nuntius::Error => e
         { index: index, prompt: prompt, error: e.message }
       end
     end
@@ -237,15 +237,15 @@ def generate_with_retry(prompt, max_retries: 3)
   retries = 0
 
   begin
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
     client.generate_text(prompt)
 
-  rescue GeminiAI::AuthenticationError => e
+  rescue Nuntius::AuthenticationError => e
     # Don't retry authentication errors
     Rails.logger.error "Authentication failed: #{e.message}"
     raise "AI service authentication failed"
 
-  rescue GeminiAI::RateLimitError => e
+  rescue Nuntius::RateLimitError => e
     retries += 1
     if retries <= max_retries
       wait_time = 2 ** retries  # Exponential backoff
@@ -257,7 +257,7 @@ def generate_with_retry(prompt, max_retries: 3)
       raise "AI service temporarily unavailable"
     end
 
-  rescue GeminiAI::NetworkError => e
+  rescue Nuntius::NetworkError => e
     retries += 1
     if retries <= max_retries
       Rails.logger.warn "Network error, retrying (attempt #{retries}): #{e.message}"
@@ -268,11 +268,11 @@ def generate_with_retry(prompt, max_retries: 3)
       raise "AI service connection failed"
     end
 
-  rescue GeminiAI::APIError => e
+  rescue Nuntius::APIError => e
     Rails.logger.error "API error: #{e.message}"
     raise "AI service error: #{e.message}"
 
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     Rails.logger.error "Gemini AI error: #{e.message}"
     raise "AI service error"
   end
@@ -285,7 +285,7 @@ end
 ```ruby
 class CircuitBreakerClient
   def initialize(failure_threshold: 5, timeout: 60)
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @failure_count = 0
     @failure_threshold = failure_threshold
     @timeout = timeout
@@ -312,7 +312,7 @@ class CircuitBreakerClient
 
       response
 
-    rescue GeminiAI::Error => e
+    rescue Nuntius::Error => e
       @failure_count += 1
       @last_failure_time = Time.now
 
@@ -428,7 +428,7 @@ balanced_params = {
 # app/services/ai_content_service.rb
 class AiContentService
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate_blog_post(topic, style: 'professional')
@@ -439,7 +439,7 @@ class AiContentService
       temperature: style == 'creative' ? 0.8 : 0.6,
       max_tokens: 800
     )
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     Rails.logger.error "AI Content Service Error: #{e.message}"
     "Unable to generate content at this time."
   end
@@ -462,7 +462,7 @@ class ContentGenerationJob < ApplicationJob
 
   def perform(user_id, prompt, content_type)
     user = User.find(user_id)
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
 
     response = client.generate_text(prompt)
 
@@ -477,7 +477,7 @@ class ContentGenerationJob < ApplicationJob
     # Notify user
     ContentGeneratedMailer.notify(user, response).deliver_now
 
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     Rails.logger.error "Content generation failed: #{e.message}"
     # Handle error - maybe retry or notify user
   end
@@ -502,7 +502,7 @@ class Api::V1::AiController < ApplicationController
       return
     end
 
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
     response = client.generate_text(prompt, options)
 
     # Log usage
@@ -510,7 +510,7 @@ class Api::V1::AiController < ApplicationController
 
     render json: { response: response }
 
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     render json: { error: e.message }, status: 500
   end
 
@@ -557,7 +557,7 @@ RSpec.describe AiContentService do
   describe '#generate_blog_post' do
     context 'when API call succeeds' do
       before do
-        allow_any_instance_of(GeminiAI::Client).to receive(:generate_text)
+        allow_any_instance_of(Nuntius::Client).to receive(:generate_text)
           .and_return('Generated blog post content')
       end
 
@@ -569,8 +569,8 @@ RSpec.describe AiContentService do
 
     context 'when API call fails' do
       before do
-        allow_any_instance_of(GeminiAI::Client).to receive(:generate_text)
-          .and_raise(GeminiAI::APIError.new('API Error'))
+        allow_any_instance_of(Nuntius::Client).to receive(:generate_text)
+          .and_raise(Nuntius::APIError.new('API Error'))
       end
 
       it 'returns fallback message' do
@@ -633,7 +633,7 @@ end
 ```ruby
 class LoggedGeminiClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate_text(prompt, options = {})
@@ -656,7 +656,7 @@ class LoggedGeminiClient
 
     response
 
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     duration = Time.now - start_time
 
     Rails.logger.error "Gemini Request Failed", {
@@ -676,7 +676,7 @@ end
 ```ruby
 class MetricsGeminiClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @metrics = {
       requests: 0,
       successes: 0,
@@ -693,7 +693,7 @@ class MetricsGeminiClient
       response = @client.generate_text(prompt, options)
       @metrics[:successes] += 1
       response
-    rescue GeminiAI::Error => e
+    rescue Nuntius::Error => e
       @metrics[:failures] += 1
       raise e
     ensure

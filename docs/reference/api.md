@@ -21,7 +21,7 @@ Or in Gemfile:
 <br>
 
 ```ruby
-gem 'nuntius-rb', require: 'vesper'
+gem 'nuntius-rb', require: 'nuntius'
 ```
 
 <br>
@@ -31,9 +31,9 @@ gem 'nuntius-rb', require: 'vesper'
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 response = client.generate_text("Hello, world!")
 puts response
 ```
@@ -49,7 +49,7 @@ puts response
 <br>
 
 ```ruby
-GeminiAI::Client.new(api_key = nil, model: :pro)
+Nuntius::Client.new(api_key = nil, model: :pro)
 ```
 
 <br>
@@ -65,9 +65,9 @@ Examples:
 <br>
 
 ```ruby
-client = GeminiAI::Client.new
-client = GeminiAI::Client.new('your_key')
-client = GeminiAI::Client.new(model: :flash)
+client = Nuntius::Client.new
+client = Nuntius::Client.new('your_key')
+client = Nuntius::Client.new(model: :flash)
 ```
 
 <br>
@@ -187,12 +187,12 @@ response = client.generate_image_text(image_data, "What's in this image?")
 
 | Error Class | Description |
 | ----------- | ----------- |
-| `GeminiAI::Error` | Base error class for all gem-related errors |
-| `GeminiAI::APIError` | Raised when API returns an error response |
-| `GeminiAI::AuthenticationError` | Raised when API key is invalid or missing |
-| `GeminiAI::RateLimitError` | Raised when API rate limit is exceeded |
-| `GeminiAI::InvalidRequestError` | Raised when request parameters are invalid |
-| `GeminiAI::NetworkError` | Raised when network communication fails |
+| `Nuntius::Error` | Base error class for all gem-related errors |
+| `Nuntius::APIError` | Raised when API returns an error response |
+| `Nuntius::AuthenticationError` | Raised when API key is invalid or missing |
+| `Nuntius::RateLimitError` | Raised when API rate limit is exceeded |
+| `Nuntius::InvalidRequestError` | Raised when request parameters are invalid |
+| `Nuntius::NetworkError` | Raised when network communication fails |
 
 <br>
 
@@ -200,7 +200,7 @@ response = client.generate_image_text(image_data, "What's in this image?")
 
 <br>
 
-# `GeminiAI::Utils::Loader`
+# `Nuntius::Utils::Loader`
 
 <br>
 
@@ -209,14 +209,14 @@ Utility for loading environment variables from .env files.
 <br>
 
 ```ruby
-GeminiAI::Utils::Loader.load('.env')
+Nuntius::Utils::Loader.load('.env')
 # or
-GeminiAI.load_env('.env')
+Nuntius.load_env('.env')
 ```
 
 <br>
 
-# `GeminiAI::Utils::Logger`
+# `Nuntius::Utils::Logger`
 
 <br>
 
@@ -225,8 +225,8 @@ Centralized logging utility with API key masking.
 <br>
 
 ```ruby
-GeminiAI::Utils::Logger.info("Message")
-GeminiAI::Utils::Logger.debug("Debug info")
+Nuntius::Utils::Logger.info("Message")
+Nuntius::Utils::Logger.debug("Debug info")
 ```
 
 <br>
@@ -264,10 +264,10 @@ GeminiAI::Utils::Logger.debug("Debug info")
 
 ```ruby
 # Default (pro/flash)
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 
 # Lite model for faster responses
-client = GeminiAI::Client.new(model: :flash_lite)
+client = Nuntius::Client.new(model: :flash_lite)
 ```
 
 <br>
@@ -299,7 +299,7 @@ GEMINI_API_KEY=your_api_key_here
 
 Load it in your code:
 ```ruby
-GeminiAI.load_env
+Nuntius.load_env
 ```
 
 <br>
@@ -310,13 +310,13 @@ GeminiAI.load_env
 
 ```ruby
 begin
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text("Hello")
-rescue GeminiAI::AuthenticationError => e
+rescue Nuntius::AuthenticationError => e
   puts "Invalid API key: #{e.message}"
-rescue GeminiAI::APIError => e
+rescue Nuntius::APIError => e
   puts "API error: #{e.message}"
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   puts "Gemini AI error: #{e.message}"
 end
 ```

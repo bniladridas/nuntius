@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
 name: Analysis
@@ -31,6 +31,6 @@ jobs:
 
       - name: Run manual fix analysis
         run: |
-          node vesper/manual.js "**/*.js,**/*.ts,**/*.py,**/*.rb"
+          node nuntius/manual.js "**/*.js,**/*.ts,**/*.py,**/*.rb"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

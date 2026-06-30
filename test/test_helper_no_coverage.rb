@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
 # Minimal test helper for CI environments where coverage is not needed
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'gemini'
+require_relative '../lib/nuntius'
 require 'minitest/autorun'
 # require 'minitest/reporters'
 require 'mocha/minitest'

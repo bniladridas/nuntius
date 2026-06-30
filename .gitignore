@@ -1,4 +1,4 @@
-# @vesper
+# @nuntius
 # Environment files
 
 .env.local
@@ -45,3 +45,4 @@ vendor/
 testing_documentation.html
 .vercel
 site/
+.env*

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module GeminiAI
+module Nuntius
   module Utils
     # Content moderation utility for filtering potentially harmful or inappropriate content
     class Moderation

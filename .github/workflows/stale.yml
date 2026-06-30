@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
 name: Stale
@@ -32,7 +32,7 @@ jobs:
             - Add a comment explaining why it should remain open
             - Remove the 'stale' label
 
-            Thank you for your contributions to Vesper!
+            Thank you for your contributions to Nuntius!
           close-issue-message: |
             This issue has been automatically closed due to inactivity.
 

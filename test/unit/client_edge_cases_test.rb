@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -7,7 +7,7 @@ require 'test_helper'
 
 class ClientEdgeCasesTest < Minitest::Test
   def setup
-    @client = GeminiAI::Client.new('AIzaSyDummyTestKeyForUnitTests123456789')
+    @client = Nuntius::Client.new('AIzaSyDummyTestKeyForUnitTests123456789')
     @test_image = Base64.strict_encode64(File.binread('test/fixtures/test_image.jpg'))
     HTTParty.stubs(:post).returns(Minitest::Test::MockHTTPResponse.new(status: 200,
                                                                        body: '{"candidates":[{"content":{"parts":[{"text":"Test response from Gemini AI"}]}}]}'))
@@ -17,7 +17,7 @@ class ClientEdgeCasesTest < Minitest::Test
     long_prompt = 'a' * 9000
     stub_gemini_request(response: test_response, status: 200)
 
-    error = assert_raises(GeminiAI::Error) do
+    error = assert_raises(Nuntius::Error) do
       @client.generate_text(long_prompt)
     end
 
@@ -25,7 +25,7 @@ class ClientEdgeCasesTest < Minitest::Test
   end
 
   def test_generate_image_text_with_empty_image
-    error = assert_raises(GeminiAI::Error) do
+    error = assert_raises(Nuntius::Error) do
       @client.generate_image_text('', 'test prompt')
     end
 

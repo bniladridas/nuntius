@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -75,7 +75,7 @@ end
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift File.expand_path(__dir__)
-require 'gemini'
+require_relative '../lib/nuntius'
 require 'minitest'
 require 'mocha/minitest'
 require 'minitest/autorun'
@@ -348,7 +348,7 @@ module Minitest
 
   # Helper method to create a test client
   def create_test_client(model: :pro, **)
-    GeminiAI::Client.new('test_key', model: model)
+    Nuntius::Client.new('test_key', model: model)
   end
 end
 

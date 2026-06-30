@@ -1,19 +1,19 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative '../lib/gemini'
+require_relative '../lib/nuntius'
 
 # Load environment variables
-GeminiAI.load_env
+Nuntius.load_env
 
 # Advanced configuration example
 def configuration_example
   puts '=== Advanced Configuration ==='
 
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
 
   # Custom parameters for more creative output
   creative_response = client.generate_text(
@@ -44,17 +44,17 @@ def error_handling_example
 
   begin
     # This will fail - empty prompt
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
     client.generate_text('')
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     puts "Caught expected error: #{e.message}"
   end
 
   begin
     # This will fail - invalid API key
-    invalid_client = GeminiAI::Client.new('invalid_key')
+    invalid_client = Nuntius::Client.new('invalid_key')
     invalid_client.generate_text('Hello')
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     puts "Caught API key error: #{e.message}"
   end
 end
@@ -63,7 +63,7 @@ end
 def batch_processing
   puts "\n=== Batch Processing Example ==="
 
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   prompts = [
     'Write a haiku about coding',
     'Explain recursion briefly',

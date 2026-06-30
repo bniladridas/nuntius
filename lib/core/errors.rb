@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
-module GeminiAI
-  # Base error class for all GeminiAI related errors
+module Nuntius
+  # Base error class for all Nuntius related errors
   class Error < StandardError; end
 
   # API related errors

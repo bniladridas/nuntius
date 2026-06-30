@@ -28,7 +28,7 @@ The project tracks maintained Ruby branches for local development and CI. Do not
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/bniladridas/nuntius.git
+   git clone https://github.com/palmshed/nuntius.git
    cd nuntius
    ```
 
@@ -125,7 +125,7 @@ The project uses GitHub Actions for CI/CD. Key workflows:
 
 <br>
 
-2. **Vesper Workflow** (`.github/workflows/vesper.yml`):
+2. **Nuntius Workflow** (`.github/workflows/nuntius.yml`):
     - Automated PR analysis and code review
     - Comments on code quality, security, and performance
     - Uses Gemini for PR analysis
@@ -172,7 +172,7 @@ The project uses GitHub Actions for CI/CD. Key workflows:
 
 Enable debug logging:
 ```ruby
-GeminiAI::Client.logger.level = Logger::DEBUG
+Nuntius::Client.logger.level = Logger::DEBUG
 ```
 
 <br>

@@ -2,7 +2,7 @@
 
 <br>
 
-This repository uses GitHub Actions for tests, security checks, release tasks, site deployment, and Vesper.
+This repository uses GitHub Actions for tests, security checks, release tasks, site deployment, and Nuntius.
 
 <br>
 
@@ -12,7 +12,7 @@ This repository uses GitHub Actions for tests, security checks, release tasks, s
 | E2E | `.github/workflows/e2e.yml` | Runs API-oriented checks when configured |
 | Security | `.github/workflows/security.yml` | Runs dependency and secret scans |
 | Dependencies | `.github/workflows/dependencies.yml` | Checks dependency updates |
-| Vesper | `.github/workflows/vesper.yml` | Reviews pull requests with Gemini-backed analysis |
+| Nuntius | `.github/workflows/nuntius.yml` | Reviews pull requests with Gemini-backed analysis |
 | Site | `.github/workflows/deploy-site.yml` | Publishes the static website |
 | Release | `.github/workflows/release.yml` | Handles release automation |
 | Publish Gem | `.github/workflows/publish-gem.yml` | Builds and publishes package artifacts |
@@ -45,10 +45,10 @@ Common workflow secrets are:
 
 | Secret | Used for |
 | --- | --- |
-| `GEMINI_API_KEY` | Gemini API tests and Vesper |
+| `GEMINI_API_KEY` | Gemini API tests and Nuntius |
 | `RUBYGEMS_API_KEY` | RubyGems publishing |
 | `CODECOV_TOKEN` | Coverage upload |
 
 <br>
 
-Vesper may also require GitHub App credentials when running in app mode. See [`Vesper`](../reference/vesper.md).
+Nuntius may also require GitHub App credentials when running in app mode. See [`Nuntius`](../reference/nuntius.md).

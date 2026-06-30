@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -75,17 +75,17 @@ class TestClient < Minitest::Test
     @api_key = "AIzaSyD#{'a' * 35}" # 39 characters total, starting with AIzaSyD
 
     # Stub the API key validation to always pass
-    GeminiAI::Client.any_instance.stubs(:validate_api_key!).returns(true)
+    Nuntius::Client.any_instance.stubs(:validate_api_key!).returns(true)
 
     # Stub sleep to speed up tests
-    GeminiAI::Client.any_instance.stubs(:sleep)
+    Nuntius::Client.any_instance.stubs(:sleep)
 
     # Stub HTTParty to prevent real API calls
     HTTParty.stubs(:post).returns(Minitest::Test::MockHTTPResponse.new(status: 200,
                                                                        body: '{"candidates":[{"content":{"parts":[{"text":"Test response from Gemini AI"}]}}]}'))
 
     # Create client after stubs are set up
-    @client = GeminiAI::Client.new(@api_key)
+    @client = Nuntius::Client.new(@api_key)
 
     # Mock successful response
     @success_response = {
@@ -114,11 +114,11 @@ class TestClient < Minitest::Test
   end
 
   def test_initialization_does_not_print_api_key_to_stdout
-    GeminiAI::Client.any_instance.unstub(:validate_api_key!)
-    GeminiAI::Client.instance_variable_set(:@logger, nil)
+    Nuntius::Client.any_instance.unstub(:validate_api_key!)
+    Nuntius::Client.instance_variable_set(:@logger, nil)
 
     stdout, stderr = capture_io do
-      GeminiAI::Client.new(@api_key)
+      Nuntius::Client.new(@api_key)
     end
 
     refute_includes stdout, @api_key, 'Raw API key should not be printed to stdout'
@@ -134,11 +134,11 @@ class TestClient < Minitest::Test
     end
 
     # Stub the logger to capture logs
-    GeminiAI::Client.stubs(:logger).returns(logger)
+    Nuntius::Client.stubs(:logger).returns(logger)
 
     # Create a client with a test API key
     test_api_key = 'AIzaSyDtestkey1234567890123456789012345678'
-    client = GeminiAI::Client.new(test_api_key)
+    client = Nuntius::Client.new(test_api_key)
 
     # Stub the HTTP request to avoid making real API calls
     stub_request(:post, /generativelanguage\.googleapis\.com/)
@@ -162,7 +162,7 @@ class TestClient < Minitest::Test
 
   def test_initialization_with_env_var
     ENV['GEMINI_API_KEY'] = 'env_api_key_12345678901234567890123456789012'
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
 
     assert_equal ENV.fetch('GEMINI_API_KEY', nil), client.instance_variable_get(:@api_key)
     ENV.delete('GEMINI_API_KEY')
@@ -185,7 +185,7 @@ class TestClient < Minitest::Test
     ENV['GITHUB_ACTIONS'] = nil
 
     # Initialize the client and override the min_request_interval to 0 for testing
-    client = GeminiAI::Client.new(@api_key)
+    client = Nuntius::Client.new(@api_key)
     client.instance_variable_set(:@min_request_interval, 0)
 
     # Mock Kernel.sleep to track calls
@@ -209,7 +209,7 @@ class TestClient < Minitest::Test
     ENV['CI'] = 'true'
     ENV['GITHUB_ACTIONS'] = 'true'
 
-    client = GeminiAI::Client.new(@api_key)
+    client = Nuntius::Client.new(@api_key)
 
     # Mock sleep to track calls
     sleep_calls = []
@@ -232,14 +232,14 @@ class TestClient < Minitest::Test
   end
 
   def test_initialization_with_different_model
-    client = GeminiAI::Client.new(@api_key, model: :flash)
+    client = Nuntius::Client.new(@api_key, model: :flash)
 
     assert_equal 'gemini-3.5-flash', client.instance_variable_get(:@model)
   end
 
   def setup_invalid_api_key_tests
     @original_api_key = ENV.fetch('GEMINI_API_KEY', nil)
-    GeminiAI::Client.any_instance.unstub(:validate_api_key!)
+    Nuntius::Client.any_instance.unstub(:validate_api_key!)
   end
 
   def teardown_invalid_api_key_tests
@@ -254,7 +254,7 @@ class TestClient < Minitest::Test
     setup_invalid_api_key_tests
     ENV.delete('GEMINI_API_KEY')
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new(nil) }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new(nil) }
 
     assert_match(/API key is required/, error.message)
   ensure
@@ -264,7 +264,7 @@ class TestClient < Minitest::Test
   def test_initialization_with_empty_key
     setup_invalid_api_key_tests
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new('') }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new('') }
 
     assert_match(/API key is required/, error.message)
   ensure
@@ -274,7 +274,7 @@ class TestClient < Minitest::Test
   def test_initialization_with_invalid_format_key
     setup_invalid_api_key_tests
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new('invalid-key') }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new('invalid-key') }
 
     assert_match(/Invalid API key format/, error.message)
   ensure
@@ -284,7 +284,7 @@ class TestClient < Minitest::Test
   def test_initialization_with_short_but_valid_prefix_key
     setup_invalid_api_key_tests
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new('AIza123') }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new('AIza123') }
 
     assert_match(/Invalid API key format/, error.message)
   ensure
@@ -295,7 +295,7 @@ class TestClient < Minitest::Test
     setup_invalid_api_key_tests
     ENV.delete('GEMINI_API_KEY')
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new }
 
     assert_match(/API key is required/, error.message)
   ensure
@@ -306,7 +306,7 @@ class TestClient < Minitest::Test
     setup_invalid_api_key_tests
     ENV['GEMINI_API_KEY'] = ''
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new }
 
     assert_match(/API key is required/, error.message)
   ensure
@@ -317,7 +317,7 @@ class TestClient < Minitest::Test
     setup_invalid_api_key_tests
     ENV['GEMINI_API_KEY'] = 'invalid-key'
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new }
 
     assert_match(/Invalid API key format/, error.message)
   ensure
@@ -328,7 +328,7 @@ class TestClient < Minitest::Test
     setup_invalid_api_key_tests
     ENV['GEMINI_API_KEY'] = 'AIza123'
 
-    error = assert_raises(GeminiAI::Error) { GeminiAI::Client.new }
+    error = assert_raises(Nuntius::Error) { Nuntius::Client.new }
 
     assert_match(/Invalid API key format/, error.message)
   ensure
@@ -349,7 +349,7 @@ class TestClient < Minitest::Test
   end
 
   def test_generate_image_text_with_empty_image
-    assert_raises(GeminiAI::Error) do
+    assert_raises(Nuntius::Error) do
       @client.generate_image_text('', 'Describe this image')
     end
   end
@@ -831,7 +831,7 @@ class TestClient < Minitest::Test
     HTTParty.stubs(:post).returns(MockHTTPResponse.new(status: 400,
                                                        body: @error_response.to_json))
 
-    error = assert_raises(GeminiAI::Error) do
+    error = assert_raises(Nuntius::Error) do
       @client.generate_text('Test prompt')
     end
 
@@ -841,7 +841,7 @@ class TestClient < Minitest::Test
   def test_generate_content_network_error
     HTTParty.stubs(:post).raises(HTTParty::Error.new('Network error'))
 
-    error = assert_raises(GeminiAI::Error) do
+    error = assert_raises(Nuntius::Error) do
       @client.generate_text('Test prompt')
     end
 
@@ -850,7 +850,7 @@ class TestClient < Minitest::Test
 
   def test_rate_limiting
     # Create a new client with a shorter interval for testing
-    client = GeminiAI::Client.new(@api_key)
+    client = Nuntius::Client.new(@api_key)
     client.instance_variable_set(:@min_request_interval, 0.1)
 
     # Track sleep calls
@@ -887,20 +887,20 @@ class TestClient < Minitest::Test
   end
 
   def test_models_constant
-    assert_kind_of Hash, GeminiAI::Client::MODELS
-    assert GeminiAI::Client::MODELS.key?(:pro)
-    assert GeminiAI::Client::MODELS.key?(:flash)
+    assert_kind_of Hash, Nuntius::Client::MODELS
+    assert Nuntius::Client::MODELS.key?(:pro)
+    assert Nuntius::Client::MODELS.key?(:flash)
   end
 
   def test_logger
-    assert_respond_to GeminiAI::Client, :logger
-    assert_kind_of Logger, GeminiAI::Client.logger
+    assert_respond_to Nuntius::Client, :logger
+    assert_kind_of Logger, Nuntius::Client.logger
   end
 
   def test_redacts_api_key_in_logs
     # Create a new client with a known API key
     api_key = 'AIza12345678901234567890123456789012345678'
-    client = GeminiAI::Client.new(api_key)
+    client = Nuntius::Client.new(api_key)
 
     # Capture log output
     log_output = StringIO.new
@@ -910,7 +910,7 @@ class TestClient < Minitest::Test
     end
 
     # Stub the logger
-    GeminiAI::Client.stubs(:logger).returns(logger)
+    Nuntius::Client.stubs(:logger).returns(logger)
 
     # Setup the API response
     stub_request(:post, /generativelanguage\.googleapis\.com/)

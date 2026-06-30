@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 require 'test_helper'
 require 'tempfile'
@@ -8,7 +8,7 @@ require 'fileutils'
 
 class TestLoader < Minitest::Test
   def setup
-    @temp_dir = Dir.mktmpdir('vesper_test')
+    @temp_dir = Dir.mktmpdir('nuntius_test')
     @env_file = File.join(@temp_dir, '.env')
   end
 
@@ -29,7 +29,7 @@ class TestLoader < Minitest::Test
     end
 
     # Load the environment variables
-    GeminiAI::Utils::Loader.load(@env_file)
+    Nuntius::Utils::Loader.load(@env_file)
 
     # Check that the environment variables were set correctly
     assert_equal 'test_value', ENV.fetch('TEST_KEY', nil)
@@ -39,7 +39,7 @@ class TestLoader < Minitest::Test
   def test_load_with_nonexistent_file
     # This should not raise an error
     refute_path_exists('nonexistent_file')
-    GeminiAI::Utils::Loader.load('nonexistent_file')
+    Nuntius::Utils::Loader.load('nonexistent_file')
   end
 
   def test_load_with_empty_file
@@ -47,7 +47,7 @@ class TestLoader < Minitest::Test
     FileUtils.touch(@env_file)
 
     # This should not raise an error
-    GeminiAI::Utils::Loader.load(@env_file)
+    Nuntius::Utils::Loader.load(@env_file)
   end
 
   def test_load_with_malformed_line
@@ -59,7 +59,7 @@ class TestLoader < Minitest::Test
     end
 
     # This should not raise an error
-    GeminiAI::Utils::Loader.load(@env_file)
+    Nuntius::Utils::Loader.load(@env_file)
 
     # The well-formed lines should still be processed
     assert_equal 'good_value', ENV.fetch('GOOD_KEY', nil)
@@ -77,7 +77,7 @@ class TestLoader < Minitest::Test
       f.puts 'WITH_HASH=value#not_a_comment'
     end
 
-    GeminiAI::Utils::Loader.load(@env_file)
+    Nuntius::Utils::Loader.load(@env_file)
 
     # Check that the environment variables were set correctly
     assert_equal 'https://example.com?param=value&another=param', ENV.fetch('URL', nil)

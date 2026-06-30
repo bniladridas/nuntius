@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -12,16 +12,16 @@ class TestModels < Minitest::Test
   end
 
   def test_default_pro_model
-    client = GeminiAI::Client.new(@api_key, model: :pro)
+    client = Nuntius::Client.new(@api_key, model: :pro)
 
-    assert_instance_of GeminiAI::Client, client
+    assert_instance_of Nuntius::Client, client
     assert_equal 'gemini-pro-latest', client.instance_variable_get(:@model)
   end
 
   def test_default_flash_model
-    client = GeminiAI::Client.new(@api_key, model: :flash)
+    client = Nuntius::Client.new(@api_key, model: :flash)
 
-    assert_instance_of GeminiAI::Client, client
+    assert_instance_of Nuntius::Client, client
     assert_equal 'gemini-3.5-flash', client.instance_variable_get(:@model)
   end
 
@@ -40,16 +40,16 @@ class TestModels < Minitest::Test
     }
 
     expected_models.each do |key, model_id|
-      client = GeminiAI::Client.new(@api_key, model: key)
+      client = Nuntius::Client.new(@api_key, model: key)
 
       assert_equal model_id, client.instance_variable_get(:@model)
     end
   end
 
   def test_short_aliases
-    flash_2_0_client = GeminiAI::Client.new(@api_key, model: :flash_2_0)
-    lite_client = GeminiAI::Client.new(@api_key, model: :flash_lite)
-    pro_2_0_client = GeminiAI::Client.new(@api_key, model: :pro_2_0)
+    flash_2_0_client = Nuntius::Client.new(@api_key, model: :flash_2_0)
+    lite_client = Nuntius::Client.new(@api_key, model: :flash_lite)
+    pro_2_0_client = Nuntius::Client.new(@api_key, model: :pro_2_0)
 
     assert_equal 'gemini-2.0-flash', flash_2_0_client.instance_variable_get(:@model)
     assert_equal 'gemini-3.1-flash-lite', lite_client.instance_variable_get(:@model)
@@ -57,17 +57,17 @@ class TestModels < Minitest::Test
   end
 
   def test_all_supported_models
-    GeminiAI::Client::MODELS.each do |model_key, model_id|
-      client = GeminiAI::Client.new(@api_key, model: model_key)
+    Nuntius::Client::MODELS.each do |model_key, model_id|
+      client = Nuntius::Client.new(@api_key, model: model_key)
 
-      assert_instance_of GeminiAI::Client, client, "Failed to create client for model: #{model_key} (#{model_id})"
+      assert_instance_of Nuntius::Client, client, "Failed to create client for model: #{model_key} (#{model_id})"
     end
   end
 
   def test_invalid_model_defaults_to_pro
-    client = GeminiAI::Client.new(@api_key, model: :invalid_model)
+    client = Nuntius::Client.new(@api_key, model: :invalid_model)
 
-    assert_instance_of GeminiAI::Client, client
+    assert_instance_of Nuntius::Client, client
     assert_equal 'gemini-pro-latest', client.instance_variable_get(:@model)
   end
 end

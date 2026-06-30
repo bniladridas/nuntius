@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -8,14 +8,14 @@ require 'test_helper'
 class TestAPI < Minitest::Test
   def setup
     # Stub the API key validation to always pass
-    GeminiAI::Client.any_instance.stubs(:validate_api_key!).returns(true)
+    Nuntius::Client.any_instance.stubs(:validate_api_key!).returns(true)
 
     # Stub sleep to speed up tests
-    GeminiAI::Client.any_instance.stubs(:sleep)
+    Nuntius::Client.any_instance.stubs(:sleep)
 
     # Create a test API key that passes validation
     @api_key = "AIzaSyD#{'a' * 35}" # 39 characters total, starting with AIzaSyD
-    @client = GeminiAI::Client.new(@api_key)
+    @client = Nuntius::Client.new(@api_key)
 
     # Mock successful response
     @success_response = {
@@ -45,7 +45,7 @@ class TestAPI < Minitest::Test
     # Stub the API request with the expected response
     HTTParty.stubs(:post).returns(mock_response(status: 200, body: @success_response.to_json))
 
-    client = GeminiAI::Client.new(@api_key)
+    client = Nuntius::Client.new(@api_key)
 
     # First message
     response1 = client.generate_text('Hello, how are you?')
@@ -76,7 +76,7 @@ class TestAPI < Minitest::Test
         headers: { 'Content-Type': 'application/json' }
       )
 
-    client = GeminiAI::Client.new(@api_key, model: :pro)
+    client = Nuntius::Client.new(@api_key, model: :pro)
     response = client.generate_text('What is the weather like?')
 
     assert_equal 'Test response from Gemini AI', response
@@ -98,7 +98,7 @@ class TestAPI < Minitest::Test
         headers: { 'Content-Type': 'application/json' }
       )
 
-    client = GeminiAI::Client.new(@api_key, model: :flash)
+    client = Nuntius::Client.new(@api_key, model: :flash)
     response = client.generate_text('What is the weather like?')
 
     assert_equal 'Test response from Gemini AI', response
@@ -149,7 +149,7 @@ class TestAPI < Minitest::Test
         headers: { 'Content-Type': 'application/json' }
       )
 
-    client = GeminiAI::Client.new(@api_key)
+    client = Nuntius::Client.new(@api_key)
 
     # Test with system instructions
     response = client.chat(
@@ -203,10 +203,10 @@ class TestAPI < Minitest::Test
   end
 
   def test_error_handling
-    client = GeminiAI::Client.new(@api_key)
+    client = Nuntius::Client.new(@api_key)
 
     # Test empty prompt
-    assert_raises(GeminiAI::Error) do
+    assert_raises(Nuntius::Error) do
       client.generate_text('')
     end
 
@@ -220,8 +220,8 @@ class TestAPI < Minitest::Test
     }.to_json))
 
     # Test API error with invalid key
-    client = GeminiAI::Client.new('invalid-api-key')
-    assert_raises(GeminiAI::Error) do
+    client = Nuntius::Client.new('invalid-api-key')
+    assert_raises(Nuntius::Error) do
       client.generate_text('This should fail')
     end
   end

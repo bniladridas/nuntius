@@ -2,7 +2,7 @@
 
 <br>
 
-Vesper provides a Ruby interface for Gemini text generation, chat, and image input.
+Nuntius provides a Ruby interface for Gemini text generation, chat, and image input.
 
 <br>
 
@@ -16,7 +16,7 @@ Generate text with request options for temperature, token limits, and sampling.
 
 # Basic Text Generation
 ```ruby
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 response = client.generate_text("Explain quantum computing")
 ```
 
@@ -186,7 +186,7 @@ ruby_code = client.generate_text(
 # Parameter Optimization
 ```ruby
 # For factual accuracy
-factual_client = GeminiAI::Client.new
+factual_client = Nuntius::Client.new
 factual_response = factual_client.generate_text(
   "What are the key features of Ruby 3.2?",
   temperature: 0.1,   # Low randomness
@@ -195,7 +195,7 @@ factual_response = factual_client.generate_text(
 )
 
 # For creative tasks
-creative_client = GeminiAI::Client.new
+creative_client = Nuntius::Client.new
 creative_response = creative_client.generate_text(
   "Write a poem about programming",
   temperature: 0.9,   # High creativity
@@ -227,7 +227,7 @@ def generate_with_retry(prompt, retries: 3)
   attempt = 0
   begin
     client.generate_text(prompt)
-  rescue GeminiAI::RateLimitError => e
+  rescue Nuntius::RateLimitError => e
     attempt += 1
     if attempt <= retries
       sleep(2 ** attempt)  # Exponential backoff
@@ -249,7 +249,7 @@ end
 ```ruby
 class CachedClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @cache = {}
   end
 
@@ -290,10 +290,10 @@ end
 ```ruby
 class AiController < ApplicationController
   def generate
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
     response = client.generate_text(params[:prompt])
     render json: { response: response }
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     render json: { error: e.message }, status: 500
   end
 end
@@ -305,7 +305,7 @@ end
 ```ruby
 class AiGenerationJob < ApplicationJob
   def perform(prompt, user_id)
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
     response = client.generate_text(prompt)
 
     # Store result
@@ -324,7 +324,7 @@ end
 ```ruby
 class WebhookProcessor
   def process_content(webhook_data)
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
 
     analysis = client.generate_text(
       "Analyze this webhook data: #{webhook_data}",
@@ -361,15 +361,15 @@ end
 # API Key Protection
 ```ruby
 # Good - Environment variables
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 
 # Bad - Hardcoded keys
-# client = GeminiAI::Client.new('AIza...')
+# client = Nuntius::Client.new('AIza...')
 
 # Good - Key validation
 begin
-  client = GeminiAI::Client.new
-rescue GeminiAI::AuthenticationError
+  client = Nuntius::Client.new
+rescue Nuntius::AuthenticationError
   Rails.logger.error "Invalid API key configuration"
   raise "AI service unavailable"
 end
@@ -385,7 +385,7 @@ end
 ```ruby
 class TrackedClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @request_count = 0
   end
 
@@ -409,10 +409,10 @@ end
 ```ruby
 def monitored_generation(prompt)
   client.generate_text(prompt)
-rescue GeminiAI::RateLimitError => e
+rescue Nuntius::RateLimitError => e
   ErrorTracker.notify("Rate limit exceeded", context: { prompt: prompt })
   raise e
-rescue GeminiAI::APIError => e
+rescue Nuntius::APIError => e
   ErrorTracker.notify("API error", context: { error: e.message })
   raise e
 end

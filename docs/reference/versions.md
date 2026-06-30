@@ -6,16 +6,16 @@ The gem is currently `1.0.0.pre`.
 
 <br>
 
-The published gem name is `nuntius-rb`. The runtime entrypoint is `vesper`.
+The published gem name is `nuntius-rb`. The runtime entrypoint is `nuntius`.
 
 <br>
 
-Gem releases use tags such as `nuntius-rb/v1.0.0-pre`. The Vesper Review app is deployed from `main` and is identified by its build commit rather than a gem release tag.
+Gem releases use tags such as `nuntius-rb/v1.0.0-pre`. The Nuntius Review app is deployed from `main` and is identified by its build commit rather than a gem release tag.
 
 <br>
 
 ```ruby
-gem 'nuntius-rb', require: 'vesper'
+gem 'nuntius-rb', require: 'nuntius'
 ```
 
 <br>
@@ -43,10 +43,10 @@ Ruby support follows maintained Ruby branches. The gem currently requires Ruby 3
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
-GeminiAI.load_env
-client = GeminiAI::Client.new
+Nuntius.load_env
+client = Nuntius::Client.new
 
 client.generate_text('Hello')
 client.chat([{ role: 'user', content: 'Hello' }])

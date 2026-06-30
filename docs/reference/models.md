@@ -2,7 +2,7 @@
 
 <br>
 
-Vesper maps Ruby symbols to Gemini `generateContent` text model IDs.
+Nuntius maps Ruby symbols to Gemini `generateContent` text model IDs.
 
 <br>
 
@@ -30,10 +30,10 @@ Vesper maps Ruby symbols to Gemini `generateContent` text model IDs.
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
-client = GeminiAI::Client.new
-fast_client = GeminiAI::Client.new(model: :flash)
+client = Nuntius::Client.new
+fast_client = Nuntius::Client.new(model: :flash)
 ```
 
 <br>

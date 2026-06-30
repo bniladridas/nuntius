@@ -6,7 +6,7 @@ Contributions are welcome when they keep the project small, clear, and tested.
 
 <br>
 
-Please read the [`Code of Conduct`](https://github.com/bniladridas/nuntius/blob/main/docs/CODE_OF_CONDUCT.md) before participating.
+Please read the [`Code of Conduct`](https://github.com/palmshed/nuntius/blob/main/docs/CODE_OF_CONDUCT.md) before participating.
 
 <br>
 
@@ -19,7 +19,7 @@ Clone the repository, install the bundle, and copy the example environment file.
 <br>
 
 ```bash
-git clone https://github.com/bniladridas/nuntius.git
+git clone https://github.com/palmshed/nuntius.git
 cd nuntius
 bundle install
 cp config/.env.example .env
@@ -82,7 +82,7 @@ Use clear commit messages. Conventional Commit format is fine, but plain wording
 
 <br>
 
-For bugs, include the Ruby version, Vesper version, operating system, reproduction steps, and the expected and actual behavior.
+For bugs, include the Ruby version, Nuntius version, operating system, reproduction steps, and the expected and actual behavior.
 
 <br>
 
@@ -96,10 +96,10 @@ For feature requests, describe the use case and the smallest API that would solv
 
 | Topic | Link |
 | --- | --- |
-| Setup | [`Setup`](https://github.com/bniladridas/nuntius/blob/main/docs/SETUP.md) |
-| Practices | [`Development practices`](https://github.com/bniladridas/nuntius/blob/main/docs/guides/practices.md) |
-| Tests | [`Testing`](https://github.com/bniladridas/nuntius/blob/main/docs/reference/testing.md) |
-| API | [`API reference`](https://github.com/bniladridas/nuntius/blob/main/docs/reference/api.md) |
+| Setup | [`Setup`](https://github.com/palmshed/nuntius/blob/main/docs/SETUP.md) |
+| Practices | [`Development practices`](https://github.com/palmshed/nuntius/blob/main/docs/guides/practices.md) |
+| Tests | [`Testing`](https://github.com/palmshed/nuntius/blob/main/docs/reference/testing.md) |
+| API | [`API reference`](https://github.com/palmshed/nuntius/blob/main/docs/reference/api.md) |
 
 <br>
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -19,17 +19,17 @@ class GeminiTest < Minitest::Test
   def test_new_client_creation
     # Use a valid API key format that will pass validation
     valid_api_key = 'AIzaSyDummyTestKeyForUnitTests123456789'
-    client = GeminiAI.new(valid_api_key)
+    client = Nuntius.new(valid_api_key)
 
-    assert_instance_of GeminiAI::Client, client
+    assert_instance_of Nuntius::Client, client
   end
 
   def test_new_client_with_options
     # Use a valid API key format that will pass validation
     valid_api_key = 'AIzaSyDummyTestKeyForUnitTests123456789'
-    client = GeminiAI.new(valid_api_key, model: :flash)
+    client = Nuntius.new(valid_api_key, model: :flash)
 
-    assert_instance_of GeminiAI::Client, client
+    assert_instance_of Nuntius::Client, client
     assert_equal 'gemini-3.5-flash', client.instance_variable_get(:@model)
   end
 
@@ -40,7 +40,7 @@ class GeminiTest < Minitest::Test
     temp_env.close
 
     # Test loading the .env file
-    GeminiAI.load_env(temp_env.path)
+    Nuntius.load_env(temp_env.path)
 
     # Check that environment variables were set
     assert_equal 'test_value', ENV.fetch('TEST_KEY', nil)

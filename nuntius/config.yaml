@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
-# Vesper Configuration
-# This file configures Vesper's analysis behavior. Modify these settings to customize the bot's performance and output.
+# Nuntius Configuration
+# This file configures Nuntius's analysis behavior. Modify these settings to customize the bot's performance and output.
 # Customize the analysis focus and model
 
 # Analysis focus: 'all', 'security', 'performance', 'quality'
@@ -12,7 +12,7 @@ focus: all
 
 # Gemini model to use
 # Default: 'gemini-3.5-flash'
-# Use VESPER_GEMINI_MODEL to override the default in hosted environments.
+# Use NUNTIUS_GEMINI_MODEL to override the default in hosted environments.
 # See https://ai.google.dev/models/gemini for the full list and latest models
 model: gemini-3.5-flash
 
@@ -42,7 +42,7 @@ safety_settings:
     threshold: BLOCK_NONE
 
 # Enable code authoring features
-# When enabled, Vesper can create commits, branches, and PRs with improvements
+# When enabled, Nuntius can create commits, branches, and PRs with improvements
 enable_authoring: true
 
 # Auto-commit suggestions to PR branches
@@ -55,7 +55,7 @@ create_improvement_prs: false
 
 # Branch naming pattern for improvement PRs
 # {timestamp} and {pr_number} will be replaced with actual values
-improvement_branch_pattern: "vesper-improvements-{timestamp}"
+improvement_branch_pattern: "nuntius-improvements-{timestamp}"
 
 # Optional retrieval context. Disabled by default to keep reviews fast and predictable.
 enable_rag: false
@@ -69,7 +69,7 @@ rag_github_token: ""
 rag_max_items: 3
 
 # AI analysis prompt template
-# Customize the prompt to change how Vesper analyzes code
+# Customize the prompt to change how Nuntius analyzes code
 prompt: |
   Analyze the following code changes. Focus on code quality, security, performance, and correctness.
 

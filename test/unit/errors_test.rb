@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -7,62 +7,62 @@ require 'test_helper'
 
 class ErrorsTest < Minitest::Test
   def test_error_inheritance
-    assert_kind_of StandardError, GeminiAI::Error.new
+    assert_kind_of StandardError, Nuntius::Error.new
   end
 
   def test_api_error_inheritance
-    assert_kind_of GeminiAI::Error, GeminiAI::APIError.new
+    assert_kind_of Nuntius::Error, Nuntius::APIError.new
   end
 
   def test_authentication_error_inheritance
-    assert_kind_of GeminiAI::Error, GeminiAI::AuthenticationError.new
+    assert_kind_of Nuntius::Error, Nuntius::AuthenticationError.new
   end
 
   def test_rate_limit_error_inheritance
-    assert_kind_of GeminiAI::Error, GeminiAI::RateLimitError.new
+    assert_kind_of Nuntius::Error, Nuntius::RateLimitError.new
   end
 
   def test_invalid_request_error_inheritance
-    assert_kind_of GeminiAI::Error, GeminiAI::InvalidRequestError.new
+    assert_kind_of Nuntius::Error, Nuntius::InvalidRequestError.new
   end
 
   def test_network_error_inheritance
-    assert_kind_of GeminiAI::Error, GeminiAI::NetworkError.new
+    assert_kind_of Nuntius::Error, Nuntius::NetworkError.new
   end
 
   def test_error_message
     message = 'Test error message'
 
-    assert_equal message, GeminiAI::Error.new(message).message
+    assert_equal message, Nuntius::Error.new(message).message
   end
 
   def test_api_error_message
     message = 'Test error message'
 
-    assert_equal message, GeminiAI::APIError.new(message).message
+    assert_equal message, Nuntius::APIError.new(message).message
   end
 
   def test_authentication_error_message
     message = 'Test error message'
 
-    assert_equal message, GeminiAI::AuthenticationError.new(message).message
+    assert_equal message, Nuntius::AuthenticationError.new(message).message
   end
 
   def test_rate_limit_error_message
     message = 'Test error message'
 
-    assert_equal message, GeminiAI::RateLimitError.new(message).message
+    assert_equal message, Nuntius::RateLimitError.new(message).message
   end
 
   def test_invalid_request_error_message
     message = 'Test error message'
 
-    assert_equal message, GeminiAI::InvalidRequestError.new(message).message
+    assert_equal message, Nuntius::InvalidRequestError.new(message).message
   end
 
   def test_network_error_message
     message = 'Test error message'
 
-    assert_equal message, GeminiAI::NetworkError.new(message).message
+    assert_equal message, Nuntius::NetworkError.new(message).message
   end
 end

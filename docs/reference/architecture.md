@@ -1,4 +1,4 @@
-# GeminiAI Gem Architecture
+# Nuntius Gem Architecture
 
 <br>
 
@@ -7,7 +7,7 @@
 <br>
 
 ```
-vesper/
+nuntius/
 ├── bin/                    # Executable scripts
 │   └── gemini             # CLI interface
 ├── config/                # Configuration files
@@ -25,7 +25,7 @@ vesper/
 │   ├── utils/             # Utility classes
 │   │   ├── loader.rb      # Environment loader
 │   │   └── logger.rb      # Logging utility
-│   └── vesper.rb       # Main entry point
+│   └── nuntius.rb       # Main entry point
 ├── tests/                 # Test suite
 │   ├── unit/              # Unit tests
 │   │   └── test_client.rb # Client unit tests
@@ -160,7 +160,7 @@ User Input → Client → API Request → Gemini API → Response → Client →
 # Error Hierarchy
 ```
 StandardError
-└── GeminiAI::Error (base)
+└── Nuntius::Error (base)
     ├── APIError
     ├── AuthenticationError
     ├── RateLimitError
@@ -228,7 +228,7 @@ StandardError
 <br>
 
 # Custom Error Types
-1. Inherit from `GeminiAI::Error`
+1. Inherit from `Nuntius::Error`
 2. Add to error hierarchy
 3. Update error handling logic
 

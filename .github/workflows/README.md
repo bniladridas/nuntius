@@ -12,12 +12,12 @@ This directory holds the GitHub Actions workflows for the repository.
 | `e2e.yml` | Runs API-oriented checks when the required secret is available |
 | `security.yml` | Runs dependency, code, and secret scanning |
 | `dependencies.yml` | Checks dependency updates |
-| `vesper.yml` | Runs Vesper on pull requests |
+| `nuntius.yml` | Runs Nuntius on pull requests |
 | `deploy-site.yml` | Publishes the static website |
 | `release.yml` | Opens gem release pull requests and tags gem releases |
 | `nightly.yml` | Creates daily preview releases from `main` |
 | `publish-gem.yml` | Builds and publishes gem artifacts |
-| `vesper-review.yml` | Publishes the Vesper Review app check |
+| `nuntius-review.yml` | Publishes the Nuntius Review app check |
 | `manual.yml` | Provides manual release and maintenance tasks |
 | `analysis.yml` | Runs repository analysis checks |
 | `cleanup.yml` | Handles scheduled cleanup |

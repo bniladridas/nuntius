@@ -2,7 +2,7 @@
 
 <br>
 
-Practical recipes and code examples for common Vesper use cases.
+Practical recipes and code examples for common Nuntius use cases.
 
 <br>
 
@@ -14,7 +14,7 @@ Practical recipes and code examples for common Vesper use cases.
 ```ruby
 class BlogPostGenerator
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate_post(topic, style: 'professional', length: 'medium')
@@ -78,7 +78,7 @@ puts post
 ```ruby
 class CodeDocGenerator
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def document_method(code, language: 'ruby')
@@ -141,7 +141,7 @@ explanation = doc_gen.explain_code(code)
 ```ruby
 class QABot
   def initialize(context: nil)
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @conversation = []
     @context = context
 
@@ -183,10 +183,10 @@ class QABot
 end
 
 # Usage
-context = "Vesper is a Ruby gem for interacting with Google's Gemini AI models."
+context = "Nuntius is a Ruby gem for interacting with Google's Gemini AI models."
 bot = QABot.new(context: context)
 
-puts bot.ask("What is Vesper?")
+puts bot.ask("What is Nuntius?")
 puts bot.ask("How do I install it?")
 puts bot.ask("What models does it support?")
 ```
@@ -197,7 +197,7 @@ puts bot.ask("What models does it support?")
 ```ruby
 class SupportBot
   SUPPORT_CONTEXT = <<~CONTEXT
-    You answer support questions for the Vesper Ruby gem.
+    You answer support questions for the Nuntius Ruby gem.
 
     Common issues:
     - API key problems: Check environment variables and key format
@@ -209,10 +209,10 @@ class SupportBot
   CONTEXT
 
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @conversation = [
       { role: 'user', content: SUPPORT_CONTEXT },
-      { role: 'model', content: 'I understand. I\'m ready to help with Vesper support questions.' }
+      { role: 'model', content: 'I understand. I\'m ready to help with Nuntius support questions.' }
     ]
   end
 
@@ -247,7 +247,7 @@ puts support.handle_query("How do I handle rate limiting?")
 ```ruby
 class TextSummarizer
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def summarize(text, length: 'medium', style: 'bullet_points')
@@ -316,7 +316,7 @@ key_points = summarizer.extract_key_points(long_article, count: 3)
 ```ruby
 class LanguageHelper
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def translate(text, from_lang, to_lang)
@@ -374,7 +374,7 @@ improved_text = helper.improve_writing(rough_text, style: 'professional')
 ```ruby
 class StoryGenerator
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate_story(genre:, characters:, setting:, length: 'short')
@@ -452,7 +452,7 @@ continuation = generator.continue_story(
 ```ruby
 class MarketingCopyGenerator
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate_ad_copy(product:, audience:, platform:, tone: 'professional')
@@ -514,7 +514,7 @@ end
 marketing = MarketingCopyGenerator.new
 
 ad_copy = marketing.generate_ad_copy(
-  product: 'Vesper Ruby Gem',
+  product: 'Nuntius Ruby Gem',
   audience: 'Ruby developers',
   platform: 'LinkedIn',
   tone: 'technical but approachable'
@@ -548,7 +548,7 @@ class AiContentService
 
   def initialize(attributes = {})
     super
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate
@@ -577,7 +577,7 @@ class AiContentService
 
       response
 
-    rescue GeminiAI::Error => e
+    rescue Nuntius::Error => e
       errors.add(:base, "AI generation failed: #{e.message}")
       false
     end
@@ -643,7 +643,7 @@ class BulkContentGenerationJob < ApplicationJob
   queue_as :ai_processing
 
   def perform(batch_id, prompts_data)
-    client = GeminiAI::Client.new
+    client = Nuntius::Client.new
     batch = ContentBatch.find(batch_id)
 
     batch.update!(status: 'processing', started_at: Time.current)
@@ -668,7 +668,7 @@ class BulkContentGenerationJob < ApplicationJob
         # Rate limiting - wait between requests
         sleep(1) unless index == prompts_data.length - 1
 
-      rescue GeminiAI::Error => e
+      rescue Nuntius::Error => e
         results << {
           index: index,
           prompt: prompt_data['prompt'],
@@ -734,7 +734,7 @@ RSpec.describe AiContentService do
   describe '#generate' do
     context 'when API call succeeds' do
       before do
-        allow_any_instance_of(GeminiAI::Client).to receive(:generate_text)
+        allow_any_instance_of(Nuntius::Client).to receive(:generate_text)
           .and_return('Generated content')
       end
 
@@ -750,8 +750,8 @@ RSpec.describe AiContentService do
 
     context 'when API call fails' do
       before do
-        allow_any_instance_of(GeminiAI::Client).to receive(:generate_text)
-          .and_raise(GeminiAI::APIError.new('API Error'))
+        allow_any_instance_of(Nuntius::Client).to receive(:generate_text)
+          .and_raise(Nuntius::APIError.new('API Error'))
       end
 
       it 'adds error to service' do
@@ -766,21 +766,21 @@ RSpec.describe AiContentService do
   end
 end
 
-# spec/support/vesper_helpers.rb
-module GeminiAIHelpers
+# spec/support/nuntius_helpers.rb
+module NuntiusHelpers
   def stub_gemini_success(response = 'Test response')
-    allow_any_instance_of(GeminiAI::Client).to receive(:generate_text)
+    allow_any_instance_of(Nuntius::Client).to receive(:generate_text)
       .and_return(response)
   end
 
-  def stub_gemini_failure(error_class = GeminiAI::APIError, message = 'Test error')
-    allow_any_instance_of(GeminiAI::Client).to receive(:generate_text)
+  def stub_gemini_failure(error_class = Nuntius::APIError, message = 'Test error')
+    allow_any_instance_of(Nuntius::Client).to receive(:generate_text)
       .and_raise(error_class.new(message))
   end
 end
 
 RSpec.configure do |config|
-  config.include GeminiAIHelpers
+  config.include NuntiusHelpers
 end
 ```
 

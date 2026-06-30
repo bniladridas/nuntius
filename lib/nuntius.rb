@@ -1,16 +1,16 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
-# Main entry point for the GeminiAI gem
+# Main entry point for the Nuntius gem
 require_relative 'core/version'
 require_relative 'core/errors'
 require_relative 'core/client'
 require_relative 'utils/loader'
 require_relative 'utils/logger'
 
-module GeminiAI
+module Nuntius
   # Convenience method to create a new client
   def self.new(api_key = nil, model: :pro)
     Client.new(api_key, model: model)

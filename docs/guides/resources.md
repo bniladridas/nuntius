@@ -2,7 +2,7 @@
 
 <br>
 
-Additional resources, links, and references for Vesper.
+Additional resources, links, and references for Nuntius.
 
 <br>
 
@@ -19,7 +19,7 @@ Additional resources, links, and references for Vesper.
 <br>
 
 # Nuntius Documentation
-- [GitHub Repository](https://github.com/bniladridas/nuntius) - Source code and issues
+- [GitHub Repository](https://github.com/palmshed/nuntius) - Source code and issues
 - [RubyGems](https://rubygems.org/gems/nuntius-rb) - Gem installation and versions
 - [`API Reference`](../reference/api.md) - Complete method documentation
 - [`Usage Guide`](../reference/usage.md) - Comprehensive examples
@@ -46,8 +46,8 @@ response = client.completions(
   }
 )
 
-# Vesper equivalent
-client = GeminiAI::Client.new
+# Nuntius equivalent
+client = Nuntius::Client.new
 response = client.generate_text(
   "Hello world",
   max_tokens: 100
@@ -66,8 +66,8 @@ response = client.complete(
   max_tokens_to_sample: 100
 )
 
-# Vesper equivalent
-client = GeminiAI::Client.new
+# Nuntius equivalent
+client = Nuntius::Client.new
 messages = [{ role: 'user', content: 'Hello' }]
 response = client.chat(messages, max_tokens: 100)
 ```
@@ -94,8 +94,8 @@ request.body = {
 
 response = http.request(request)
 
-# Vesper equivalent
-client = GeminiAI::Client.new
+# Nuntius equivalent
+client = Nuntius::Client.new
 response = client.generate_text("Hello")
 ```
 
@@ -219,7 +219,7 @@ def with_retry(max_retries: 3)
   retries = 0
   begin
     yield
-  rescue GeminiAI::RateLimitError
+  rescue Nuntius::RateLimitError
     retries += 1
     if retries <= max_retries
       sleep(2 ** retries)
@@ -326,7 +326,7 @@ messages = [
 # Development Setup
 ```bash
 # Clone repository
-git clone https://github.com/bniladridas/nuntius.git
+git clone https://github.com/palmshed/nuntius.git
 cd nuntius
 
 # Install dependencies
@@ -473,7 +473,7 @@ end
 # Redis caching
 class CachedGeminiClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @redis = Redis.new
   end
 
@@ -498,7 +498,7 @@ end
 # Application monitoring
 class MonitoredGeminiClient
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
     @metrics = {
       requests: 0,
       errors: 0,

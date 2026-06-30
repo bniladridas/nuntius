@@ -1,16 +1,16 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
-# Environment configuration for GeminiAI gem
-require_relative '../lib/gemini'
+# Environment configuration for Nuntius gem
+require_relative '../lib/nuntius'
 
 # Load environment variables from .env file
-GeminiAI.load_env
+Nuntius.load_env
 
 # Configure logging level based on environment
-GeminiAI::Utils::Logger.instance.level = case ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+Nuntius::Utils::Logger.instance.level = case ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
                                          when 'production'
                                            Logger::ERROR
                                          when 'test'

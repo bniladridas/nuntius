@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
@@ -9,8 +9,8 @@ require 'test_helper'
 module ModelTestHelper
   def setup_model_test
     # Stub the API key validation to always pass
-    GeminiAI::Client.any_instance.stubs(:validate_api_key!).returns(true)
-    GeminiAI::Client.any_instance.stubs(:sleep)
+    Nuntius::Client.any_instance.stubs(:validate_api_key!).returns(true)
+    Nuntius::Client.any_instance.stubs(:sleep)
   end
 
   def test_model(model_name, model_id)
@@ -24,7 +24,7 @@ module ModelTestHelper
     responses = {}
 
     models.each do |model_name|
-      client = GeminiAI::Client.new(test_api_key, model: model_name, debug: true)
+      client = Nuntius::Client.new(test_api_key, model: model_name, debug: true)
       stub_model_comparison_request(model_name)
       responses[model_name] = client.generate_text(prompt)
 

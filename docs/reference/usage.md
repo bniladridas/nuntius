@@ -46,13 +46,13 @@ GEMINI_API_KEY=your_api_key_here
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
 # Load environment variables
-GeminiAI.load_env
+Nuntius.load_env
 
 # Create client and generate text
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 response = client.generate_text("Write a haiku about programming")
 puts response
 ```
@@ -64,7 +64,7 @@ puts response
 <br>
 
 ```ruby
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 messages = [
   { role: 'user', content: 'Hello, what is Ruby?' },
   { role: 'model', content: 'Ruby is a programming language.' },
@@ -113,13 +113,13 @@ factual_response = client.generate_text(
 
 ```ruby
 # Default model
-pro_client = GeminiAI::Client.new
+pro_client = Nuntius::Client.new
 
 # Fast model
-flash_client = GeminiAI::Client.new(model: :flash)
+flash_client = Nuntius::Client.new(model: :flash)
 
 # Flash Lite model (faster, lighter)
-lite_client = GeminiAI::Client.new(model: :flash_lite)
+lite_client = Nuntius::Client.new(model: :flash_lite)
 
 # Compare responses
 pro_response = pro_client.generate_text("Explain AI")
@@ -135,16 +135,16 @@ lite_response = lite_client.generate_text("Explain AI")
 
 ```ruby
 begin
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text("Your prompt")
   puts response
-rescue GeminiAI::AuthenticationError => e
+rescue Nuntius::AuthenticationError => e
   puts "API key error: #{e.message}"
-rescue GeminiAI::APIError => e
+rescue Nuntius::APIError => e
   puts "API error: #{e.message}"
-rescue GeminiAI::NetworkError => e
+rescue Nuntius::NetworkError => e
   puts "Network error: #{e.message}"
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   puts "General error: #{e.message}"
 end
 ```
@@ -156,7 +156,7 @@ end
 <br>
 
 ```ruby
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 prompts = [
   "Write a haiku about coding",
   "Explain recursion briefly",
@@ -269,10 +269,10 @@ This starts an interactive session where you can have a conversation with the AI
 
 ```ruby
 # Good - Use environment variables
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 
 # Bad - Hardcode API key
-client = GeminiAI::Client.new('AIza...')
+client = Nuntius::Client.new('AIza...')
 ```
 
 <br>
@@ -285,9 +285,9 @@ client = GeminiAI::Client.new('AIza...')
 # Good - Handle specific errors
 begin
   response = client.generate_text(prompt)
-rescue GeminiAI::AuthenticationError
+rescue Nuntius::AuthenticationError
   # Handle auth error
-rescue GeminiAI::APIError
+rescue Nuntius::APIError
   # Handle API error
 end
 
@@ -343,7 +343,7 @@ top_k: 20-30
 
 1. **"API key is required"**
    - Set `GEMINI_API_KEY` environment variable
-   - Check .env file is loaded with `GeminiAI.load_env`
+   - Check .env file is loaded with `Nuntius.load_env`
 
 <br>
 
@@ -373,7 +373,7 @@ Enable debug logging to see request and response details:
 <br>
 
 ```ruby
-GeminiAI::Utils::Logger.instance.level = Logger::DEBUG
+Nuntius::Utils::Logger.instance.level = Logger::DEBUG
 ```
 
 <br>
@@ -401,12 +401,12 @@ GeminiAI::Utils::Logger.instance.level = Logger::DEBUG
 # app/services/ai_service.rb
 class AiService
   def initialize
-    @client = GeminiAI::Client.new
+    @client = Nuntius::Client.new
   end
 
   def generate_content(prompt)
     @client.generate_text(prompt)
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     Rails.logger.error "AI Service Error: #{e.message}"
     "Sorry, I couldn't generate content right now."
   end
@@ -421,15 +421,15 @@ end
 
 ```ruby
 require 'sinatra'
-require 'vesper'
+require 'nuntius'
 
-GeminiAI.load_env
+Nuntius.load_env
 
 post '/generate' do
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text(params[:prompt])
   { response: response }.to_json
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   status 500
   { error: e.message }.to_json
 end

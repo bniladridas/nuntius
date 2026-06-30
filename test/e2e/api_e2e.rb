@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require_relative '../../lib/gemini'
+require_relative '../../lib/nuntius'
 
 class TestAPIe2e < Minitest::Test
   def setup
@@ -12,7 +12,7 @@ class TestAPIe2e < Minitest::Test
     skip 'GEMINI_API_KEY not set, skipping e2e tests' unless @api_key
     skip 'Using dummy API key, skipping e2e tests' if @api_key == 'dummy-key-for-ci'
 
-    @client = GeminiAI::Client.new(@api_key)
+    @client = Nuntius::Client.new(@api_key)
   end
 
   def test_basic_text_generation
@@ -28,7 +28,7 @@ class TestAPIe2e < Minitest::Test
            "Response should contain 'hello' or 'world', got: #{response}"
   rescue Net::ReadTimeout, Timeout::Error => e
     skip "API timeout: #{e.message}"
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     skip "API limit exceeded: #{e.message}" if e.message.include?('Rate limit exceeded') || e.message.include?('RESOURCE_EXHAUSTED') || e.message.include?('overloaded')
     raise
   end
@@ -48,20 +48,20 @@ class TestAPIe2e < Minitest::Test
     assert_includes response, '6'
   rescue Net::ReadTimeout, Timeout::Error => e
     skip "API timeout: #{e.message}"
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     skip "API limit exceeded: #{e.message}" if e.message.include?('Rate limit exceeded') || e.message.include?('RESOURCE_EXHAUSTED') || e.message.include?('overloaded')
     raise
   end
 
   def test_different_models
     # Test with flash model for speed
-    client_flash = GeminiAI::Client.new(@api_key, model: :flash)
+    client_flash = Nuntius::Client.new(@api_key, model: :flash)
     response = client_flash.generate_text('What is the capital of France? Answer in one word.')
 
     refute_nil response
     refute_empty response.strip
     assert_includes response.downcase, 'paris'
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     skip "API limit exceeded: #{e.message}" if e.message.include?('Rate limit exceeded') || e.message.include?('RESOURCE_EXHAUSTED') || e.message.include?('overloaded')
     raise
   end

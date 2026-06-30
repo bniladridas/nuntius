@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
-name: Vesper Review
+name: Nuntius Review
 
 on:
   push:
@@ -12,9 +12,9 @@ on:
 
 jobs:
   check:
-    name: Vesper Review
+    name: Nuntius Review
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'bniladridas'
+    if: github.repository_owner == 'palmshed'
     permissions:
       contents: read
       pull-requests: read
@@ -22,11 +22,11 @@ jobs:
 
     steps:
       - id: app-token
-        name: Create Vesper Review app token
+        name: Create Nuntius Review app token
         uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ secrets.VESPER_CLIENT_ID }}
-          private-key: ${{ secrets.VESPER_PRIVATE_KEY }}
+          client-id: ${{ secrets.NUNTIUS_CLIENT_ID }}
+          private-key: ${{ secrets.NUNTIUS_PRIVATE_KEY }}
           permission-statuses: write
           permission-pull-requests: read
           permission-contents: read
@@ -42,6 +42,6 @@ jobs:
           gh api "repos/$REPO/statuses/$HEAD_SHA" \
             -X POST \
             -f state='success' \
-            -f context='Vesper Review' \
-            -f description='Vesper Review is available for this ref.' \
+            -f context='Nuntius Review' \
+            -f description='Nuntius Review is available for this ref.' \
             --silent

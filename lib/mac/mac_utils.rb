@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
-module GeminiAI
+module Nuntius
   module MacUtils
     def self.mac?
       require 'rbconfig'

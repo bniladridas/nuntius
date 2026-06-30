@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 """
 GitHub PR Bot that analyzes pull requests using Google's Gemini API.
 Supports both CLI and webhook modes.
@@ -25,23 +25,23 @@ from github.GithubException import GithubException
 from google.genai import errors as genai_errors
 from google.genai import types
 
-PAUSE_LABEL = "vesper:paused"
-QUOTA_COOLDOWN_SECONDS = int(os.getenv("VESPER_QUOTA_COOLDOWN_SECONDS", "1800"))
-QUOTA_UNTIL_MARKER_RE = re.compile(r"vesper-quota-until:\s*(\d+)")
-REVIEW_HISTORY_START = "<!-- vesper-history-start -->"
-REVIEW_HISTORY_END = "<!-- vesper-history-end -->"
-DEFAULT_GEMINI_MODEL = os.getenv("VESPER_GEMINI_MODEL", "gemini-3.5-flash")
+PAUSE_LABEL = "nuntius:paused"
+QUOTA_COOLDOWN_SECONDS = int(os.getenv("NUNTIUS_QUOTA_COOLDOWN_SECONDS", "1800"))
+QUOTA_UNTIL_MARKER_RE = re.compile(r"nuntius-quota-until:\s*(\d+)")
+REVIEW_HISTORY_START = "<!-- nuntius-history-start -->"
+REVIEW_HISTORY_END = "<!-- nuntius-history-end -->"
+DEFAULT_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_MODEL", "gemini-3.5-flash")
 
 try:
     from .rag import fetch_rag_context
 except ImportError:
     from rag import fetch_rag_context
-ENABLE_RANGE_COMMENTS = os.getenv("VESPER_ENABLE_RANGE_COMMENTS", "0").strip().lower() in {"1", "true", "yes", "on"}
+ENABLE_RANGE_COMMENTS = os.getenv("NUNTIUS_ENABLE_RANGE_COMMENTS", "0").strip().lower() in {"1", "true", "yes", "on"}
 
 try:
-    from .vesper_apply import handle_apply_comment
+    from .nuntius_apply import handle_apply_comment
 except ImportError:
-    from vesper_apply import handle_apply_comment
+    from nuntius_apply import handle_apply_comment
 
 # Flask imported conditionally for webhook mode
 flask_available = False
@@ -158,11 +158,11 @@ def setup_environment():
 
     # Get GitHub token and API key from environment
     github_token = os.getenv("GITHUB_TOKEN")
-    gemini_api_key = os.getenv("VESPER_GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+    gemini_api_key = os.getenv("NUNTIUS_GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
 
     if not github_token or not gemini_api_key:
         logging.error(
-            "Missing required environment variables. Ensure GITHUB_TOKEN and GEMINI_API_KEY (or VESPER_GEMINI_API_KEY) are set."
+            "Missing required environment variables. Ensure GITHUB_TOKEN and GEMINI_API_KEY (or NUNTIUS_GEMINI_API_KEY) are set."
         )
         sys.exit(1)
 
@@ -255,7 +255,7 @@ Provide a concise code review analysis in this format:
         "enable_authoring": False,
         "auto_commit_suggestions": False,
         "create_improvement_prs": False,
-        "improvement_branch_pattern": "vesper-improvements-{timestamp}",
+        "improvement_branch_pattern": "nuntius-improvements-{timestamp}",
         "enable_rag": False,
         "rag_sources": ["pypi", "npm", "rubygems", "security", "github", "docs"],
         "rag_max_items": 3,
@@ -274,8 +274,8 @@ Provide a concise code review analysis in this format:
             try:
                 user_config = yaml.safe_load(f) or {}
                 config = {**default_config, **user_config}
-                if os.getenv("VESPER_GEMINI_MODEL"):
-                    config["model"] = os.getenv("VESPER_GEMINI_MODEL")
+                if os.getenv("NUNTIUS_GEMINI_MODEL"):
+                    config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
                 return config
             except yaml.YAMLError as e:
                 logging.error(f"Error loading config.yaml: {e}")
@@ -320,7 +320,7 @@ def analyze_with_gemini(client, pr_details):
             num_files=len(pr_details["files_changed"]),
             files_list=files_list,
             diff_content=diff_content,
-            # Backward-compatible placeholders (used by vesper/config.yaml)
+            # Backward-compatible placeholders (used by nuntius/config.yaml)
             files=files_list,
             diff=diff_content,
             focus_instruction=focus_instruction,
@@ -514,7 +514,7 @@ def analyze_with_gemini(client, pr_details):
                 logging.exception(f"API authentication error{context}: {str(e)}")
                 return (
                     "Error generating analysis: Invalid API key or authentication failed"
-                    f"{context}. Please check your GEMINI_API_KEY or VESPER_GEMINI_API_KEY."
+                    f"{context}. Please check your GEMINI_API_KEY or NUNTIUS_GEMINI_API_KEY."
                 )
 
             if code == 404 or "model" in lower_message or "not found" in lower_message:
@@ -540,7 +540,7 @@ def analyze_with_gemini(client, pr_details):
             logging.error(f"API authentication error{context}: {str(e)}")
             return (
                 "Error generating analysis: Invalid API key or authentication failed"
-                f"{context}. Please check your GEMINI_API_KEY or VESPER_GEMINI_API_KEY."
+                f"{context}. Please check your GEMINI_API_KEY or NUNTIUS_GEMINI_API_KEY."
             )
         elif "model" in error_msg or "not found" in error_msg:
             logging.error(f"Model error{context}: {str(e)}")
@@ -561,7 +561,7 @@ def parse_diff_for_suggestions(diff_text):
        +++ b/path
        @@ -old +new @@
 
-    2) The simplified format Vesper asks the model to emit:
+    2) The simplified format Nuntius asks the model to emit:
        path
        @@ -old +new @@
        - old
@@ -746,11 +746,11 @@ def _format_review_history(rows: list[dict]) -> str:
 
 def format_comment(analysis, sha=None, history_rows=None):
     """Format the analysis with proper markdown and emojis."""
-    sha_marker = f"\n<!-- vesper-sha: {sha} -->" if sha else ""
+    sha_marker = f"\n<!-- nuntius-sha: {sha} -->" if sha else ""
     history = _format_review_history(history_rows or [])
     history_block = f"\n{history}\n\n" if history else ""
     return f"""<details>
-<summary>Vesper</summary>
+<summary>Nuntius</summary>
 
 {history_block}
 {analysis}
@@ -875,8 +875,8 @@ def create_commit_with_changes(repo, branch_ref, changes, commit_message):
         # Create new tree
         tree = repo.create_git_tree(new_blobs, base_tree=current_tree)
         author = {
-            "name": "Vesper",
-            "email": "236089746+vesper-glitch@users.noreply.github.com",
+            "name": "Nuntius",
+            "email": "236089746+nuntius-glitch@users.noreply.github.com",
         }
         commit = repo.create_git_commit(commit_message, tree, [current_commit], author=author)
         branch_ref.edit(commit.sha)
@@ -1002,7 +1002,7 @@ def apply_suggestions_to_pr(repo, pr, suggestions):
                 repo,
                 head_ref,
                 changes,
-                "Apply code suggestions from Vesper analysis",
+                "Apply code suggestions from Nuntius analysis",
             )
             logging.info(f"Applied {len(suggestion_groups)} file changes to PR #{pr.number}")
     except Exception as e:
@@ -1025,7 +1025,7 @@ def create_improvement_pr_from_analysis(repo, pr_details, analysis, config):
         timestamp = str(int(time.time()))
 
         # Generate branch name
-        branch_pattern = config.get("improvement_branch_pattern", "vesper-improvements-{timestamp}")
+        branch_pattern = config.get("improvement_branch_pattern", "nuntius-improvements-{timestamp}")
         branch_name = branch_pattern.replace("{timestamp}", timestamp).replace("{pr_number}", str(pr_details["number"]))
 
         # Create branch from main/master
@@ -1033,19 +1033,19 @@ def create_improvement_pr_from_analysis(repo, pr_details, analysis, config):
         branch_ref = create_branch(repo, base_branch, branch_name)
 
         # Create an initial empty commit to allow PR creation
-        create_commit_with_changes(repo, branch_ref, {}, "Initial commit for Vesper improvements")
+        create_commit_with_changes(repo, branch_ref, {}, "Initial commit for Nuntius improvements")
 
         # For now, create an empty improvement PR (could be extended to include actual improvements)
-        title = f"Vesper Improvements for PR #{pr_details['number']}"
-        body = f"""## Vesper Improvement Suggestions
+        title = f"Nuntius Improvements for PR #{pr_details['number']}"
+        body = f"""## Nuntius Improvement Suggestions
 
-This PR contains additional improvements suggested by Vesper analysis of PR #{pr_details["number"]}.
+This PR contains additional improvements suggested by Nuntius analysis of PR #{pr_details["number"]}.
 
 ### Analysis Summary
 {analysis[:1000]}...
 
 ---
-*Generated by Vesper*"""
+*Generated by Nuntius*"""
 
         create_improvement_pr(repo, branch_name, base_branch, title, body)
 
@@ -1074,9 +1074,9 @@ def post_inline_suggestions(pr, pr_details, suggestions, g, repo, *, force_revie
         head_sha = pr_details["head_sha"]
 
         # Check if we already posted a review for this exact commit
-        # We'll look for reviews that include the vesper marker.
+        # We'll look for reviews that include the nuntius marker.
         for review in pr.get_reviews():
-            if f"vesper-sha: {head_sha}" in (review.body or ""):
+            if f"nuntius-sha: {head_sha}" in (review.body or ""):
                 if not force_review:
                     logging.info(f"Skipping inline suggestions for SHA {head_sha}: Review already exists")
                     return
@@ -1113,7 +1113,7 @@ def post_inline_suggestions(pr, pr_details, suggestions, g, repo, *, force_revie
                 comment.update({"line": start_line, "side": "RIGHT"})
             review_comments.append(comment)
 
-        review_body = f"Vesper Analysis for {head_sha}\n<!-- vesper-sha: {head_sha} -->"
+        review_body = f"Nuntius Analysis for {head_sha}\n<!-- nuntius-sha: {head_sha} -->"
 
         if not review_comments:
             logging.info("Skipped review creation: no inline suggestions to post")
@@ -1211,13 +1211,13 @@ def setup_environment_webhook(installation_id):
     load_dotenv()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-    gemini_api_key = os.getenv("VESPER_GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
-    app_id = os.getenv("VESPER_APP_ID")
-    private_key = os.getenv("VESPER_PRIVATE_KEY")
+    gemini_api_key = os.getenv("NUNTIUS_GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+    app_id = os.getenv("NUNTIUS_APP_ID")
+    private_key = os.getenv("NUNTIUS_PRIVATE_KEY")
 
     if not gemini_api_key or not app_id or not private_key:
         logging.error(
-            "Missing required environment variables for webhook mode (VESPER_GEMINI_API_KEY or GEMINI_API_KEY, VESPER_APP_ID, VESPER_PRIVATE_KEY)"
+            "Missing required environment variables for webhook mode (NUNTIUS_GEMINI_API_KEY or GEMINI_API_KEY, NUNTIUS_APP_ID, NUNTIUS_PRIVATE_KEY)"
         )
         raise ValueError("Missing required environment variables")
 
@@ -1257,9 +1257,9 @@ def get_pr_details_webhook(g, repo_name, pr_number, installation_token: str | No
     return build_pr_details_from_pr(pr, installation_token=installation_token)
 
 
-def is_vesper_comment(comment):
-    """Identify Vesper comments by the known summary marker."""
-    return "<summary>Vesper</summary>" in (comment.body or "")
+def is_nuntius_comment(comment):
+    """Identify Nuntius comments by the known summary marker."""
+    return "<summary>Nuntius</summary>" in (comment.body or "")
 
 
 def post_comment_webhook(
@@ -1286,10 +1286,10 @@ def post_comment_webhook(
         suggestions = parse_code_suggestions(analysis)
         main_comment = update_main_comment(analysis)
 
-        # Find existing Vesper comment to update
+        # Find existing Nuntius comment to update
         existing_comment = None
         for comment in pr.get_issue_comments():
-            if is_vesper_comment(comment):
+            if is_nuntius_comment(comment):
                 existing_comment = comment
                 break
 
@@ -1324,7 +1324,7 @@ def post_comment_webhook(
 
 def format_notice(title: str, details: str) -> str:
     # Notice comments should not include the SHA marker to avoid being treated as successful analysis
-    return f"""Vesper: {title}
+    return f"""Nuntius: {title}
 
 {notice_emoji(title)} {details}
 """
@@ -1400,7 +1400,7 @@ def run_analysis_for_pr(
         repo = g.get_repo(repo_name)
         pr = repo.get_pull(pr_number)
         for comment in pr.get_issue_comments():
-            if f"vesper-sha: {head_sha}" in (comment.body or ""):
+            if f"nuntius-sha: {head_sha}" in (comment.body or ""):
                 logging.info(f"Skipping analysis for PR #{pr_number}: Analysis already exists for SHA {head_sha}")
                 return
 
@@ -1419,7 +1419,7 @@ def run_analysis_for_pr(
             repo_name,
             pr_number,
             "Empty diff",
-            "Vesper could not find a diff to analyze.",
+            "Nuntius could not find a diff to analyze.",
         )
         return
     analysis = analyze_with_gemini(client, pr_details)
@@ -1429,7 +1429,7 @@ def run_analysis_for_pr(
             repo_name,
             pr_number,
             "No analysis output",
-            "Vesper did not receive a response from the model.",
+            "Nuntius did not receive a response from the model.",
         )
         return
 
@@ -1442,10 +1442,10 @@ def run_analysis_for_pr(
             pr_number,
             "Gemini quota exceeded",
             (
-                "Vesper hit a Gemini quota/rate limit and will pause auto-analysis for this PR.\n\n"
+                "Nuntius hit a Gemini quota/rate limit and will pause auto-analysis for this PR.\n\n"
                 f"Auto-analysis resumes after: **{until_iso}**\n\n"
                 "You can retry immediately with `/analyze`.\n\n"
-                f"<!-- vesper-quota-until: {quota_until} -->"
+                f"<!-- nuntius-quota-until: {quota_until} -->"
             ),
         )
         logging.warning(f"Quota exceeded for PR #{pr_number}; cooldown until {until_iso}")
@@ -1459,7 +1459,7 @@ def run_analysis_for_pr(
                 repo_name,
                 pr_number,
                 "Gemini unavailable",
-                "Gemini is temporarily unavailable. The previous Vesper analysis was left unchanged.",
+                "Gemini is temporarily unavailable. The previous Nuntius analysis was left unchanged.",
             )
         return
 
@@ -1575,7 +1575,7 @@ def handle_pr_comment_command(
     if command == "/help":
         _, installation_token, _ = setup_environment_webhook(installation_id)
         help_text = """
-Vesper can review a pull request, apply suggestions when authoring is enabled, and manage auto analysis for a thread.
+Nuntius can review a pull request, apply suggestions when authoring is enabled, and manage auto analysis for a thread.
 
 Use `/analyze` for a fresh review, `/apply` for suggestions, and `/pause`, `/resume`, or `/status` for auto analysis.
 
@@ -1636,7 +1636,7 @@ def ensure_label_exists(repo, name: str):
     """Ensure a repository label exists when possible."""
     try:
         # If it already exists, GitHub will return 422 on create; swallow it.
-        repo.create_label(name=name, color="6e7681", description="Vesper control label")
+        repo.create_label(name=name, color="6e7681", description="Nuntius control label")
     except GithubException as e:
         status = getattr(e, "status", None)
         if status in {422, 409}:
@@ -1698,7 +1698,7 @@ def handle_merge_command(
 
         result = pr.merge(merge_method=merge_method)
         if result.merged:
-            pr.create_issue_comment(f"Vesper: Merged\n\n🙂 Merged via `{merge_method}`.")
+            pr.create_issue_comment(f"Nuntius: Merged\n\n🙂 Merged via `{merge_method}`.")
             logging.info(f"Merged PR #{pr_number} with method={merge_method}")
             return jsonify({"status": "merged"})
 
@@ -1870,11 +1870,11 @@ if __name__ == "__main__":
     else:
         # Webhook mode
         if flask_available:
-            print("Starting Vesper in webhook mode...")
+            print("Starting Nuntius in webhook mode...")
             # Note: Flask's development server is for testing only. For production,
-            # use a WSGI server like Gunicorn: gunicorn -w 4 vesper:app
+            # use a WSGI server like Gunicorn: gunicorn -w 4 nuntius:app
             app.run(debug=False)
         else:
             print("Flask not installed. For webhook mode, install with: pip install flask")
-            print("For CLI mode, run: python vesper.py --repo owner/repo --pr 123")
+            print("For CLI mode, run: python nuntius.py --repo owner/repo --pr 123")
             sys.exit(1)

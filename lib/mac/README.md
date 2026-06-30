@@ -10,7 +10,7 @@ This module provides macOS-specific utilities for the nuntius-rb gem.
 
 <br>
 
-# `GeminiAI::MacUtils.mac?`
+# `Nuntius::MacUtils.mac?`
 
 <br>
 
@@ -18,7 +18,7 @@ Returns `true` if the current platform is macOS (Darwin), `false` otherwise.
 
 <br>
 
-# `GeminiAI::MacUtils.version`
+# `Nuntius::MacUtils.version`
 
 <br>
 
@@ -33,7 +33,7 @@ Returns the macOS version string (e.g., "14.1") if running on macOS, `nil` other
 ```ruby
 require 'mac/mac_utils'
 
-if GeminiAI::MacUtils.mac?
-  puts "Running on macOS version #{GeminiAI::MacUtils.version}"
+if Nuntius::MacUtils.mac?
+  puts "Running on macOS version #{Nuntius::MacUtils.version}"
 end
 ```

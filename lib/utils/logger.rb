@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 # frozen_string_literal: true
 
 require 'logger'
 
-module GeminiAI
+module Nuntius
   module Utils
     # Centralized logging utility
     class Logger

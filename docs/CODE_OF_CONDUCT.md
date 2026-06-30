@@ -89,7 +89,7 @@ representative at an online or offline event.
 <br>
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported through our [`GitHub Security Advisory`](https://github.com/bniladridas/nuntius/security/advisories/new) page.
+reported through our [`GitHub Security Advisory`](https://github.com/palmshed/nuntius/security/advisories/new) page.
 All complaints will be reviewed and investigated promptly and fairly.
 
 <br>

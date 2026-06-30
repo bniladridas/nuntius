@@ -1,20 +1,20 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'httparty'
 require 'json'
-require_relative '../lib/gemini'
+require_relative '../lib/nuntius'
 
 # Load environment variables
-GeminiAI.load_env
+Nuntius.load_env
 
 class ModelChecker
   BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models'
 
-  APP_MODEL = ENV.fetch('VESPER_GEMINI_MODEL', 'gemini-3.5-flash')
+  APP_MODEL = ENV.fetch('NUNTIUS_GEMINI_MODEL', 'gemini-3.5-flash')
 
   def initialize(api_key = nil)
     @api_key = api_key || ENV.fetch('GEMINI_API_KEY', nil)
@@ -40,8 +40,8 @@ class ModelChecker
     available_models.each { |model| puts "  * #{model}" }
     puts
 
-    check_models = { APP_MODEL => 'Vesper app default' }
-    GeminiAI::Client::MODELS.each do |key, model_id|
+    check_models = { APP_MODEL => 'Nuntius app default' }
+    Nuntius::Client::MODELS.each do |key, model_id|
       check_models[model_id] ||= "Ruby client :#{key}"
     end
 

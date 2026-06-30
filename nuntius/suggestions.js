@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2026 vesper
+// Copyright (c) 2026 Palmshed
 
 /**
  * suggestions.js
@@ -43,7 +43,7 @@ function getDiff() {
 
 async function analyzeWithGemini(files, diff, apiKey) {
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: process.env.VESPER_GEMINI_MODEL || 'gemini-3.5-flash' });
+  const model = genAI.getGenerativeModel({ model: process.env.NUNTIUS_GEMINI_MODEL || 'gemini-3.5-flash' });
 
   const prompt = `
 Analyze the following code changes. Focus on code quality, security, performance, and correctness.

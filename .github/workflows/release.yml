@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
 name: Gem release
@@ -19,11 +19,11 @@ jobs:
       contents: read
     steps:
       - id: app-token
-        name: Create Vesper Review app token
+        name: Create Nuntius Review app token
         uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ secrets.VESPER_CLIENT_ID }}
-          private-key: ${{ secrets.VESPER_PRIVATE_KEY }}
+          client-id: ${{ secrets.NUNTIUS_CLIENT_ID }}
+          private-key: ${{ secrets.NUNTIUS_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
           permission-issues: write
@@ -70,7 +70,7 @@ jobs:
               --jq ".files[].path" | while IFS= read -r path; do
                 printf -- "- \`%s\`\n" "$path"
               done
-            printf "\nManaged by Vesper Review.\n"
+            printf "\nManaged by Nuntius Review.\n"
           } > "$body_file"
 
           gh pr edit "$pr_number" --repo "$REPO" --body-file "$body_file"
@@ -83,11 +83,11 @@ jobs:
       contents: read
     steps:
       - id: app-token
-        name: Create Vesper Review app token
+        name: Create Nuntius Review app token
         uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ secrets.VESPER_CLIENT_ID }}
-          private-key: ${{ secrets.VESPER_PRIVATE_KEY }}
+          client-id: ${{ secrets.NUNTIUS_CLIENT_ID }}
+          private-key: ${{ secrets.NUNTIUS_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
           permission-issues: write

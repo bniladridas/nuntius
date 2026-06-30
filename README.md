@@ -1,5 +1,5 @@
-# Vesper
-<img src="website/assets/readme-header.png" alt="Vesper" width="100%">
+# Nuntius
+<img src="website/assets/nuntius-header.png" alt="Nuntius" width="100%">
 
 <br>
 
@@ -29,12 +29,12 @@ With Bundler:
 <br>
 
 ```ruby
-gem 'nuntius-rb', require: 'vesper'
+gem 'nuntius-rb', require: 'nuntius'
 ```
 
 <br>
 
-The package is published as `nuntius-rb`. The runtime entrypoint is `vesper`.
+The package is published as `nuntius-rb`. The runtime entrypoint is `nuntius`.
 
 <br>
 
@@ -62,10 +62,10 @@ GEMINI_API_KEY=your_api_key
 <br>
 
 ```ruby
-require 'vesper'
-GeminiAI.load_env
+require 'nuntius'
+Nuntius.load_env
 
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 puts client.generate_text('Write a haiku about Ruby')
 ```
 
@@ -76,7 +76,7 @@ Use a different model when needed:
 <br>
 
 ```ruby
-fast_client = GeminiAI::Client.new(model: :flash)
+fast_client = Nuntius::Client.new(model: :flash)
 puts fast_client.generate_text('Explain Ruby in one sentence')
 ```
 
@@ -113,7 +113,7 @@ The gem does not wrap embeddings, Imagen, or Veo APIs.
 
 <br>
 
-Vesper supports text generation, chat, image input for `generateContent`, model aliases, safety settings, API key masking, retries, and a local CLI.
+Nuntius supports text generation, chat, image input for `generateContent`, model aliases, safety settings, API key masking, retries, and a local CLI.
 
 <br>
 
@@ -121,7 +121,7 @@ Vesper supports text generation, chat, image input for `generateContent`, model 
 
 <br>
 
-Client validation and API failures raise `GeminiAI::Error` with a readable message.
+Client validation and API failures raise `Nuntius::Error` with a readable message.
 HTTP 429 responses are retried automatically up to three times with exponential backoff.
 
 <br>
@@ -130,7 +130,7 @@ HTTP 429 responses are retried automatically up to three times with exponential 
 begin
   response = client.generate_text('Hello')
   puts response
-rescue GeminiAI::Error => err
+rescue Nuntius::Error => err
   warn "Generation failed: #{err.message}"
 end
 ```
@@ -170,10 +170,10 @@ Requests use a 30 second HTTParty timeout.
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
-GeminiAI::Client.logger.level = Logger::INFO
-client = GeminiAI::Client.new
+Nuntius::Client.logger.level = Logger::INFO
+client = Nuntius::Client.new
 ```
 
 <br>
@@ -224,11 +224,11 @@ gem build nuntius-rb.gemspec
 
 <br>
 
-Vesper Review is the PR review app in this repo. It defaults to `gemini-3.5-flash`; retrieval context is off unless enabled in `vesper/config.yaml`.
+Nuntius Review is the PR review app in this repo. It defaults to `gemini-3.5-flash`; retrieval context is off unless enabled in `nuntius/config.yaml`.
 
 <br>
 
-For setup details, see [`vesper/Vesper.md`](vesper/Vesper.md).
+For setup details, see [`nuntius/Nuntius.md`](nuntius/Nuntius.md).
 
 <br>
 
@@ -241,7 +241,7 @@ For setup details, see [`vesper/Vesper.md`](vesper/Vesper.md).
 <br>
 
 ```ruby
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 puts client.generate_text('Write a haiku about Ruby')
 ```
 
@@ -305,11 +305,11 @@ MIT → see [`LICENSE`](LICENSE).
 <br>
 
 <p align="center">
-  <a href="https://github.com/apps/vesper-review">
-    <img src="website/favicon.svg" alt="Vesper Review app" width="96">
+  <a href="https://github.com/apps/nuntius-review">
+    <img src="website/favicon.svg" alt="Nuntius Review app" width="96">
   </a>
 
 <br>
 
-  <a href="https://github.com/apps/vesper-review"><code>Vesper Review</code></a>
+  <a href="https://github.com/apps/nuntius-review"><code>Nuntius Review</code></a>
 </p>

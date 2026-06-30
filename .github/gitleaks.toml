@@ -1,4 +1,4 @@
-# Gitleaks configuration for Vesper
+# Gitleaks configuration for Nuntius
 # This file defines rules for detecting sensitive information in the codebase
 
 [extend]

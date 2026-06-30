@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative '../lib/gemini'
+require_relative '../lib/nuntius'
 
 # Load environment variables
-GeminiAI.load_env
+Nuntius.load_env
 
 puts 'Models demo'
 puts '=' * 50
@@ -33,11 +33,11 @@ models_to_demo = [
 models_to_demo.each do |model_info|
   puts "\nTesting #{model_info[:name]}"
   puts "   #{model_info[:description]}"
-  puts "   Model ID: #{GeminiAI::Client::MODELS[model_info[:key]]}"
+  puts "   Model ID: #{Nuntius::Client::MODELS[model_info[:key]]}"
   puts '-' * 40
 
   begin
-    client = GeminiAI::Client.new(model: model_info[:key])
+    client = Nuntius::Client.new(model: model_info[:key])
 
     # Measure response time
     start_time = Time.now
@@ -47,7 +47,7 @@ models_to_demo.each do |model_info|
     response_time = ((end_time - start_time) * 1000).round(2)
 
     puts "[SUCCESS] Response (#{response_time}ms): #{response.strip}"
-  rescue GeminiAI::Error => e
+  rescue Nuntius::Error => e
     if e.message.include?('quota')
       puts '[WARNING] Quota exceeded - this is normal for free tier'
     else
@@ -69,18 +69,18 @@ puts '* Use :flash_3_1_lite for lighter requests'
 puts '* Use :flash_2_0 when that exact model is required'
 
 puts "\nAvailable model keys:"
-GeminiAI::Client::MODELS.each do |key, model_id|
+Nuntius::Client::MODELS.each do |key, model_id|
   puts "  #{key}: #{model_id}"
 end
 
 puts "\nUsage example:"
 puts <<~RUBY
   # Use the default model
-  client = GeminiAI::Client.new(model: :pro)
+  client = Nuntius::Client.new(model: :pro)
 
   # Use the fastest model
-  client = GeminiAI::Client.new(model: :flash)
+  client = Nuntius::Client.new(model: :flash)
 
   # Use a specific version
-  client = GeminiAI::Client.new(model: :flash_2_0)
+  client = Nuntius::Client.new(model: :flash_2_0)
 RUBY

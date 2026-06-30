@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
 blank_issues_enabled: true
 contact_links:
   - name: Community Discussions
-    url: https://github.com/bniladridas/nuntius/discussions
+    url: https://github.com/palmshed/nuntius/discussions
     about: Ask questions and discuss ideas with the community
   - name: Security Issues
-    url: https://github.com/bniladridas/nuntius/security/advisories/new
+    url: https://github.com/palmshed/nuntius/security/advisories/new
     about: Report security vulnerabilities privately

@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 # Read the commit message from stdin
 MSG=$(cat)

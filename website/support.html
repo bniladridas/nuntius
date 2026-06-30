@@ -6,19 +6,19 @@
     <title>Support</title>
     <meta
       name="description"
-      content="Level 2 Technical Support notes for Vesper GitHub App setup, permissions, webhooks, and command troubleshooting."
+      content="Level 2 Technical Support notes for Nuntius GitHub App setup, permissions, webhooks, and command troubleshooting."
     />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" href="/vesper/vesper-favicon-20260522.ico" />
-    <link rel="icon" type="image/x-icon" href="/vesper/vesper-favicon-20260522.ico" />
-    <link rel="icon" type="image/png" sizes="1024x1024" href="/vesper/assets/vesper-favicon-20260522.png" />
-    <link rel="apple-touch-icon" href="/vesper/assets/vesper-favicon-20260522.png" />
+    <link rel="shortcut icon" href="/nuntius/nuntius-favicon-20260522.ico" />
+    <link rel="icon" type="image/x-icon" href="/nuntius/nuntius-favicon-20260522.ico" />
+    <link rel="icon" type="image/png" sizes="1024x1024" href="/nuntius/assets/nuntius-favicon-20260522.png" />
+    <link rel="apple-touch-icon" href="/nuntius/assets/nuntius-favicon-20260522.png" />
   </head>
 	  <body class="theme-support">
     <nav class="pill-nav">
       <div class="nav-links-container">
         <a href="./index.html">Home</a>
-        <a href="./app.html">Vesper</a>
+        <a href="./app.html">Nuntius</a>
         <a href="./support.html" class="active">Support</a>
         <a href="./experience.html">Journal</a>
         <a href="./trademark.html">Trademark</a>
@@ -38,9 +38,9 @@
       <div class="hero-content">
         <div class="hero-label">Support</div>
         <h1>Support</h1>
-        <p>Setup and troubleshooting notes for Vesper webhook mode.</p>
+        <p>Setup and troubleshooting notes for Nuntius webhook mode.</p>
         <a href="#runbook" class="btn-primary">Open notes</a>
-        <p class="subtext">Using Vesper Review means accepting the <a href="./terms.html">Terms</a>.</p>
+        <p class="subtext">Using Nuntius Review means accepting the <a href="./terms.html">Terms</a>.</p>
       </div>
     </div>
 
@@ -48,7 +48,7 @@
       <section>
         <h2>What this covers</h2>
         <p>
-          Support notes for Vesper webhook deployment and command troubleshooting.
+          Support notes for Nuntius webhook deployment and command troubleshooting.
         </p>
         <ul class="link-list">
           <li><span></span>Required GitHub App permissions + webhook events</li>
@@ -126,12 +126,12 @@ Pull request review comment</code></pre>
             <tr>
               <td data-label="Symptom">Wanted "comment on lines +X to +Y" style inline reviews</td>
               <td data-label="Root cause">Inline reviews were posted as single-line comments only</td>
-              <td data-label="Resolution">Added optional range comments (multi-line) gated by <code>VESPER_ENABLE_RANGE_COMMENTS</code></td>
+              <td data-label="Resolution">Added optional range comments (multi-line) gated by <code>NUNTIUS_ENABLE_RANGE_COMMENTS</code></td>
             </tr>
             <tr>
               <td data-label="Symptom">Need to temporarily stop auto reviews on a noisy PR</td>
               <td data-label="Root cause">No per-PR control for auto triggers</td>
-              <td data-label="Resolution">Introduce <code>/pause</code> and <code>/resume</code> using the <code>vesper:paused</code> label</td>
+              <td data-label="Resolution">Introduce <code>/pause</code> and <code>/resume</code> using the <code>nuntius:paused</code> label</td>
             </tr>
           </tbody>
         </table>
@@ -148,7 +148,7 @@ Pull request review comment</code></pre>
           <ul class="link-list">
             <li><span></span>Create a PR with a small code change</li>
             <li><span></span>Comment <code>/analyze</code> in Conversation (and optionally as an inline file comment)</li>
-            <li><span></span>Verify the main Vesper analysis comment updates</li>
+            <li><span></span>Verify the main Nuntius analysis comment updates</li>
             <li><span></span>Use <code>/analyze --force-review</code> when you want inline suggestions reposted</li>
             <li><span></span>If authoring is enabled and the commenter has write/admin access, comment <code>/apply</code> and confirm a bot-authored commit lands on the PR branch</li>
             <li><span></span>Optionally test merges: <code>/merge</code>, <code>/squash</code>, <code>/rebase</code></li>
@@ -159,10 +159,10 @@ Pull request review comment</code></pre>
         <section>
           <h2>Command replies</h2>
           <p>
-            Vesper keeps command replies short. A normal reply may use <code>🙂</code>, a blocked or unavailable state
+            Nuntius keeps command replies short. A normal reply may use <code>🙂</code>, a blocked or unavailable state
             may use <code>😅</code>, and a paused or no-op state may use <code>😴</code>.
           </p>
-          <pre><code>Vesper: Paused
+          <pre><code>Nuntius: Paused
 
 😴 Auto analysis is paused for this PR.</code></pre>
         </section>
@@ -170,22 +170,22 @@ Pull request review comment</code></pre>
         <section>
           <h2>Quota cooldown</h2>
           <p>
-            When Gemini returns a quota or rate-limit error, Vesper posts a short notice and temporarily skips
+            When Gemini returns a quota or rate-limit error, Nuntius posts a short notice and temporarily skips
             auto-analysis on new commits for a short cooldown window.
           </p>
           <p class="card-subtext">Config (Vercel → Project → Settings → Environment Variables):</p>
-          <pre><code>VESPER_QUOTA_COOLDOWN_SECONDS=1800</code></pre>
+          <pre><code>NUNTIUS_QUOTA_COOLDOWN_SECONDS=1800</code></pre>
           <p class="card-subtext">Examples: <code>300</code> (5 min), <code>1800</code> (30 min, default), <code>0</code> (disable cooldown).</p>
         </section>
 
         <section>
           <h2>Multi-line inline reviews</h2>
           <p>
-            By default, Vesper posts inline review comments anchored to a single line. If you want GitHub’s
-            “comment on lines +X to +Y” style UI for block feedback, enable range comments.
+            By default, Nuntius posts inline review comments anchored to a single line. If you want GitHub's
+            "comment on lines +X to +Y" style UI for block feedback, enable range comments.
           </p>
           <p class="card-subtext">Config (Vercel → Project → Settings → Environment Variables):</p>
-          <pre><code>VESPER_ENABLE_RANGE_COMMENTS=1</code></pre>
+          <pre><code>NUNTIUS_ENABLE_RANGE_COMMENTS=1</code></pre>
           <p class="card-subtext">
             Notes: keep this off if you only want one-line <code>```suggestion```</code> fixes. Range comments work
             for block-level guidance; <code>/apply</code> continues to work for suggestions.
@@ -206,7 +206,7 @@ Ignored webhook event:</code></pre>
     </main>
 
     <footer>
-      <p>&copy; 2026 Vesper</p>
+      <p>&copy; 2026 Nuntius</p>
     </footer>
 
     <script src="./layout.js"></script>

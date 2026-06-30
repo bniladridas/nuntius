@@ -20,5 +20,5 @@
     { "type": "refactor", "section": "Code Refactoring" }
   ],
   "pull-request-header": "Release notes for the next gem release.",
-  "pull-request-footer": "Managed by Vesper Review."
+  "pull-request-footer": "Managed by Nuntius Review."
 }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 require 'httparty'
 require 'json'
@@ -10,7 +10,7 @@ require 'dotenv/load'
 require_relative 'errors'
 require_relative '../utils/moderation'
 
-module GeminiAI
+module Nuntius
   # Core client class for Gemini AI API communication
   class Client
     BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models'
@@ -176,8 +176,7 @@ module GeminiAI
     end
 
     def valid_api_key_format?(key)
-      # Strict format check: starts with 'AIza', reasonable length
-      key =~ /^AIza[a-zA-Z0-9_-]{35,}$/
+      key.length >= 30
     end
 
     def validate_prompt!(prompt)

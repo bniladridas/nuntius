@@ -2,7 +2,7 @@
 
 <br>
 
-Common issues and solutions when using Vesper.
+Common issues and solutions when using Nuntius.
 
 <br>
 
@@ -42,15 +42,15 @@ Common issues and solutions when using Vesper.
 
    Then in your Ruby code:
    ```ruby
-   GeminiAI.load_env
-   client = GeminiAI::Client.new
+   Nuntius.load_env
+   client = Nuntius::Client.new
    ```
 
 <br>
 
 4. **Pass API key directly** (avoid in production):
    ```ruby
-   client = GeminiAI::Client.new('your_api_key_here')
+   client = Nuntius::Client.new('your_api_key_here')
    ```
 
 <br>
@@ -231,7 +231,7 @@ Limits depend on your key, billing state, region, and selected model.
    ```ruby
    begin
      response = client.generate_text(prompt)
-   rescue GeminiAI::Error => e
+   rescue Nuntius::Error => e
      if e.message.include?('Rate limit exceeded')
        warn 'Rate limit exceeded. Wait and retry later.'
      else
@@ -474,7 +474,7 @@ chmod +x bin/gemini
 
 2. **Check gem path**:
    ```bash
-   gem which vesper
+   gem which nuntius
    ```
 
 <br>
@@ -534,9 +534,9 @@ chmod +x bin/gemini
 ```ruby
 require 'logger'
 
-GeminiAI::Client.logger.level = Logger::DEBUG
+Nuntius::Client.logger.level = Logger::DEBUG
 
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 response = client.generate_text("Test prompt")
 ```
 
@@ -549,10 +549,10 @@ response = client.generate_text("Test prompt")
 ```ruby
 # Test basic connectivity
 begin
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text("Say 'Connection successful!'")
   puts "[SUCCESS] API connection working: #{response}"
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   puts "[ERROR] API connection failed: #{e.message}"
 end
 ```
@@ -566,8 +566,8 @@ end
 ```ruby
 require 'logger'
 
-GeminiAI::Client.logger.level = Logger::DEBUG
-client = GeminiAI::Client.new
+Nuntius::Client.logger.level = Logger::DEBUG
+client = Nuntius::Client.new
 response = client.generate_text("Test")
 
 # Debug logs include:
@@ -617,11 +617,11 @@ Create a minimal script to reproduce the issue:
 ```ruby
 #!/usr/bin/env ruby
 
-require 'vesper'
+require 'nuntius'
 
 begin
-  GeminiAI.load_env
-  client = GeminiAI::Client.new
+  Nuntius.load_env
+  client = Nuntius::Client.new
   response = client.generate_text("Hello")
   puts "Success: #{response}"
 rescue => e

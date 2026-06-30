@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 nuntius
 
 ---
-name: Vesper
+name: Nuntius
 
 on:
   workflow_dispatch:
@@ -107,41 +107,41 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 1
 
-      # Install Python dependencies required for Vesper
+      # Install Python dependencies required for Nuntius
       - name: Install dependencies
         run: |
-          # Install pinned Vesper dependencies (direct + transitive) for reproducible runs
-          pip install --no-cache-dir -r vesper/requirements.lock
+          # Install pinned Nuntius dependencies (direct + transitive) for reproducible runs
+          pip install --no-cache-dir -r nuntius/requirements.lock
 
           # Verify installations
           python --version
           pip --version
 
     # Generate GitHub App token for PR commenting
-      - name: Check Vesper secrets
-        id: vesper-secrets
+      - name: Check Nuntius secrets
+        id: nuntius-secrets
         env:
-          VESPER_CLIENT_ID: ${{ secrets.VESPER_CLIENT_ID }}
-          VESPER_PRIVATE_KEY: ${{ secrets.VESPER_PRIVATE_KEY }}
+          NUNTIUS_CLIENT_ID: ${{ secrets.NUNTIUS_CLIENT_ID }}
+          NUNTIUS_PRIVATE_KEY: ${{ secrets.NUNTIUS_PRIVATE_KEY }}
         run: |
-          if [ -n "$VESPER_CLIENT_ID" ] && [ -n "$VESPER_PRIVATE_KEY" ]; then
+          if [ -n "$NUNTIUS_CLIENT_ID" ] && [ -n "$NUNTIUS_PRIVATE_KEY" ]; then
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Vesper app secrets are not configured; skipping bot run."
+            echo "Nuntius app secrets are not configured; skipping bot run."
           fi
 
       - name: Generate GitHub App Token
-        if: steps.vesper-secrets.outputs.available == 'true'
+        if: steps.nuntius-secrets.outputs.available == 'true'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ secrets.VESPER_CLIENT_ID }}
-          private-key: ${{ secrets.VESPER_PRIVATE_KEY }}
+          client-id: ${{ secrets.NUNTIUS_CLIENT_ID }}
+          private-key: ${{ secrets.NUNTIUS_PRIVATE_KEY }}
 
-      # Run Vesper to analyze PR with Gemini AI
+      # Run Nuntius to analyze PR with Gemini AI
       - name: Run Gemini PR Bot
-        if: steps.vesper-secrets.outputs.available == 'true'
+        if: steps.nuntius-secrets.outputs.available == 'true'
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -158,6 +158,6 @@ jobs:
           fi
 
           # Run the PR bot script with repository and PR number
-          python ./vesper/vesper.py \
+          python ./nuntius/nuntius.py \
             --repo ${{ github.repository }} \
             --pr $PR_NUMBER

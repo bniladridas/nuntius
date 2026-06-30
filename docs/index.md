@@ -1,4 +1,4 @@
-# Vesper
+# Nuntius
 
 <br>
 
@@ -35,9 +35,9 @@ Generate text:
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 response = client.generate_text("Hello, Gemini!")
 puts response
 ```
@@ -48,7 +48,7 @@ puts response
 
 <br>
 
-[`Vesper`](reference/vesper.md) automates code reviews using Gemini AI, analyzing PRs and providing feedback.
+[`Nuntius`](reference/nuntius.md) automates code reviews using Gemini AI, analyzing PRs and providing feedback.
 
 <br>
 
@@ -58,7 +58,7 @@ puts response
 
 - [`Quick Start`](start/quickstart.md)
 - [`API Reference`](reference/api.md)
-- [`Vesper`](reference/vesper.md)
+- [`Nuntius`](reference/nuntius.md)
 - [`Guides`](guides/community.md)
 - [`Testing`](reference/testing.md)
 
@@ -69,7 +69,7 @@ puts response
 <br>
 
 - [RubyGems](https://rubygems.org/gems/nuntius-rb)
-- [Issues](https://github.com/bniladridas/nuntius/issues)
-- [Discussions](https://github.com/bniladridas/nuntius/discussions)
-- [`Security`](https://github.com/bniladridas/nuntius/blob/main/.github/SECURITY.md)
-- [`License`](https://github.com/bniladridas/nuntius/blob/main/LICENSE)
+- [Issues](https://github.com/palmshed/nuntius/issues)
+- [Discussions](https://github.com/palmshed/nuntius/discussions)
+- [`Security`](https://github.com/palmshed/nuntius/blob/main/.github/SECURITY.md)
+- [`License`](https://github.com/palmshed/nuntius/blob/main/LICENSE)

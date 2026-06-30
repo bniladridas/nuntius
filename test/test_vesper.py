@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 
 #!/usr/bin/env python3
 """
-Unit tests for Vesper core functionality.
-Run with: python -m pytest test/test_vesper.py
+Unit tests for Nuntius core functionality.
+Run with: python -m pytest test/test_nuntius.py
 """
 
 import os
@@ -12,12 +12,12 @@ import sys
 import unittest
 from unittest.mock import Mock, mock_open, patch
 
-# Add the repo root to path so we can import `vesper.*` as a package.
+# Add the repo root to path so we can import `nuntius.*` as a package.
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from github.GithubException import GithubException  # noqa: E402
 
-from vesper.vesper import (  # noqa: E402
+from nuntius.nuntius import (  # noqa: E402
     analyze_with_gemini,
     apply_suggestions_to_pr,
     create_branch,
@@ -34,11 +34,12 @@ from vesper.vesper import (  # noqa: E402
     post_inline_suggestions,
     run_analysis_for_pr,
     verify_webhook_signature,
+    is_nuntius_comment,
 )
 
 
-class TestVesper(unittest.TestCase):
-    """Test cases for Vesper functionality."""
+class TestNuntius(unittest.TestCase):
+    """Test cases for Nuntius functionality."""
 
     def test_verify_webhook_signature_valid(self):
         """Test webhook signature verification with valid signature."""
@@ -80,12 +81,12 @@ class TestVesper(unittest.TestCase):
         with (
             patch("os.path.exists", return_value=True),
             patch("builtins.open", mock_open(read_data=config_yaml)),
-            patch.dict(os.environ, {"VESPER_GEMINI_MODEL": "gemini-3.5-flash"}),
+            patch.dict(os.environ, {"NUNTIUS_GEMINI_MODEL": "gemini-3.5-flash"}),
         ):
             config = load_config()
             self.assertEqual(config["model"], "gemini-3.5-flash")
 
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.load_config")
     def test_analyze_with_gemini_success(self, mock_load_config):
         """Test successful Gemini analysis."""
         # Mock config with all required keys
@@ -116,8 +117,8 @@ class TestVesper(unittest.TestCase):
         self.assertEqual(result, "Test analysis")
         mock_client.models.generate_content.assert_called_once()
 
-    @patch("vesper.vesper.time.sleep", return_value=None)
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.time.sleep", return_value=None)
+    @patch("nuntius.nuntius.load_config")
     def test_analyze_with_gemini_retries_on_server_error(self, mock_load_config, _mock_sleep):
         """Retries on 5xx and succeeds when API recovers."""
         from google.genai import errors as genai_errors
@@ -153,8 +154,8 @@ class TestVesper(unittest.TestCase):
         self.assertEqual(result, "Recovered analysis")
         self.assertEqual(mock_client.models.generate_content.call_count, 3)
 
-    @patch("vesper.vesper.time.sleep", return_value=None)
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.time.sleep", return_value=None)
+    @patch("nuntius.nuntius.load_config")
     def test_analyze_with_gemini_server_error_message_includes_http(self, mock_load_config, _mock_sleep):
         """Server errors return a helpful message with HTTP details."""
         from google.genai import errors as genai_errors
@@ -183,7 +184,7 @@ class TestVesper(unittest.TestCase):
         self.assertIn("api unavailable", result.lower())
         self.assertIn("http 503", result.lower())
 
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.load_config")
     def test_analyze_with_gemini_prompt_backcompat_files_diff(self, mock_load_config):
         """Supports legacy {files}/{diff} placeholders in prompt templates."""
         mock_load_config.return_value = {
@@ -215,7 +216,7 @@ class TestVesper(unittest.TestCase):
         self.assertIn("Diff:", kwargs["contents"])
         self.assertIn("test diff", kwargs["contents"])
 
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.load_config")
     def test_analyze_with_gemini_keeps_large_response_with_8k_output_budget(self, mock_load_config):
         """An 8k-token output budget should not be cut off by the sanitizer's char cap."""
         mock_load_config.return_value = {
@@ -318,33 +319,33 @@ Use the hyphen tag format so the compare link points at the release tag.
 ```diff
 docs/CHANGELOG.md
 @@ -6,1 +6,1 @@
--## [1.8.0](https://github.com/bniladridas/vesper/compare/vesper-v1.7.0...vesper/v1.8.0)
-+## [1.8.0](https://github.com/bniladridas/vesper/compare/vesper-v1.7.0...vesper-v1.8.0)
+-## [1.8.0](https://github.com/palmshed/nuntius/compare/nuntius-v1.7.0...nuntius/v1.8.0)
++## [1.8.0](https://github.com/palmshed/nuntius/compare/nuntius-v1.7.0...nuntius-v1.8.0)
 ```"""
         result = parse_code_suggestions(analysis)
 
         self.assertEqual(result[0]["reason"], "Use the hyphen tag format so the compare link points at the release tag.")
 
     def test_format_comment_does_not_add_hr(self):
-        """Vesper comment should not add extra decorations."""
-        from vesper.vesper import format_comment
+        """Nuntius comment should not add extra decorations."""
+        from nuntius.nuntius import format_comment
 
         formatted = format_comment("hello")
         self.assertNotIn("\n---", formatted)
         self.assertNotIn("badge.svg", formatted)
 
     def test_format_comment_with_sha(self):
-        """Vesper comment should include SHA marker when provided."""
-        from vesper.vesper import format_comment
+        """Nuntius comment should include SHA marker when provided."""
+        from nuntius.nuntius import format_comment
 
         formatted = format_comment("analysis content", sha="abc123")
-        self.assertIn("vesper-sha: abc123", formatted)
+        self.assertIn("nuntius-sha: abc123", formatted)
         self.assertIn("<details>", formatted)
         self.assertIn("analysis content", formatted)
 
     def test_format_comment_includes_review_history(self):
-        """Vesper comment can include a quiet reviewed commit table."""
-        from vesper.vesper import format_comment
+        """Nuntius comment can include a quiet reviewed commit table."""
+        from nuntius.nuntius import format_comment
 
         formatted = format_comment(
             "analysis content",
@@ -357,48 +358,48 @@ docs/CHANGELOG.md
         self.assertIn("analysis content", formatted)
 
     def test_format_comment_without_sha(self):
-        """Vesper comment should not include SHA marker when not provided."""
-        from vesper.vesper import format_comment
+        """Nuntius comment should not include SHA marker when not provided."""
+        from nuntius.nuntius import format_comment
 
         formatted = format_comment("analysis content")
-        self.assertNotIn("vesper-sha:", formatted)
+        self.assertNotIn("nuntius-sha:", formatted)
         self.assertIn("<details>", formatted)
         self.assertIn("analysis content", formatted)
 
     def test_format_notice_includes_quiet_title(self):
         """Notice comment should include a quiet title."""
-        from vesper.vesper import format_notice
+        from nuntius.nuntius import format_notice
 
         formatted = format_notice("Test Title", "Test details")
-        self.assertIn("Vesper: Test Title", formatted)
+        self.assertIn("Nuntius: Test Title", formatted)
         self.assertIn("🙂 Test details", formatted)
         self.assertIn("Test details", formatted)
 
     def test_format_notice_does_not_include_sha_marker(self):
         """Notice comment should NOT include SHA marker (format_notice no longer accepts sha parameter)."""
-        from vesper.vesper import format_notice
+        from nuntius.nuntius import format_notice
 
         formatted = format_notice("Test Title", "Test details")
-        self.assertNotIn("vesper-sha:", formatted)
-        self.assertIn("Vesper: Test Title", formatted)
+        self.assertNotIn("nuntius-sha:", formatted)
+        self.assertIn("Nuntius: Test Title", formatted)
         self.assertIn("Test details", formatted)
 
     def test_format_notice_uses_attention_emoji_for_quota(self):
-        from vesper.vesper import format_notice
+        from nuntius.nuntius import format_notice
 
         formatted = format_notice("Gemini quota exceeded", "Try again later.")
         self.assertIn("😅 Try again later.", formatted)
 
     def test_format_notice_uses_sleeping_emoji_for_paused(self):
-        from vesper.vesper import format_notice
+        from nuntius.nuntius import format_notice
 
         formatted = format_notice("Paused", "Auto analysis is paused.")
         self.assertIn("😴 Auto analysis is paused.", formatted)
 
-    @patch("vesper.vesper.post_comment_webhook")
-    @patch("vesper.vesper.analyze_with_gemini")
-    @patch("vesper.vesper.get_pr_details_webhook")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_comment_webhook")
+    @patch("nuntius.nuntius.analyze_with_gemini")
+    @patch("nuntius.nuntius.get_pr_details_webhook")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_run_analysis_for_pr_skips_when_sha_already_commented(
         self,
         mock_setup_env,
@@ -411,7 +412,7 @@ docs/CHANGELOG.md
         repo = Mock()
         pr = Mock()
         comment = Mock()
-        comment.body = "hello\nvesper-sha: deadbeef\n"
+        comment.body = "hello\nnuntius-sha: deadbeef\n"
         pr.get_issue_comments.return_value = [comment]
         repo.get_pull.return_value = pr
         g.get_repo.return_value = repo
@@ -429,10 +430,10 @@ docs/CHANGELOG.md
         mock_analyze.assert_not_called()
         mock_post_comment.assert_not_called()
 
-    @patch("vesper.vesper.time.time")
-    @patch("vesper.vesper.analyze_with_gemini")
-    @patch("vesper.vesper.get_pr_details_webhook")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.time.time")
+    @patch("nuntius.nuntius.analyze_with_gemini")
+    @patch("nuntius.nuntius.get_pr_details_webhook")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_run_analysis_for_pr_skips_when_quota_cooldown_active(
         self,
         mock_setup_env,
@@ -451,7 +452,7 @@ docs/CHANGELOG.md
         issue.get_labels.return_value = [label]
 
         comment = Mock()
-        comment.body = "<!-- vesper-quota-until: 2000 -->"
+        comment.body = "<!-- nuntius-quota-until: 2000 -->"
         pr.get_issue_comments.return_value = [comment]
 
         repo.get_issue.return_value = issue
@@ -470,10 +471,10 @@ docs/CHANGELOG.md
 
         mock_analyze.assert_not_called()
 
-    @patch("vesper.vesper.post_comment_webhook")
-    @patch("vesper.vesper.analyze_with_gemini")
-    @patch("vesper.vesper.get_pr_details_webhook")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_comment_webhook")
+    @patch("nuntius.nuntius.analyze_with_gemini")
+    @patch("nuntius.nuntius.get_pr_details_webhook")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_run_analysis_for_pr_force_reruns_even_with_existing_sha_comment(
         self,
         mock_setup_env,
@@ -486,7 +487,7 @@ docs/CHANGELOG.md
         repo = Mock()
         pr = Mock()
         comment = Mock()
-        comment.body = "hello\nvesper-sha: deadbeef\n"
+        comment.body = "hello\nnuntius-sha: deadbeef\n"
         pr.get_issue_comments.return_value = [comment]
         repo.get_pull.return_value = pr
         g.get_repo.return_value = repo
@@ -515,11 +516,11 @@ docs/CHANGELOG.md
         self.assertTrue(is_api_unavailable_message("503 UNAVAILABLE: high demand, try later"))
         self.assertFalse(is_api_unavailable_message("all good"))
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.post_comment_webhook")
-    @patch("vesper.vesper.analyze_with_gemini")
-    @patch("vesper.vesper.get_pr_details_webhook")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.post_comment_webhook")
+    @patch("nuntius.nuntius.analyze_with_gemini")
+    @patch("nuntius.nuntius.get_pr_details_webhook")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_run_analysis_for_pr_skips_comment_update_when_api_unavailable(
         self,
         mock_setup_env,
@@ -556,11 +557,11 @@ docs/CHANGELOG.md
         mock_post_comment.assert_not_called()
         mock_post_notice.assert_not_called()
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.post_comment_webhook")
-    @patch("vesper.vesper.analyze_with_gemini")
-    @patch("vesper.vesper.get_pr_details_webhook")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.post_comment_webhook")
+    @patch("nuntius.nuntius.analyze_with_gemini")
+    @patch("nuntius.nuntius.get_pr_details_webhook")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_run_analysis_for_pr_posts_notice_when_manual_api_unavailable(
         self,
         mock_setup_env,
@@ -590,11 +591,11 @@ docs/CHANGELOG.md
         mock_post_comment.assert_not_called()
         mock_post_notice.assert_called_once()
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.analyze_with_gemini")
-    @patch("vesper.vesper.get_pr_details_webhook")
-    @patch("vesper.vesper.setup_environment_webhook")
-    @patch("vesper.vesper.time.time")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.analyze_with_gemini")
+    @patch("nuntius.nuntius.get_pr_details_webhook")
+    @patch("nuntius.nuntius.setup_environment_webhook")
+    @patch("nuntius.nuntius.time.time")
     def test_run_analysis_for_pr_posts_quota_notice_and_skips_comment_webhook(
         self,
         mock_time,
@@ -614,13 +615,13 @@ docs/CHANGELOG.md
         }
         mock_analyze.return_value = "Error generating analysis: API quota exceeded."
 
-        with patch("vesper.vesper.post_comment_webhook") as mock_post_comment:
+        with patch("nuntius.nuntius.post_comment_webhook") as mock_post_comment:
             run_analysis_for_pr(123, "o/r", 1, force=True)
             mock_post_comment.assert_not_called()
 
         mock_post_notice.assert_called_once()
 
-    @patch("vesper.vesper.requests.get")
+    @patch("nuntius.nuntius.requests.get")
     def test_get_pr_details_webhook_uses_auth_header_when_token_provided(self, mock_get):
         g = Mock()
         repo = Mock()
@@ -638,7 +639,7 @@ docs/CHANGELOG.md
         self.assertIn("Authorization", kwargs["headers"])
         self.assertEqual(kwargs["headers"]["Authorization"], "token inst-token")
 
-    @patch("vesper.vesper.requests.get")
+    @patch("nuntius.nuntius.requests.get")
     def test_fetch_pr_diff_treats_stateless_installation_tokens_as_opaque(self, mock_get):
         token = f"ghs_{'a' * 80}.{'b' * 210}.{'c' * 210}"
         mock_get.return_value = Mock(status_code=200, text="diff")
@@ -648,7 +649,7 @@ docs/CHANGELOG.md
         _args, kwargs = mock_get.call_args
         self.assertEqual(kwargs["headers"]["Authorization"], f"token {token}")
 
-    @patch("vesper.vesper.requests.get")
+    @patch("nuntius.nuntius.requests.get")
     def test_fetch_pr_diff_returns_empty_on_non_200(self, mock_get):
         response = Mock()
         response.status_code = 403
@@ -698,9 +699,9 @@ docs/CHANGELOG.md
         self.assertEqual(kwargs["comments"][0]["side"], "RIGHT")
         self.assertEqual(kwargs["comments"][0]["body"], "Use the current value.\n\n```suggestion\nnew\n```")
 
-    @patch("vesper.vesper.post_inline_suggestions")
-    @patch("vesper.vesper.Github")
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.post_inline_suggestions")
+    @patch("nuntius.nuntius.Github")
+    @patch("nuntius.nuntius.load_config")
     def test_post_comment_webhook_force_review_from_config(self, mock_load_config, mock_github, mock_post_inline):
         """Config can opt-in to reposting reviews on manual /analyze."""
         mock_load_config.return_value = {
@@ -723,13 +724,13 @@ docs/CHANGELOG.md
         _args, kwargs = mock_post_inline.call_args
         self.assertTrue(kwargs["force_review"])
 
-    @patch("vesper.vesper.post_inline_suggestions")
-    @patch("vesper.vesper.Github")
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.post_inline_suggestions")
+    @patch("nuntius.nuntius.Github")
+    @patch("nuntius.nuntius.load_config")
     def test_post_comment_webhook_updates_existing_comment_with_commit_history(
         self, mock_load_config, mock_github, mock_post_inline
     ):
-        """Existing Vesper comment is edited with the latest reviewed commit."""
+        """Existing Nuntius comment is edited with the latest reviewed commit."""
         mock_load_config.return_value = {"enable_authoring": False}
 
         repo = Mock()
@@ -739,18 +740,18 @@ docs/CHANGELOG.md
 
         existing = Mock()
         existing.body = """<details>
-<summary>Vesper</summary>
+<summary>Nuntius</summary>
 
-<!-- vesper-history-start -->
+<!-- nuntius-history-start -->
 ### Reviewed commits
 
 | Commit | Summary |
 | --- | --- |
 | `oldsha1` | previous change |
-<!-- vesper-history-end -->
+<!-- nuntius-history-end -->
 
 old analysis
-<!-- vesper-sha: oldsha1 -->
+<!-- nuntius-sha: oldsha1 -->
 </details>
 """
 
@@ -769,12 +770,12 @@ old analysis
         body = existing.edit.call_args.args[0]
         self.assertIn("| `abcdef1` | quiet the release body |", body)
         self.assertIn("| `oldsha1` | previous change |", body)
-        self.assertIn("vesper-sha: abcdef1234567890", body)
+        self.assertIn("nuntius-sha: abcdef1234567890", body)
         pr.create_issue_comment.assert_not_called()
 
-    @patch("vesper.vesper.post_inline_suggestions")
-    @patch("vesper.vesper.Github")
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.post_inline_suggestions")
+    @patch("nuntius.nuntius.Github")
+    @patch("nuntius.nuntius.load_config")
     def test_post_comment_webhook_force_review_explicit_arg(self, mock_load_config, mock_github, mock_post_inline):
         """Explicit force_review argument always wins."""
         mock_load_config.return_value = {
@@ -797,25 +798,25 @@ old analysis
         _args, kwargs = mock_post_inline.call_args
         self.assertTrue(kwargs["force_review"])
 
-    @patch("vesper.vesper.handle_merge_command")
-    @patch("vesper.vesper.handle_apply_comment")
-    @patch("vesper.vesper.run_analysis_for_pr")
+    @patch("nuntius.nuntius.handle_merge_command")
+    @patch("nuntius.nuntius.handle_apply_comment")
+    @patch("nuntius.nuntius.run_analysis_for_pr")
     def test_handle_pr_comment_command_dispatches_analyze(self, mock_run_analysis, _mock_apply, _mock_merge):
         result = handle_pr_comment_command(123, "o/r", 1, "/analyze", "alice")
         self.assertEqual(result, ({"status": "ok"}, 200))
         mock_run_analysis.assert_called_once_with(123, "o/r", 1, force=True, force_review=False)
 
-    @patch("vesper.vesper.handle_merge_command")
-    @patch("vesper.vesper.handle_apply_comment")
-    @patch("vesper.vesper.run_analysis_for_pr")
+    @patch("nuntius.nuntius.handle_merge_command")
+    @patch("nuntius.nuntius.handle_apply_comment")
+    @patch("nuntius.nuntius.run_analysis_for_pr")
     def test_handle_pr_comment_command_dispatches_analyze_force_review(self, mock_run_analysis, _mock_apply, _mock_merge):
         result = handle_pr_comment_command(123, "o/r", 1, "/analyze --force-review", "alice")
         self.assertEqual(result, ({"status": "ok"}, 200))
         mock_run_analysis.assert_called_once_with(123, "o/r", 1, force=True, force_review=True)
 
-    @patch("vesper.vesper.handle_merge_command")
-    @patch("vesper.vesper.handle_apply_comment")
-    @patch("vesper.vesper.run_analysis_for_pr")
+    @patch("nuntius.nuntius.handle_merge_command")
+    @patch("nuntius.nuntius.handle_apply_comment")
+    @patch("nuntius.nuntius.run_analysis_for_pr")
     def test_handle_pr_comment_command_dispatches_merge(self, mock_run_analysis, mock_apply, mock_merge):
         mock_merge.return_value = {"status": "merged"}
         result = handle_pr_comment_command(123, "o/r", 1, " /merge ", "alice")
@@ -824,10 +825,10 @@ old analysis
         mock_run_analysis.assert_not_called()
         mock_apply.assert_not_called()
 
-    @patch("vesper.vesper.jsonify", side_effect=lambda payload: payload)
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.jsonify", side_effect=lambda payload: payload)
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_handle_merge_command_rebase_405_returns_notice_not_500(self, mock_setup_env, _mock_jsonify):
-        from vesper.vesper import handle_merge_command
+        from nuntius.nuntius import handle_merge_command
 
         g = Mock()
         repo = Mock()
@@ -852,10 +853,10 @@ old analysis
         body = pr.create_issue_comment.call_args[0][0]
         self.assertIn("Merge method not allowed", body)
 
-    @patch("vesper.vesper.jsonify", side_effect=lambda payload: payload)
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.jsonify", side_effect=lambda payload: payload)
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_handle_merge_command_blocks_non_collaborator_lookup_failure(self, mock_setup_env, _mock_jsonify):
-        from vesper.vesper import handle_merge_command
+        from nuntius.nuntius import handle_merge_command
 
         g = Mock()
         repo = Mock()
@@ -871,16 +872,16 @@ old analysis
         self.assertEqual(payload["status"], "forbidden")
         pr.create_issue_comment.assert_called_once()
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_handle_pr_comment_command_help_posts_notice(self, mock_setup_env, mock_post_notice):
         mock_setup_env.return_value = (Mock(), "token", Mock())
         result = handle_pr_comment_command(123, "o/r", 1, "/help", "alice")
         self.assertEqual(result, ({"status": "ok"}, 200))
         mock_post_notice.assert_called_once()
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_handle_pr_comment_command_pause_adds_label(self, mock_setup_env, mock_post_notice):
         g = Mock()
         repo = Mock()
@@ -896,9 +897,9 @@ old analysis
         issue.add_to_labels.assert_called_once()
         mock_post_notice.assert_called_once()
 
-    @patch("vesper.vesper.ensure_label_exists")
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.ensure_label_exists")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_handle_pr_comment_command_pause_creates_label_if_missing(
         self, mock_setup_env, mock_post_notice, mock_ensure_label
     ):
@@ -921,8 +922,8 @@ old analysis
         self.assertEqual(issue.add_to_labels.call_count, 2)
         mock_post_notice.assert_called_once()
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     def test_handle_pr_comment_command_resume_removes_label(self, mock_setup_env, mock_post_notice):
         g = Mock()
         repo = Mock()
@@ -930,7 +931,7 @@ old analysis
         g.get_repo.return_value = repo
         repo.get_issue.return_value = issue
         paused_label = Mock()
-        paused_label.name = "vesper:paused"
+        paused_label.name = "nuntius:paused"
         issue.get_labels.return_value = [paused_label]
         mock_setup_env.return_value = (g, "token", Mock())
 
@@ -940,8 +941,8 @@ old analysis
         issue.remove_from_labels.assert_called_once()
         mock_post_notice.assert_called_once()
 
-    @patch("vesper.vesper.post_notice_comment")
-    @patch("vesper.vesper.setup_environment_webhook")
+    @patch("nuntius.nuntius.post_notice_comment")
+    @patch("nuntius.nuntius.setup_environment_webhook")
     @patch.dict(
         "os.environ",
         {"VERCEL_GIT_COMMIT_SHA": "0123456789abcdef", "VERCEL_GIT_COMMIT_REF": "main"},
@@ -973,7 +974,7 @@ old analysis
         # Paused
         mock_post_notice.reset_mock()
         paused_label = Mock()
-        paused_label.name = "vesper:paused"
+        paused_label.name = "nuntius:paused"
         issue.get_labels.return_value = [paused_label]
 
         result = handle_pr_comment_command(123, "o/r", 1, "/status", "alice")
@@ -1001,7 +1002,7 @@ old analysis
         position = find_diff_position(diff, "test.py", 2)
         self.assertEqual(position, 3)
 
-    @patch("vesper.vesper.load_config")
+    @patch("nuntius.nuntius.load_config")
     def test_load_config_with_authoring_defaults(self, mock_load_config):
         """Test loading config with authoring defaults."""
         with patch("os.path.exists", return_value=False):
@@ -1011,7 +1012,7 @@ old analysis
             self.assertFalse(config["create_improvement_prs"])
             self.assertEqual(
                 config["improvement_branch_pattern"],
-                "vesper-improvements-{timestamp}",
+                "nuntius-improvements-{timestamp}",
             )
 
     def test_create_branch_success(self):

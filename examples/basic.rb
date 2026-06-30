@@ -1,18 +1,18 @@
 #!/usr/bin/env ruby
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 vesper
+# Copyright (c) 2026 Palmshed
 # frozen_string_literal: true
 
-require_relative '../lib/gemini'
+require_relative '../lib/nuntius'
 
 # Load environment variables
-GeminiAI.load_env
+Nuntius.load_env
 
 # Basic text generation example
 def basic_text_generation
   puts '=== Basic Text Generation ==='
 
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   response = client.generate_text('Tell me a joke about programming')
   puts "Response: #{response}"
 end
@@ -21,7 +21,7 @@ end
 def chat_example
   puts "\n=== Chat Example ==="
 
-  client = GeminiAI::Client.new
+  client = Nuntius::Client.new
   messages = [
     { role: 'user', content: 'Hello, what is Ruby?' },
     { role: 'model', content: 'Ruby is a dynamic programming language.' },
@@ -37,12 +37,12 @@ def model_comparison
   puts "\n=== Model Comparison ==="
 
   # Flash model (default)
-  flash_client = GeminiAI::Client.new(model: :flash)
+  flash_client = Nuntius::Client.new(model: :flash)
   flash_response = flash_client.generate_text('Explain AI in one sentence')
   puts "Flash Model: #{flash_response}"
 
   # Flash Lite model
-  lite_client = GeminiAI::Client.new(model: :flash_lite)
+  lite_client = Nuntius::Client.new(model: :flash_lite)
   lite_response = lite_client.generate_text('Explain AI in one sentence')
   puts "Flash Lite Model: #{lite_response}"
 end
@@ -52,7 +52,7 @@ begin
   basic_text_generation
   chat_example
   model_comparison
-rescue GeminiAI::Error => e
+rescue Nuntius::Error => e
   puts "Gemini AI Error: #{e.message}"
 rescue StandardError => e
   puts "Unexpected Error: #{e.message}"

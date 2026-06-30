@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2026 vesper
+// Copyright (c) 2026 Palmshed
 
 /**
  * manual.js
@@ -64,7 +64,7 @@ function expandGlobs(patterns) {
 
 async function analyzeWithGemini(files, apiKey) {
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: process.env.VESPER_GEMINI_MODEL || 'gemini-3.5-flash' });
+  const model = genAI.getGenerativeModel({ model: process.env.NUNTIUS_GEMINI_MODEL || 'gemini-3.5-flash' });
 
   let content = 'Analyze the following code files. Focus on code quality, security, performance, and correctness.\n\n';
 

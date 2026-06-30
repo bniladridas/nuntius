@@ -2,7 +2,7 @@
 
 <br>
 
-Get started with Vesper in minutes.
+Get started with Nuntius in minutes.
 
 <br>
 
@@ -34,7 +34,7 @@ Or add to Gemfile:
 <br>
 
 ```ruby
-gem 'nuntius-rb', require: 'vesper'
+gem 'nuntius-rb', require: 'nuntius'
 ```
 
 <br>
@@ -74,9 +74,9 @@ Create a Ruby file:
 <br>
 
 ```ruby
-require 'vesper'
+require 'nuntius'
 
-client = GeminiAI::Client.new
+client = Nuntius::Client.new
 response = client.generate_text("Hello, world!")
 puts response
 ```

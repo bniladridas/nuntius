@@ -15,7 +15,7 @@ Keep this file short. Store facts that must survive into the next session.
 
 <br>
 
-This repo publishes the `nuntius-rb` gem. Runtime code is required with `vesper`. The GitHub App is `Vesper Review`.
+This repo publishes the `nuntius-rb` gem. Runtime code is required with `nuntius`. The GitHub App is `Nuntius Review`.
 
 <br>
 
@@ -31,7 +31,7 @@ Ruby support is `>= 3.3`. `.ruby-version` is `3.3.11`. CI tests Ruby `3.3` and `
 
 <br>
 
-Gemini calls use `https://generativelanguage.googleapis.com/v1beta/models`. Vesper defaults to `gemini-3.5-flash`; hosted runs can override with `VESPER_GEMINI_MODEL`.
+Gemini calls use `https://generativelanguage.googleapis.com/v1beta/models`. Nuntius defaults to `gemini-3.5-flash`; hosted runs can override with `NUNTIUS_GEMINI_MODEL`.
 
 <br>
 
@@ -39,7 +39,7 @@ Main Ruby aliases are `:pro -> gemini-pro-latest`, `:flash -> gemini-3.5-flash`,
 
 <br>
 
-# Vesper Review
+# Nuntius Review
 
 <br>
 
@@ -72,7 +72,7 @@ Python focused test:
 <br>
 
 ```sh
-.venv/bin/python -m pytest test/test_vesper.py
+.venv/bin/python -m pytest test/test_nuntius.py
 ```
 
 <br>

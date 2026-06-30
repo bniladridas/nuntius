@@ -1,12 +1,12 @@
-# Vesper Review GitHub App Permissions (Webhook Mode)
+# Nuntius Review GitHub App Permissions (Webhook Mode)
 
 <br>
 
-Use the smallest set of GitHub App permissions needed for Vesper to review PRs and (optionally) merge them.
+Use the smallest set of GitHub App permissions needed for Nuntius to review PRs and (optionally) merge them.
 
 <br>
 
-# Recommended (Vesper can merge PRs)
+# Recommended (Nuntius can merge PRs)
 
 <br>
 
