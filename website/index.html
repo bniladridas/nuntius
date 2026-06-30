@@ -4,74 +4,91 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>nuntius-rb</title>
-    <meta name="description" content="nuntius-rb — Ruby gem for integrating with Google Gemini AI models." />
+    <meta name="description" content="nuntius-rb — a compact Ruby client for Google Gemini models." />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/x-icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/png" sizes="1024x1024" href="/nuntius/assets/nuntius-favicon-20260522.png" />
-    <link rel="apple-touch-icon" href="/nuntius/assets/nuntius-favicon-20260522.png" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
-  <body class="theme-home">
-    <nav class="pill-nav">
-      <div class="nav-links-container">
-        <a href="./index.html" class="active">Home</a>
-        <a href="./app.html">Nuntius</a>
-        <a href="./support.html">Support</a>
-        <a href="./experience.html">Journal</a>
-        <a href="./trademark.html">Trademark</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Terms</a>
-      </div>
-      <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-        <span class="dots-icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
+  <body>
+    <nav>
+      <ul class="nav-links" id="nav">
+        <li><span class="nav-mark">nuntius</span></li>
+        <li><a href="./index.html" class="active">Home</a></li>
+        <li><a href="./app.html">App</a></li>
+        <li><a href="./support.html">Support</a></li>
+        <li><a href="./experience.html">Journal</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
     </nav>
 
     <div class="hero">
       <div class="hero-content">
-        <div class="hero-label">Ruby client</div>
-        <h1>nuntius-rb</h1>
-        <p>A compact Ruby client for Gemini models.</p>
-        <a href="https://github.com/palmshed/nuntius" class="btn-primary">View source</a>
-        <p class="subtext">Use of nuntius-rb is subject to the <a href="./terms.html">Terms</a>.</p>
+        <div class="hero-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4"/>
+            <path d="M13 7.14A5.82 5.82 0 0 1 16.5 6c3.04 0 5.5 2.24 5.5 5h-3l-1-1-1 1h-3"/>
+            <path d="M5.89 9.71c-2.15 2.15-2.3 5.47-.35 7.43l4.24-4.25.7-.7.71-.71 2.12-2.12c-1.95-1.96-5.27-1.8-7.42.35"/>
+            <path d="M11 15.5c.5 2.5-.17 4.5-1 6.5h4c2-5.5-.5-12-1-14"/>
+          </svg>
+          <span>nuntius</span>
+        </div>
+        <h1>Ruby client for Gemini</h1>
+        <p>A compact, dependency-light client for Google Gemini text generation, with a CLI and a PR review app.</p>
+        <div class="hero-actions">
+          <a href="https://github.com/palmshed/nuntius">View on GitHub</a>
+          <a href="./app.html">Nuntius App</a>
+        </div>
       </div>
     </div>
 
-    <main>
+    <div class="page">
       <section>
-        <h2>Quick Install</h2>
+        <h2>Install</h2>
         <pre><code>gem install nuntius-rb --pre</code></pre>
-        <p class="subtext">Add it to your Gemfile or install it directly.</p>
+        <p class="subtext">Add it to your Gemfile with <code>gem 'nuntius-rb', require: 'nuntius'</code>.</p>
       </section>
 
       <section>
-        <h2>Basic Usage</h2>
+        <h2>Use</h2>
         <pre><code>require 'nuntius'
-client = Nuntius::Client.new('API_KEY')
-puts client.generate_text('Hello')</code></pre>
+Nuntius.load_env
+
+client = Nuntius::Client.new
+puts client.generate_text('Write a haiku about Ruby')</code></pre>
+        <p class="subtext">Set <code>GEMINI_API_KEY</code> in your environment or <code>.env</code> file.</p>
       </section>
 
       <section>
-        <h2>More</h2>
-        <ul class="link-list">
-          <li><a href="./app.html"><span></span>Nuntius</a></li>
-          <li><a href="https://github.com/apps/nuntius-review"><span></span>GitHub App</a></li>
-          <li><a href="./experience.html"><span></span>Journal</a></li>
-          <li><a href="https://rubygems.org/gems/nuntius-rb"><span></span>RubyGems</a></li>
+        <h2>CLI</h2>
+        <pre><code>./bin/nuntius generate "Your prompt"
+./bin/nuntius chat
+./bin/nuntius test</code></pre>
+      </section>
+
+      <section>
+        <h2>Project</h2>
+        <ul>
+          <li><a href="https://github.com/palmshed/nuntius">Source</a> on GitHub</li>
+          <li><a href="https://rubygems.org/gems/nuntius-rb">Package</a> on RubyGems</li>
+          <li><a href="https://github.com/apps/nuntius-review">Nuntius Review</a> GitHub App</li>
+          <li><a href="./support.html">Support</a> and troubleshooting</li>
         </ul>
       </section>
-    </main>
+    </div>
 
     <footer>
-      <p>&copy; 2026 Nuntius</p>
+      <p>&copy; 2026 Palmshed</p>
+      <ul class="footer-links">
+        <li><a href="./trademark.html">Trademark</a></li>
+        <li><a href="./privacy.html">Privacy</a></li>
+        <li><a href="./terms.html">Terms</a></li>
+      </ul>
     </footer>
 
-    <script src="./layout.js"></script>
-    <script src="./mobile-menu.js"></script>
-    <script src="./script.js"></script>
+    <script>
+      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('nav').classList.toggle('active');
+      });
+    </script>
   </body>
 </html>

@@ -3,84 +3,65 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trademark</title>
+    <title>Trademark — Nuntius</title>
+    <meta name="description" content="Trademark notice for the Nuntius mark." />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/x-icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/png" sizes="1024x1024" href="/nuntius/assets/nuntius-favicon-20260522.png" />
-    <link rel="apple-touch-icon" href="/nuntius/assets/nuntius-favicon-20260522.png" />
-    <link rel="preload" as="image" href="./favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
-  <body class="theme-trademark">
-    <nav class="pill-nav">
-      <div class="nav-links-container">
-        <a href="./index.html">Home</a>
-        <a href="./app.html">Nuntius</a>
-        <a href="./support.html">Support</a>
-        <a href="./experience.html">Journal</a>
-        <a href="./trademark.html" class="active">Trademark</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Terms</a>
-      </div>
-      <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-        <span class="dots-icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
+  <body>
+    <nav>
+      <ul class="nav-links" id="nav">
+        <li><span class="nav-mark">nuntius</span></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./app.html">App</a></li>
+        <li><a href="./support.html">Support</a></li>
+        <li><a href="./experience.html">Journal</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
     </nav>
 
-    <div class="hero hero-orange">
+    <div class="hero hero-short">
       <div class="hero-content">
-        <div class="hero-label">Trademark notice</div>
-        <img src="./favicon.svg" alt="Nuntius mark" class="hero-logo" />
-        <h1>Nuntius Mark</h1>
+        <h1>Trademark</h1>
         <p>The Nuntius mark is part of the project identity. This page records the symbol and usage guidelines.</p>
-        <p class="subtext">Use of the project is subject to the <a href="./terms.html">Terms</a>.</p>
       </div>
     </div>
 
-    <main>
+    <div class="page">
       <section>
-        <h2>What this page does</h2>
-        <ul>
-          <li>States that the mark is a trademark of Nuntius</li>
-          <li>Shows that we publicly claim the brand</li>
-          <li>Links to permission details for reuse</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Why it matters</h2>
-        <p>Publishing a trademark notice documents first public use and usage rules. Legal rights still require an official registration with the Controller General of Patents, Designs &amp; Trade Marks in India.</p>
+        <h2>Purpose</h2>
+        <p>This page states that the mark is a trademark of Nuntius, shows that we publicly claim the brand, and links to permission details for reuse.</p>
       </section>
 
       <section>
         <h2>Usage rules</h2>
         <ul>
-          <li>Only the stylized design shown here is claimed.</li>
+          <li>Only the stylized leaf mark shown on this site is claimed.</li>
           <li>Do not modify, recolor, animate, or repurpose the mark without written permission.</li>
           <li>Commercial use requires advance approval. Contact <code>bniladridas@gmail.com</code>.</li>
         </ul>
       </section>
 
       <section>
-        <h2>Mark status</h2>
-        <p>The mark should be noted as <code>™</code> until you obtain registration, after which you may use <code>®</code>.</p>
+        <h2>Status</h2>
+        <p>The mark should be noted as <code>™</code> until registration is obtained, after which <code>®</code> may be used.</p>
       </section>
-
-      <section>
-        <h2>Footer notice</h2>
-        <p>&copy; 2026 Nuntius. The Nuntius mark is a trademark of Nuntius.</p>
-      </section>
-    </main>
+    </div>
 
     <footer>
-      <p>&copy; 2026 Nuntius</p>
+      <p>&copy; 2026 Palmshed</p>
+      <ul class="footer-links">
+        <li><a href="./trademark.html">Trademark</a></li>
+        <li><a href="./privacy.html">Privacy</a></li>
+        <li><a href="./terms.html">Terms</a></li>
+      </ul>
     </footer>
-    <script src="./layout.js"></script>
-    <script src="./mobile-menu.js"></script>
-    <script src="./script.js"></script>
+
+    <script>
+      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('nav').classList.toggle('active');
+      });
+    </script>
   </body>
 </html>

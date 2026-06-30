@@ -3,73 +3,40 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Support</title>
-    <meta
-      name="description"
-      content="Level 2 Technical Support notes for Nuntius GitHub App setup, permissions, webhooks, and command troubleshooting."
-    />
+    <title>Support — Nuntius</title>
+    <meta name="description" content="Setup, permissions, and troubleshooting for Nuntius webhook mode." />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/x-icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/png" sizes="1024x1024" href="/nuntius/assets/nuntius-favicon-20260522.png" />
-    <link rel="apple-touch-icon" href="/nuntius/assets/nuntius-favicon-20260522.png" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
-	  <body class="theme-support">
-    <nav class="pill-nav">
-      <div class="nav-links-container">
-        <a href="./index.html">Home</a>
-        <a href="./app.html">Nuntius</a>
-        <a href="./support.html" class="active">Support</a>
-        <a href="./experience.html">Journal</a>
-        <a href="./trademark.html">Trademark</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Terms</a>
-      </div>
-      <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-        <span class="dots-icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
+  <body>
+    <nav>
+      <ul class="nav-links" id="nav">
+        <li><span class="nav-mark">nuntius</span></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./app.html">App</a></li>
+        <li><a href="./support.html" class="active">Support</a></li>
+        <li><a href="./experience.html">Journal</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
     </nav>
 
-    <div class="hero hero-teal">
+    <div class="hero hero-short">
       <div class="hero-content">
-        <div class="hero-label">Support</div>
         <h1>Support</h1>
-        <p>Setup and troubleshooting notes for Nuntius webhook mode.</p>
-        <a href="#runbook" class="btn-primary">Open notes</a>
-        <p class="subtext">Using Nuntius Review means accepting the <a href="./terms.html">Terms</a>.</p>
+        <p>Setup notes and troubleshooting for Nuntius webhook mode. If something is missing, <a href="https://github.com/palmshed/nuntius/issues">open an issue</a>.</p>
       </div>
     </div>
 
-    <main id="runbook">
+    <div class="page">
       <section>
-        <h2>What this covers</h2>
-        <p>
-          Support notes for Nuntius webhook deployment and command troubleshooting.
-        </p>
-        <ul class="link-list">
-          <li><span></span>Required GitHub App permissions + webhook events</li>
-          <li><span></span>Slash command behavior: <code>/analyze</code>, <code>/apply</code>, <code>/help</code>, <code>/merge</code>, <code>/squash</code>, <code>/rebase</code></li>
-          <li><span></span>Operational controls: <code>/pause</code>, <code>/resume</code>, <code>/status</code></li>
-          <li><span></span>Why reviews/inline suggestions sometimes don't appear</li>
-          <li><span></span>Optional multi-line inline review comments ("comment on lines ...")</li>
-          <li><span></span>Common log patterns and how to interpret them</li>
-        </ul>
-        <p class="subtext"><code>/apply</code> is a privileged command. It requires authoring to be enabled and the commenter to have write or admin access on the repository.</p>
-      </section>
-
-      <section>
-        <h2>Baseline permissions</h2>
-        <p>Minimum repository permissions for review + merge + apply:</p>
-        <pre><code>Metadata: read (required)
+        <h2>Permissions</h2>
+        <p>Minimum repository permissions for review, merge, and apply:</p>
+        <pre><code>Metadata: read
 Pull requests: read &amp; write
 Issues: read &amp; write
-Code/Contents: read &amp; write</code></pre>
-        <p class="subtext">Everything else: No access (Actions/Checks/Secrets/Administration/etc.).</p>
-        <p class="subtext">Comment-level access is not enough for write operations. A non-collaborator may be able to comment on a PR but should still be denied for <code>/apply</code> and merge commands.</p>
+Contents: read &amp; write</code></pre>
+        <p class="subtext">Everything else should be set to no access. Comment-level access alone is not sufficient for write operations.</p>
       </section>
 
       <section>
@@ -77,140 +44,120 @@ Code/Contents: read &amp; write</code></pre>
         <pre><code>Pull request
 Issue comment
 Pull request review comment</code></pre>
-        <p class="subtext">
-          The third event enables commands posted as inline comments on the "Files changed" tab.
-        </p>
+        <p class="subtext">The third event enables commands posted as inline file comments on the Files changed tab.</p>
       </section>
 
       <section>
-        <h2>Fixes shipped (L2 summary)</h2>
+        <h2>Commands</h2>
+        <pre><code>/analyze           Start or refresh a review
+/analyze --force-review   Repost inline suggestions
+/apply             Apply code suggestions when authoring is enabled
+/merge             Merge with a merge commit
+/squash            Squash and merge
+/rebase            Rebase and merge
+/pause             Stop auto analysis on new commits
+/resume            Re-enable auto analysis
+/status            Show current analysis state
+/help              List available commands</code></pre>
+        <p class="subtext">Commands work from conversation comments and, when enabled, inline file comments. Write-capable commands require write or admin access.</p>
+      </section>
+
+      <section>
+        <h2>Fixes shipped</h2>
         <table class="table">
           <thead>
             <tr>
               <th>Symptom</th>
-              <th>Root cause</th>
+              <th>Cause</th>
               <th>Resolution</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td data-label="Symptom"><code>/apply</code> returned 500 with <code>pr</code> unbound</td>
-              <td data-label="Root cause">Code path referenced <code>pr</code> when there were no suggestions</td>
-              <td data-label="Resolution">Always fetch <code>repo</code>/<code>pr</code> before branching; added tests</td>
+              <td data-label="Symptom"><code>/apply</code> returned 500 with pr unbound</td>
+              <td data-label="Cause">Code path used <code>pr</code> when there were no suggestions</td>
+              <td data-label="Resolution">Fetch repo and pr before branching; added tests</td>
             </tr>
             <tr>
-              <td data-label="Symptom"><code>/analyze</code> skipped due to "analysis already exists for SHA ..."</td>
-              <td data-label="Root cause">Dedup logic applied to manual reruns</td>
-              <td data-label="Resolution">Manual <code>/analyze</code> reruns; use <code>/analyze --force-review</code> to repost inline suggestions</td>
+              <td data-label="Symptom"><code>/analyze</code> skipped due to existing analysis for SHA</td>
+              <td data-label="Cause">Dedup logic applied to manual reruns</td>
+              <td data-label="Resolution">Use <code>/analyze --force-review</code> to repost inline suggestions</td>
             </tr>
             <tr>
               <td data-label="Symptom">PR comment posted but no inline suggestions</td>
-              <td data-label="Root cause">The analysis did not produce valid suggestion blocks for changed lines</td>
-              <td data-label="Resolution">Keep the main analysis comment, and skip empty review creation to avoid noise</td>
+              <td data-label="Cause">Analysis did not produce valid suggestion blocks</td>
+              <td data-label="Resolution">Keep the main analysis comment, skip empty review creation</td>
             </tr>
             <tr>
-              <td data-label="Symptom">Inline <code>/analyze</code> comment in "Files changed" was ignored</td>
-              <td data-label="Root cause">Webhook handler only processed issue comments</td>
-              <td data-label="Resolution">Added handling for pull_request_review_comment "created" events</td>
+              <td data-label="Symptom">Inline <code>/analyze</code> comment on Files changed ignored</td>
+              <td data-label="Cause">Webhook handler only processed issue comments</td>
+              <td data-label="Resolution">Added handling for pull request review comment events</td>
             </tr>
             <tr>
-              <td data-label="Symptom"><code>/apply</code> said "No code suggestions found" even when diff blocks were present</td>
-              <td data-label="Root cause">Parser expected <code>--- a/</code> headers; deletions weren't supported</td>
-              <td data-label="Resolution">Support simplified diff blocks + deletion operations; apply deletes safely</td>
+              <td data-label="Symptom"><code>/apply</code> said no code suggestions found</td>
+              <td data-label="Cause">Parser expected <code>--- a/</code> headers; deletions unsupported</td>
+              <td data-label="Resolution">Support simplified diff blocks and deletion operations</td>
             </tr>
             <tr>
-              <td data-label="Symptom"><code>/apply</code> should not run for external contributors or when authoring is disabled</td>
-              <td data-label="Root cause">Write-capable command needed explicit config and permission gating</td>
-              <td data-label="Resolution">Require <code>enable_authoring: true</code> and write/admin access; treat collaborator lookup failures as deny</td>
+              <td data-label="Symptom"><code>/apply</code> ran for external contributors</td>
+              <td data-label="Cause">Missing permission gating</td>
+              <td data-label="Resolution">Require authoring enabled and write or admin access</td>
             </tr>
             <tr>
-              <td data-label="Symptom">Wanted "comment on lines +X to +Y" style inline reviews</td>
-              <td data-label="Root cause">Inline reviews were posted as single-line comments only</td>
-              <td data-label="Resolution">Added optional range comments (multi-line) gated by <code>NUNTIUS_ENABLE_RANGE_COMMENTS</code></td>
+              <td data-label="Symptom">Wanted multi-line inline review comments</td>
+              <td data-label="Cause">Only single-line comments supported</td>
+              <td data-label="Resolution">Added optional range comments gated by environment variable</td>
             </tr>
             <tr>
-              <td data-label="Symptom">Need to temporarily stop auto reviews on a noisy PR</td>
-              <td data-label="Root cause">No per-PR control for auto triggers</td>
-              <td data-label="Resolution">Introduce <code>/pause</code> and <code>/resume</code> using the <code>nuntius:paused</code> label</td>
+              <td data-label="Symptom">Need to stop auto reviews on a noisy PR</td>
+              <td data-label="Cause">No per-PR control for auto triggers</td>
+              <td data-label="Resolution">Introduced <code>/pause</code> and <code>/resume</code> using a PR label</td>
             </tr>
           </tbody>
         </table>
-        <p class="subtext">
-          Tip: When triaging "ignored" events, remember the handler processes PR actions (<code>opened</code>,
-          <code>reopened</code>, <code>synchronize</code>) plus comment events. Review "submitted" events are expected
-          to be ignored.
-        </p>
       </section>
 
-      <div class="section-grid max-2">
-        <section>
-          <h2>Validation checklist</h2>
-          <ul class="link-list">
-            <li><span></span>Create a PR with a small code change</li>
-            <li><span></span>Comment <code>/analyze</code> in Conversation (and optionally as an inline file comment)</li>
-            <li><span></span>Verify the main Nuntius analysis comment updates</li>
-            <li><span></span>Use <code>/analyze --force-review</code> when you want inline suggestions reposted</li>
-            <li><span></span>If authoring is enabled and the commenter has write/admin access, comment <code>/apply</code> and confirm a bot-authored commit lands on the PR branch</li>
-            <li><span></span>Optionally test merges: <code>/merge</code>, <code>/squash</code>, <code>/rebase</code></li>
-            <li><span></span>Pause auto runs: <code>/pause</code>; re-enable: <code>/resume</code></li>
-          </ul>
-        </section>
+      <section>
+        <h2>Quota cooldown</h2>
+        <p>When Gemini returns a quota or rate-limit error, Nuntius posts a notice and skips auto-analysis for a configurable window.</p>
+        <pre><code>NUNTIUS_QUOTA_COOLDOWN_SECONDS=1800</code></pre>
+        <p class="subtext">Set to <code>300</code> (5 minutes), <code>1800</code> (30 minutes, default), or <code>0</code> to disable.</p>
+      </section>
 
-        <section>
-          <h2>Command replies</h2>
-          <p>
-            Nuntius keeps command replies short. A normal reply may use <code>🙂</code>, a blocked or unavailable state
-            may use <code>😅</code>, and a paused or no-op state may use <code>😴</code>.
-          </p>
-          <pre><code>Nuntius: Paused
+      <section>
+        <h2>Range comments</h2>
+        <p>By default, inline review comments anchor to a single line. Enable range comments for GitHub's block-level comment UI.</p>
+        <pre><code>NUNTIUS_ENABLE_RANGE_COMMENTS=1</code></pre>
+        <p class="subtext">Keep this off if you only want single-line suggestion blocks. Range comments are useful for block-level guidance.</p>
+      </section>
 
-😴 Auto analysis is paused for this PR.</code></pre>
-        </section>
-
-        <section>
-          <h2>Quota cooldown</h2>
-          <p>
-            When Gemini returns a quota or rate-limit error, Nuntius posts a short notice and temporarily skips
-            auto-analysis on new commits for a short cooldown window.
-          </p>
-          <p class="card-subtext">Config (Vercel → Project → Settings → Environment Variables):</p>
-          <pre><code>NUNTIUS_QUOTA_COOLDOWN_SECONDS=1800</code></pre>
-          <p class="card-subtext">Examples: <code>300</code> (5 min), <code>1800</code> (30 min, default), <code>0</code> (disable cooldown).</p>
-        </section>
-
-        <section>
-          <h2>Multi-line inline reviews</h2>
-          <p>
-            By default, Nuntius posts inline review comments anchored to a single line. If you want GitHub's
-            "comment on lines +X to +Y" style UI for block feedback, enable range comments.
-          </p>
-          <p class="card-subtext">Config (Vercel → Project → Settings → Environment Variables):</p>
-          <pre><code>NUNTIUS_ENABLE_RANGE_COMMENTS=1</code></pre>
-          <p class="card-subtext">
-            Notes: keep this off if you only want one-line <code>```suggestion```</code> fixes. Range comments work
-            for block-level guidance; <code>/apply</code> continues to work for suggestions.
-          </p>
-        </section>
-
-        <section>
-          <h2>Log signals</h2>
-          <p>Useful strings to filter in Vercel logs:</p>
-          <pre><code>Processing /analyze
-Error handling apply comment:
-Posted ... inline suggestions as a review
-Skipped review creation: no inline suggestions to post
-Quota exceeded for PR
-Ignored webhook event:</code></pre>
-        </section>
-      </div>
-    </main>
+      <section>
+        <h2>Validation checklist</h2>
+        <ul>
+          <li>Create a PR with a small code change</li>
+          <li>Comment <code>/analyze</code> in conversation or as an inline file comment</li>
+          <li>Verify the main analysis comment updates</li>
+          <li>Test <code>/analyze --force-review</code> to repost inline suggestions</li>
+          <li>When authoring is enabled, test <code>/apply</code> and confirm a commit lands on the PR branch</li>
+          <li>Test merge commands: <code>/merge</code>, <code>/squash</code>, <code>/rebase</code></li>
+          <li>Pause and resume: <code>/pause</code>, <code>/resume</code></li>
+        </ul>
+      </section>
+    </div>
 
     <footer>
-      <p>&copy; 2026 Nuntius</p>
+      <p>&copy; 2026 Palmshed</p>
+      <ul class="footer-links">
+        <li><a href="./trademark.html">Trademark</a></li>
+        <li><a href="./privacy.html">Privacy</a></li>
+        <li><a href="./terms.html">Terms</a></li>
+      </ul>
     </footer>
 
-    <script src="./layout.js"></script>
-    <script src="./mobile-menu.js"></script>
-    <script src="./script.js"></script>
+    <script>
+      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('nav').classList.toggle('active');
+      });
+    </script>
   </body>
 </html>

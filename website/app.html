@@ -3,82 +3,85 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Nuntius</title>
-    <meta name="description" content="Nuntius: A GitHub PR Bot powered by Google's Gemini AI." />
+    <title>Nuntius — GitHub App</title>
+    <meta name="description" content="Nuntius is a GitHub App that reviews pull requests using Gemini." />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/x-icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/png" sizes="1024x1024" href="/nuntius/assets/nuntius-favicon-20260522.png" />
-    <link rel="apple-touch-icon" href="/nuntius/assets/nuntius-favicon-20260522.png" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
-    <body class="theme-app">
-    <nav class="pill-nav">
-      <div class="nav-links-container">
-        <a href="./index.html">Home</a>
-        <a href="./app.html" class="active">Nuntius</a>
-        <a href="./support.html">Support</a>
-        <a href="./experience.html">Journal</a>
-        <a href="./trademark.html">Trademark</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Terms</a>
-      </div>
-      <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-        <span class="dots-icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
+  <body>
+    <nav>
+      <ul class="nav-links" id="nav">
+        <li><span class="nav-mark">nuntius</span></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./app.html" class="active">App</a></li>
+        <li><a href="./support.html">Support</a></li>
+        <li><a href="./experience.html">Journal</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
     </nav>
 
-    <div class="hero hero-blue">
+    <div class="hero hero-short">
       <div class="hero-content">
-        <div class="hero-label">GitHub App</div>
         <h1>Nuntius</h1>
-        <p>Pull request review support for small teams and private repos.</p>
-        <a href="https://github.com/apps/nuntius-review" class="btn-primary">Install app</a>
-        <p class="subtext">By installing the app, you agree to the <a href="./terms.html">Terms</a>.</p>
+        <p>A GitHub App that reviews pull requests using Gemini. Install once, use across repos.</p>
+        <div class="hero-actions">
+          <a href="https://github.com/apps/nuntius-review">Install app</a>
+        </div>
       </div>
     </div>
 
-    <main>
+    <div class="page">
       <section>
-        <h2>Reviews</h2>
-        <p>Feedback on quality, maintainability, and security for pull requests.</p>
+        <h2>Install</h2>
+        <p>Install the app from the <a href="https://github.com/apps/nuntius-review">GitHub Marketplace</a>. Select the repositories you want it to review. No configuration files needed to start.</p>
+        <p>The app needs read access to pull requests and contents. If you enable authoring, it needs write access to contents and pull requests to apply suggestions and merge.</p>
       </section>
 
       <section>
-        <h2>Apply suggestions</h2>
-        <p>Actionable code suggestions can be applied back to a PR branch when authoring is enabled and the person invoking the command has write or admin access.</p>
+        <h2>Review</h2>
+        <p>When a pull request is opened or updated, Nuntius analyzes the diff and posts feedback on quality, maintainability, and security. You can request a fresh review at any time.</p>
+        <pre><code>/analyze        Standard review
+/analyze --force-review    Repost inline suggestions</code></pre>
       </section>
 
       <section>
-        <h2>Commands</h2>
-        <p>Use <code>/analyze</code> for a fresh review, <code>/apply</code> for suggestions, and <code>/pause</code>, <code>/resume</code>, or <code>/status</code> for auto analysis.</p>
+        <h2>Suggestions</h2>
+        <p>When authoring is enabled, Nuntius can apply code suggestions directly to the pull request branch.</p>
+        <pre><code>/apply</code></pre>
+        <p class="subtext">This command requires write or admin access on the repository.</p>
       </section>
 
       <section>
-        <h2>Capabilities</h2>
-        <ul class="link-list">
-          <li><span role="button" aria-disabled="true" class="link-disabled"><span></span>Summaries</span></li>
-          <li><span role="button" aria-disabled="true" class="link-disabled"><span></span>Security</span></li>
-          <li><span role="button" aria-disabled="true" class="link-disabled"><span></span>Suggestions</span></li>
-          <li><span role="button" aria-disabled="true" class="link-disabled"><span></span>Commands</span></li>
-          <li><span role="button" aria-disabled="true" class="link-disabled"><span></span>Inline range comments</span></li>
-        </ul>
-        <p class="subtext">Need setup and troubleshooting help?</p>
-        <div class="card-actions">
-          <a href="./support.html" class="btn-secondary">Support</a>
-        </div>
+        <h2>Merge</h2>
+        <p>Merge pull requests with a comment. Supported strategies:</p>
+        <pre><code>/merge    Create a merge commit
+/squash   Squash and merge
+/rebase   Rebase and merge</code></pre>
       </section>
-    </main>
+
+      <section>
+        <h2>Control</h2>
+        <p>Auto-analysis can be paused per pull request when a thread becomes noisy.</p>
+        <pre><code>/pause     Stop auto analysis on new commits
+/resume    Re-enable auto analysis
+/status    Show current analysis state</code></pre>
+      </section>
+    </div>
 
     <footer>
-      <p>&copy; 2026 Nuntius</p>
+      <p>&copy; 2026 Palmshed</p>
+      <ul class="footer-links">
+        <li><a href="./trademark.html">Trademark</a></li>
+        <li><a href="./privacy.html">Privacy</a></li>
+        <li><a href="./terms.html">Terms</a></li>
+      </ul>
     </footer>
 
-    <script src="./layout.js"></script>
-    <script src="./mobile-menu.js"></script>
-    <script src="./script.js"></script>
+    <script>
+      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('nav').classList.toggle('active');
+      });
+    </script>
   </body>
 </html>

@@ -3,121 +3,87 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Journal</title>
-    <meta name="description" content="A personal narrative of building the Nuntius Ruby gem." />
+    <title>Journal — Nuntius</title>
+    <meta name="description" content="Notes on building the Nuntius Ruby gem and GitHub App." />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/x-icon" href="/nuntius/nuntius-favicon-20260522.ico" />
-    <link rel="icon" type="image/png" sizes="1024x1024" href="/nuntius/assets/nuntius-favicon-20260522.png" />
-    <link rel="apple-touch-icon" href="/nuntius/assets/nuntius-favicon-20260522.png" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
-    <body class="theme-journal">
-      <nav class="pill-nav">
-        <div class="nav-links-container">
-          <a href="./index.html">Home</a>
-          <a href="./app.html">Nuntius</a>
-          <a href="./support.html">Support</a>
-          <a href="./experience.html" class="active">Journal</a>
-          <a href="./trademark.html">Trademark</a>
-          <a href="./privacy.html">Privacy</a>
-          <a href="./terms.html">Terms</a>
-        </div>
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-          <span class="dots-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </button>
-      </nav>
+  <body>
+    <nav>
+      <ul class="nav-links" id="nav">
+        <li><span class="nav-mark">nuntius</span></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./app.html">App</a></li>
+        <li><a href="./support.html">Support</a></li>
+        <li><a href="./experience.html" class="active">Journal</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
+    </nav>
 
-    <div class="hero hero-purple">
+    <div class="hero hero-short">
       <div class="hero-content">
-        <div class="hero-label">Notes</div>
         <h1>Journal</h1>
-        <p>Notes on the Ruby client and Nuntius.</p>
-        <a href="#entries" class="btn-primary">Read notes</a>
-        <p class="subtext">Use of Nuntius is subject to the <a href="./terms.html">Terms</a>.</p>
+        <p>Notes on the Ruby client and the Nuntius review app.</p>
       </div>
     </div>
 
-    <main id="entries">
+    <div class="page">
       <section>
-        <h2>The Vision</h2>
-        <p>
-          The goal is practical: ship an ergonomic Ruby client for Gemini, then use it to power a PR reviewer
-          (Nuntius) that teams can install once and use across repos.
-        </p>
+        <h2>The vision</h2>
+        <p>The goal is practical: ship an ergonomic Ruby client for Gemini, then use it to power a PR reviewer that teams can install once and use across repos.</p>
       </section>
 
       <section>
         <h2>Architecture</h2>
-        <p>
-          Nuntius runs in two modes: a legacy GitHub Actions workflow and a webhook deployment (Vercel).
-          Webhook mode uses GitHub App installation tokens (scoped, short-lived) and the <code>google-genai</code>
-          client for Gemini requests.
-        </p>
+        <p>Nuntius runs in two modes: a legacy GitHub Actions workflow and a webhook deployment on Vercel. Webhook mode uses GitHub App installation tokens, which are scoped and short-lived, and the <code>google-genai</code> client for Gemini requests.</p>
       </section>
 
       <section>
-        <h2>Design Shift</h2>
-        <p>
-          The UI moved toward quieter docs: fewer walls of text, clearer sections, and operational details kept in the
-          support runbook.
-        </p>
+        <h2>Design shift</h2>
+        <p>The UI moved toward quieter documentation: fewer walls of text, clearer sections, and operational details kept in the support runbook.</p>
       </section>
 
       <section>
-        <h2>Model Choice</h2>
-        <p>
-          Defaulting to Gemini Flash keeps reviews fast and cost-aware. For large diffs, the system can fall back to a
-          more capable model when needed.
-        </p>
+        <h2>Model choice</h2>
+        <p>Defaulting to Gemini Flash keeps reviews fast and cost-aware. For large diffs, the system can fall back to a more capable model when needed.</p>
       </section>
 
       <section>
-        <h2>Operational learnings (real PR tests)</h2>
-        <ul class="link-list">
-          <li><span></span>Minimum GitHub App permissions: Metadata + Pull requests + Issues + Contents</li>
-          <li><span></span>Webhook events matter: <code>Issue comment</code> vs <code>Pull request review comment</code></li>
-          <li><span></span>Skip empty PR reviews when there are no inline suggestions</li>
-          <li><span></span>Optional range comments: enable "comment on lines +X to +Y" for block feedback</li>
-          <li><span></span><code>/apply</code> needs diff block parsing with deletions</li>
-          <li><span></span><code>/apply</code> is intentionally permission-gated: authoring must be enabled and the commenter must have write/admin access</li>
-          <li><span></span>Per-PR controls: <code>/pause</code>, <code>/resume</code>, <code>/status</code></li>
-          <li><span></span>Quota handling: temporary cooldown on auto-runs with manual override via <code>/analyze</code></li>
-          <li><span></span>Quiet prose replies for normal, blocked, paused, and no-op states</li>
+        <h2>Operational learnings</h2>
+        <ul>
+          <li>Minimum GitHub App permissions: metadata, pull requests, issues, contents</li>
+          <li>Webhook events matter: <code>issue_comment</code> versus <code>pull_request_review_comment</code></li>
+          <li>Skip empty PR reviews when there are no inline suggestions</li>
+          <li>Optional range comments enable block-level feedback</li>
+          <li><code>/apply</code> needs diff block parsing that handles deletions</li>
+          <li><code>/apply</code> is intentionally permission-gated: authoring must be enabled and the commenter must have write or admin access</li>
+          <li>Per-PR controls: <code>/pause</code>, <code>/resume</code>, <code>/status</code></li>
+          <li>Quota handling: temporary cooldown on auto-runs with manual override via <code>/analyze</code></li>
+          <li>Quiet prose replies for normal, blocked, paused, and no-op states</li>
         </ul>
       </section>
 
       <section>
-        <h2>Commands</h2>
-        <pre><code>/analyze        (/analyze --force-review)
-/apply
-/pause   /resume   /status
-/help
-/merge   /squash   /rebase</code></pre>
-        <p class="subtext">Commands work from Conversation comments, and (when enabled) inline file comments. Write-capable commands still depend on repository permissions and feature flags.</p>
-      </section>
-
-      <section>
         <h2>Next</h2>
-        <p>
-          Continue tightening reliability: better diff anchoring for inline suggestions and calmer defaults for
-          high-traffic repos.
-        </p>
-        <p class="subtext">
-          See <a href="./support.html" class="inline-link">Support</a> for the L2 troubleshooting runbook.
-        </p>
+        <p>Continue tightening reliability: better diff anchoring for inline suggestions and calmer defaults for high-traffic repos.</p>
+        <p class="subtext">See <a href="./support.html">Support</a> for the troubleshooting runbook.</p>
       </section>
-    </main>
+    </div>
 
     <footer>
-      <p>&copy; 2026 Nuntius</p>
+      <p>&copy; 2026 Palmshed</p>
+      <ul class="footer-links">
+        <li><a href="./trademark.html">Trademark</a></li>
+        <li><a href="./privacy.html">Privacy</a></li>
+        <li><a href="./terms.html">Terms</a></li>
+      </ul>
     </footer>
 
-    <script src="./layout.js"></script>
-    <script src="./mobile-menu.js"></script>
-    <script src="./script.js"></script>
+    <script>
+      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('nav').classList.toggle('active');
+      });
+    </script>
   </body>
 </html>
