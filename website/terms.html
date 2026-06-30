@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Terms — Nuntius</title>
+    <title>Terms ~ Nuntius</title>
     <meta name="description" content="Terms for using Nuntius and Nuntius Review." />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -11,14 +11,14 @@
   </head>
   <body>
     <nav>
+      <span class="nav-mark">nuntius</span>
       <ul class="nav-links" id="nav">
-        <li><span class="nav-mark">nuntius</span></li>
         <li><a href="./index.html">Home</a></li>
         <li><a href="./app.html">App</a></li>
         <li><a href="./support.html">Support</a></li>
         <li><a href="./experience.html">Journal</a></li>
       </ul>
-      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
+      <button class="mobile-menu-toggle" aria-label="Menu" aria-expanded="false">Menu</button>
     </nav>
 
     <div class="hero hero-short">
@@ -41,12 +41,12 @@
 
       <section>
         <h2>AI review</h2>
-        <p>Reviews and suggestions are generated with AI and can be incomplete, stale, or wrong. You are responsible for checking any output before relying on it, applying it, merging it, or using it in production.</p>
+        <p>Reviews and suggestions are generated with AI and can be incomplete, stale, or wrong. Check any output before relying on it, applying it, merging it, or using it in production.</p>
       </section>
 
       <section>
         <h2>Private repositories</h2>
-        <p>Do not install Nuntius Review on a repository unless you are allowed to process that repository's code through the configured AI and hosting providers. Avoid sending secrets, credentials, regulated data, or confidential material that your organization does not permit for AI-assisted review.</p>
+        <p>Only install Nuntius Review on a repository if you are allowed to process that repository's code through the configured AI and hosting providers. Avoid sending secrets, credentials, regulated data, or confidential material that your organization does not permit for AI-assisted review.</p>
       </section>
 
       <section>
@@ -61,13 +61,15 @@
 
       <section>
         <h2>Contact</h2>
-        <p>For questions about these terms, contact <code>bniladridas@gmail.com</code>.</p>
+        <p>For questions about these terms, <a href="./contact.html">get in touch</a>.</p>
       </section>
+      <p class="feedback">Found something unexpected? <a href="https://github.com/palmshed/nuntius/issues">Report an issue</a>.</p>
     </div>
 
     <footer>
       <p>&copy; 2026 Palmshed</p>
       <ul class="footer-links">
+        <li><a href="./contact.html">Contact</a></li>
         <li><a href="./trademark.html">Trademark</a></li>
         <li><a href="./privacy.html">Privacy</a></li>
         <li><a href="./terms.html">Terms</a></li>
@@ -75,9 +77,30 @@
     </footer>
 
     <script>
-      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
-        document.getElementById('nav').classList.toggle('active');
-      });
+      (function() {
+        var toggle = document.querySelector('.mobile-menu-toggle');
+        var nav = document.getElementById('nav');
+        if (!toggle || !nav) return;
+        function sync() { toggle.setAttribute('aria-expanded', nav.classList.contains('active')); }
+        toggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          nav.classList.toggle('active');
+          sync();
+        });
+        document.addEventListener('click', function(e) {
+          if (nav.classList.contains('active') && !nav.contains(e.target) && e.target !== toggle) {
+            nav.classList.remove('active');
+            sync();
+          }
+        });
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            sync();
+            toggle.focus();
+          }
+        });
+      })();
     </script>
   </body>
 </html>

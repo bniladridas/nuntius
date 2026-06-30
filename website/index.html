@@ -4,21 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>nuntius-rb</title>
-    <meta name="description" content="nuntius-rb — a compact Ruby client for Google Gemini models." />
+    <meta name="description" content="nuntius-rb ~ a small Ruby toolkit for working with language models." />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
   <body>
     <nav>
+      <span class="nav-mark">nuntius</span>
       <ul class="nav-links" id="nav">
-        <li><span class="nav-mark">nuntius</span></li>
         <li><a href="./index.html" class="active">Home</a></li>
         <li><a href="./app.html">App</a></li>
         <li><a href="./support.html">Support</a></li>
         <li><a href="./experience.html">Journal</a></li>
       </ul>
-      <button class="mobile-menu-toggle" aria-label="Menu">Menu</button>
+      <button class="mobile-menu-toggle" aria-label="Menu" aria-expanded="false">Menu</button>
     </nav>
 
     <div class="hero">
@@ -30,55 +30,48 @@
             <path d="M5.89 9.71c-2.15 2.15-2.3 5.47-.35 7.43l4.24-4.25.7-.7.71-.71 2.12-2.12c-1.95-1.96-5.27-1.8-7.42.35"/>
             <path d="M11 15.5c.5 2.5-.17 4.5-1 6.5h4c2-5.5-.5-12-1-14"/>
           </svg>
-          <span>nuntius</span>
+          <span>nuntius-rb</span>
         </div>
-        <h1>Ruby client for Gemini</h1>
-        <p>A compact, dependency-light client for Google Gemini text generation, with a CLI and a PR review app.</p>
+        <h1>A small Ruby toolkit for working with language models</h1>
+        <p>Build with language models from Ruby, review pull requests, and work comfortably from the command line.</p>
         <div class="hero-actions">
-          <a href="https://github.com/palmshed/nuntius">View on GitHub</a>
-          <a href="./app.html">Nuntius App</a>
+          <a href="./app.html">GitHub App</a>
+          <a href="https://github.com/palmshed/nuntius">Project on GitHub</a>
         </div>
       </div>
     </div>
 
     <div class="page">
       <section>
-        <h2>Install</h2>
-        <pre><code>gem install nuntius-rb --pre</code></pre>
-        <p class="subtext">Add it to your Gemfile with <code>gem 'nuntius-rb', require: 'nuntius'</code>.</p>
-      </section>
-
-      <section>
-        <h2>Use</h2>
-        <pre><code>require 'nuntius'
-Nuntius.load_env
+        <h2>Getting started</h2>
+        <p>Install the gem and make your first request.</p>
+        <pre><code>gem install nuntius-rb --pre
+require 'nuntius'
 
 client = Nuntius::Client.new
 puts client.generate_text('Write a haiku about Ruby')</code></pre>
-        <p class="subtext">Set <code>GEMINI_API_KEY</code> in your environment or <code>.env</code> file.</p>
+        <p class="subtext">Set <code>GEMINI_API_KEY</code> in your environment.</p>
       </section>
 
       <section>
-        <h2>CLI</h2>
-        <pre><code>./bin/nuntius generate "Your prompt"
-./bin/nuntius chat
-./bin/nuntius test</code></pre>
+        <h2>Beyond text generation</h2>
+        <p>Use the CLI for quick prompts or an interactive session:</p>
+        <pre><code>nuntius generate "Your prompt"
+nuntius chat</code></pre>
+        <p>Connect the <a href="./app.html">GitHub App</a> to review pull requests automatically.</p>
       </section>
 
       <section>
-        <h2>Project</h2>
-        <ul>
-          <li><a href="https://github.com/palmshed/nuntius">Source</a> on GitHub</li>
-          <li><a href="https://rubygems.org/gems/nuntius-rb">Package</a> on RubyGems</li>
-          <li><a href="https://github.com/apps/nuntius-review">Nuntius Review</a> GitHub App</li>
-          <li><a href="./support.html">Support</a> and troubleshooting</li>
-        </ul>
+        <h2>Next</h2>
+        <p>Browse the <a href="https://rubygems.org/gems/nuntius-rb">Ruby API</a>, read the <a href="./experience.html">design journal</a>, or visit the <a href="./support.html">support guide</a>.</p>
       </section>
+      <p class="feedback">Found something unexpected? <a href="https://github.com/palmshed/nuntius/issues">Report an issue</a>.</p>
     </div>
 
     <footer>
       <p>&copy; 2026 Palmshed</p>
       <ul class="footer-links">
+        <li><a href="./contact.html">Contact</a></li>
         <li><a href="./trademark.html">Trademark</a></li>
         <li><a href="./privacy.html">Privacy</a></li>
         <li><a href="./terms.html">Terms</a></li>
@@ -86,9 +79,30 @@ puts client.generate_text('Write a haiku about Ruby')</code></pre>
     </footer>
 
     <script>
-      document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
-        document.getElementById('nav').classList.toggle('active');
-      });
+      (function() {
+        var toggle = document.querySelector('.mobile-menu-toggle');
+        var nav = document.getElementById('nav');
+        if (!toggle || !nav) return;
+        function sync() { toggle.setAttribute('aria-expanded', nav.classList.contains('active')); }
+        toggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          nav.classList.toggle('active');
+          sync();
+        });
+        document.addEventListener('click', function(e) {
+          if (nav.classList.contains('active') && !nav.contains(e.target) && e.target !== toggle) {
+            nav.classList.remove('active');
+            sync();
+          }
+        });
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            sync();
+            toggle.focus();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
