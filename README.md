@@ -3,7 +3,6 @@
 
 <br>
 
-[![Gem](https://img.shields.io/badge/gem-nuntius_rb-cc342d?style=flat-square)](https://rubygems.org/gems/nuntius-rb)
 ![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.3-cc342d?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-2f4858?style=flat-square)](LICENSE)
 ![Tests](https://img.shields.io/badge/tests-passing-2e7d32?style=flat-square)
