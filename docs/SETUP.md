@@ -48,6 +48,34 @@
 
 <br>
 
+# GitHub App Webhook Secret
+
+<br>
+
+Webhook mode requires a shared secret so Nuntius can verify that incoming GitHub deliveries are authentic. Set the same value in two places: the GitHub App's webhook configuration and the `WEBHOOK_SECRET` environment variable where Nuntius runs (e.g. Vercel).
+
+<br>
+
+Generate a strong random secret locally:
+
+<br>
+
+```bash
+openssl rand -hex 32
+```
+
+<br>
+
+Then configure it:
+
+1. Go to GitHub → your organization → **Settings** → **Developer settings** → **GitHub Apps** → **nuntius-review** → **Webhooks**.
+2. In the **Webhook secret** field, paste the generated value (or click **Regenerate** to have GitHub create one — it is shown only once, so copy it immediately).
+3. In the hosting platform (Vercel project `nuntius-review`), add an environment variable named `WEBHOOK_SECRET` with the same value.
+
+The values must match exactly, or Nuntius rejects deliveries with an `Invalid signature` error.
+
+<br>
+
 # Testing
 
 <br>
