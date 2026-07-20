@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Palmshed
 """
-GitHub PR Bot that analyzes pull requests using Google's Gemini API.
+GitHub PR bot that analyzes pull requests using Google's Gemini API.
 Supports both CLI and webhook modes.
 """
 
@@ -1838,7 +1838,7 @@ def webhook_handler():
 def main():
     """Main function to run the PR bot."""
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description="GitHub PR Bot with Gemini AI")
+    parser = argparse.ArgumentParser(description="GitHub PR bot with Gemini AI")
     parser.add_argument("--repo", required=True, help="GitHub repository in format: owner/repo")
     parser.add_argument("--pr", type=int, required=True, help="Pull request number")
     args = parser.parse_args()

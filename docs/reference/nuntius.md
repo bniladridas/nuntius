@@ -12,6 +12,8 @@ Nuntius reviews pull requests with Gemini and posts review comments. It can also
 
 Use the hosted GitHub App at https://github.com/apps/nuntius-review, or create your own GitHub App from GitHub settings. The app needs repository permissions for contents read, issues read/write, and pull requests read/write. For webhook mode, subscribe it to pull request, issue comment, and pull request review comment events. Generate a private key and install the app on the repositories Nuntius should review.
 
+The hosted webhook is deployed on Vercel at `https://nuntius-review.vercel.app/webhook`. Set the GitHub App webhook URL to that endpoint.
+
 <br>
 
 Set these secrets where Nuntius runs: `GEMINI_API_KEY`, `NUNTIUS_CLIENT_ID`, `NUNTIUS_APP_ID`, `NUNTIUS_PRIVATE_KEY`, and `WEBHOOK_SECRET`. `NUNTIUS_CLIENT_ID` is used by GitHub Actions token creation. `NUNTIUS_APP_ID` is still used by webhook mode. `NUNTIUS_GEMINI_API_KEY` can be set when Nuntius should use a different Gemini key from the rest of the project.
@@ -23,6 +25,8 @@ Set these secrets where Nuntius runs: `GEMINI_API_KEY`, `NUNTIUS_CLIENT_ID`, `NU
 <br>
 
 Webhook mode is the default path for new installs. One hosted deployment receives GitHub App webhooks and can review every repository where the app is installed. Put the secrets in the hosting platform, such as Vercel. If you self-host outside Vercel, run the Flask app behind a WSGI server such as Gunicorn.
+
+The hosted deployment runs on the Vercel project `nuntius-review` (production URL `https://nuntius-review.vercel.app`). If Vercel deployment protection is enabled, append the automation bypass secret to the webhook URL as `?x-vercel-protection-bypass=<secret>`. The current secret is `HxPUfGpo1SzfGNYiCOGziC0zg0DLVL1S`; regenerate it from the Vercel dashboard (Project Settings → Security → Automation Bypass) if it leaks or rotates.
 
 <br>
 
