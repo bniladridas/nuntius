@@ -14,8 +14,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'httparty', '>= 0.21', '< 0.25'
   spec.add_dependency 'logger'
+  spec.add_dependency 'dotenv', '~> 3.2'
+  spec.add_dependency 'base64'
   # Testing
-  spec.add_development_dependency 'dotenv', '~> 3.2'
   spec.add_development_dependency 'minitest', '~> 5.0' # Required for E2E tests
   spec.add_development_dependency 'rake', '~> 13.4.2'
   # spec.add_development_dependency 'simplecov', '~> 0.22.0'

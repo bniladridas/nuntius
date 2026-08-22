@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     nuntius-rb (1.0.0.pre)
+      base64
+      dotenv (~> 3.2)
       httparty (>= 0.21, < 0.25)
       logger
 
@@ -93,13 +95,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  base64
   bigdecimal (~> 4.0)
   bundler-audit (~> 0.9)
-  dotenv (~> 3.2)
   github-markup (~> 6.0)
-  httparty (>= 0.21, < 0.25)
-  logger
   minitest (~> 5.0)
   minitest-reporters (= 1.8.0)
   mocha (~> 3.0)
