@@ -10,11 +10,16 @@
 # Options: 'all' for full review, 'security' for security issues only, 'performance' for performance suggestions, 'quality' for code quality feedback
 focus: all
 
-# Gemini model to use
-# Default: 'gemini-3.5-flash'
-# Use NUNTIUS_GEMINI_MODEL to override the default in hosted environments.
-# See https://ai.google.dev/models/gemini for the full list and latest models
-model: gemini-3.5-flash
+# Gemini model configuration is canonical in config/models.yaml
+# (default: gemini-3.7-flash, fallback: gemini-3.6-flash, stable_baseline: gemini-3.5-flash,
+#  lightweight: gemini-3.1-flash-lite / gemini-3.5-flash-lite).
+# This file consumes those values at runtime via nuntius/nuntius.py.
+# Override here only if you need a per-deployment pin; env vars
+# NUNTIUS_GEMINI_MODEL and NUNTIUS_GEMINI_FALLBACK_MODEL take precedence.
+# See https://ai.google.dev/models/gemini for the full list; only Flash models
+# are verified for Free-Tier (Pro requires billing).
+# model: gemini-3.7-flash
+# complex_model: gemini-3.6-flash
 
 # Maximum diff length to analyze (characters)
 # Limits the size of diff content sent to AI. Larger values provide more context but may hit token limits or increase costs

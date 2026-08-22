@@ -6,6 +6,7 @@ require 'httparty'
 require 'json'
 require 'base64'
 require 'logger'
+require 'yaml'
 require 'dotenv/load'
 require_relative 'errors'
 require_relative '../utils/moderation'
@@ -14,7 +15,28 @@ module Nuntius
   # Core client class for Gemini AI API communication
   class Client
     BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models'
+
+    # Canonical model source: config/models.yaml (repository-wide)
+    # This file is the single source of truth. Code must not duplicate model names.
+    CANONICAL_PATH = File.expand_path('../../config/models.yaml', __dir__)
+    CANONICAL = begin
+      if File.exist?(CANONICAL_PATH)
+        YAML.safe_load(File.read(CANONICAL_PATH)) || {}
+      else
+        {}
+      end
+    rescue StandardError
+      {}
+    end.freeze
+
+    CANONICAL_DEFAULT = (CANONICAL['default'] || 'gemini-3.7-flash').freeze
+    CANONICAL_FALLBACK = (CANONICAL['fallback'] || 'gemini-3.6-flash').freeze
+    CANONICAL_STABLE = (CANONICAL['stable_baseline'] || 'gemini-3.5-flash').freeze
+    CANONICAL_LIGHTWEIGHT = (CANONICAL['lightweight'] || ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite']).freeze
+    CANONICAL_LIGHT = CANONICAL_LIGHTWEIGHT.first || 'gemini-3.1-flash-lite'
+
     # generateContent text model aliases.
+    # Canonical values are loaded from config/models.yaml but not yet derived here (next commit).
     MODELS = {
       flash_latest: 'gemini-flash-latest',
       pro_latest: 'gemini-pro-latest',
