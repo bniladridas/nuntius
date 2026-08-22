@@ -66,6 +66,14 @@ DEFAULT_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_MODEL", _CANONICAL_MODELS.get("
 FALLBACK_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL", _CANONICAL_MODELS.get("fallback", "gemini-3.6-flash"))
 
 
+def _apply_env_overrides(config):
+    """Apply environment overrides for model names. Keeps config and env in sync."""
+    if os.getenv("NUNTIUS_GEMINI_MODEL"):
+        config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+    if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+        config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
+    return config
+
 try:
     from .rag import fetch_rag_context
 except ImportError:
@@ -309,23 +317,12 @@ Provide a concise code review analysis in this format:
             try:
                 user_config = yaml.safe_load(f) or {}
                 config = {**default_config, **user_config}
-                if os.getenv("NUNTIUS_GEMINI_MODEL"):
-                    config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
-                if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
-                    config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
-                return config
+                return _apply_env_overrides(config)
             except yaml.YAMLError as e:
                 logging.error(f"Error loading config.yaml: {e}")
-                if os.getenv("NUNTIUS_GEMINI_MODEL"):
-                    default_config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
-                if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
-                    default_config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
-                return default_config
-    if os.getenv("NUNTIUS_GEMINI_MODEL"):
-        default_config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
-    if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
-        default_config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
-    return default_config
+                return _apply_env_overrides(default_config)
+    # No config.yaml – still respect env overrides
+    return _apply_env_overrides(default_config)
 
 
 def analyze_with_gemini(client, pr_details):
