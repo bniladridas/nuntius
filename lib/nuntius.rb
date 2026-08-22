@@ -11,8 +11,8 @@ require_relative 'utils/loader'
 require_relative 'utils/logger'
 
 module Nuntius
-  # Convenience method to create a new client
-  def self.new(api_key = nil, model: :pro)
+  # Convenience method to create a new client: default is Flash (3.7) for Free-Tier
+  def self.new(api_key = nil, model: :flash)
     Client.new(api_key, model: model)
   end
 

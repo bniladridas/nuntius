@@ -112,18 +112,18 @@ factual_response = client.generate_text(
 <br>
 
 ```ruby
-# Default model
-pro_client = Nuntius::Client.new
+# Default model (Flash 3.7)
+default_client = Nuntius::Client.new
 
-# Fast model
-flash_client = Nuntius::Client.new(model: :flash)
+# Fallback model
+fallback_client = Nuntius::Client.new(model: :flash_3_6)
 
 # Flash Lite model (faster, lighter)
 lite_client = Nuntius::Client.new(model: :flash_lite)
 
 # Compare responses
-pro_response = pro_client.generate_text("Explain AI")
-flash_response = flash_client.generate_text("Explain AI")
+default_response = default_client.generate_text("Explain AI")
+fallback_response = fallback_client.generate_text("Explain AI")
 lite_response = lite_client.generate_text("Explain AI")
 ```
 
@@ -253,8 +253,8 @@ This starts an interactive session where you can have a conversation with the AI
 
 | Model | Speed | Quality | Use Case |
 |-------|-------|---------|----------|
-| `:pro` | Medium | High | Default |
-| `:flash` | Fast | Good | General purpose |
+| `:flash` | Fast | Good | Default (3.7) |
+| `:flash_3_6` | Fast | Good | Fallback |
 | `:flash_lite` | Fast | Good | Quick responses |
 
 <br>

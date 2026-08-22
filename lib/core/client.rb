@@ -35,30 +35,34 @@ module Nuntius
     CANONICAL_LIGHTWEIGHT = (CANONICAL['lightweight'] || ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite']).freeze
     CANONICAL_LIGHT = CANONICAL_LIGHTWEIGHT.first || 'gemini-3.1-flash-lite'
 
-    # generateContent text model aliases.
-    # Canonical values are loaded from config/models.yaml but not yet derived here (next commit).
+    # generateContent text model aliases: Flash family only (Free-Tier compatible).
+    # Values are derived from config/models.yaml. Do not hard-code elsewhere.
     MODELS = {
       flash_latest: 'gemini-flash-latest',
-      pro_latest: 'gemini-pro-latest',
-      flash_3_5: 'gemini-3.5-flash',
-
-      pro_3_preview: 'gemini-3-pro-preview',
+      flash_3_7: CANONICAL_DEFAULT,
+      flash_3_6: CANONICAL_FALLBACK,
+      flash_3_5: CANONICAL_STABLE,
+      flash_3_5_lite: CANONICAL_LIGHTWEIGHT[1] || 'gemini-3.5-flash-lite',
       flash_3_preview: 'gemini-3-flash-preview',
-      pro_3_1_preview: 'gemini-3.1-pro-preview',
-      flash_3_1_lite: 'gemini-3.1-flash-lite',
-      pro_2_5: 'gemini-2.5-pro',
+      flash_3_1_lite: CANONICAL_LIGHT,
       flash_2_5: 'gemini-2.5-flash',
       flash_2_0: 'gemini-2.0-flash',
 
-      # Short aliases.
-      pro: 'gemini-pro-latest',
-      flash: 'gemini-3.5-flash',
-      flash_lite: 'gemini-3.1-flash-lite',
-      pro_2_0: 'gemini-2.0-flash'
+      # Short aliases: default Flash is 3.7, fallback 3.6.
+      flash: CANONICAL_DEFAULT,
+      flash_fallback: CANONICAL_FALLBACK,
+      flash_lite: CANONICAL_LIGHT,
+      pro_2_0: 'gemini-2.0-flash' # legacy alias, resolves to Flash (gemini-2.0-flash), keep for backward compat
     }.freeze
 
-    # Deprecated models removed in this version (log warning and default to :pro)
+    # Deprecated/retired models: Pro family requires billing, not usable on Free-Tier.
+    # Kept for backward compat but warn and default to :flash (gemini-3.7-flash).
     DEPRECATED_MODELS = {
+      pro_latest: 'gemini-pro-latest',
+      pro: 'gemini-pro-latest',
+      pro_3_preview: 'gemini-3-pro-preview',
+      pro_3_1_preview: 'gemini-3.1-pro-preview',
+      pro_2_5: 'gemini-2.5-pro',
       pro_1_5: 'gemini-1.5-pro',
       flash_1_5: 'gemini-1.5-flash',
       flash_8b: 'gemini-1.5-flash-8b'
@@ -76,7 +80,7 @@ module Nuntius
       end
     end
 
-    def initialize(api_key = nil, model: :pro)
+    def initialize(api_key = nil, model: :flash)
       # Prioritize passed API key, then environment variable
       @api_key = api_key || ENV.fetch('GEMINI_API_KEY', nil)
 
@@ -132,8 +136,8 @@ module Nuntius
         generationConfig: build_generation_config(options)
       }
 
-      # Use the pro model for image-to-text tasks
-      apply_moderation(send_request(request_body, model: :pro), options)
+      # Use the flash model for image-to-text tasks (Free-Tier compatible)
+      apply_moderation(send_request(request_body, model: :flash), options)
     end
 
     def chat(messages, options = {})
@@ -168,13 +172,13 @@ module Nuntius
 
     def resolve_model(model)
       if DEPRECATED_MODELS.key?(model)
-        self.class.logger.warn("Model #{model} (#{DEPRECATED_MODELS[model]}) is deprecated and has been removed. " \
-                               'Defaulting to :pro (gemini-pro-latest). Please update your code to use supported models.')
-        MODELS[:pro]
+        self.class.logger.warn("Model #{model} (#{DEPRECATED_MODELS[model]}) is deprecated/retired (Pro requires billing). " \
+                               "Defaulting to :flash (#{CANONICAL_DEFAULT}). Please update your code to use Flash models.")
+        MODELS[:flash]
       else
         MODELS.fetch(model) do
-          self.class.logger.warn("Invalid model: #{model}, defaulting to pro")
-          MODELS[:pro]
+          self.class.logger.warn("Invalid model: #{model}, defaulting to flash")
+          MODELS[:flash]
         end
       end
     end
@@ -226,7 +230,7 @@ module Nuntius
       # Rate limiting - ensure minimum interval between requests
       rate_limit_delay
 
-      current_model = model ? MODELS.fetch(model) { MODELS[:pro] } : @model
+      current_model = model ? MODELS.fetch(model) { MODELS[:flash] } : @model
       url = "#{BASE_URL}/#{current_model}:generateContent?key=#{@api_key}"
 
       # Log URL with masked API key for security

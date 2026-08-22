@@ -67,7 +67,8 @@ class TestNuntius(unittest.TestCase):
         with patch("os.path.exists", return_value=False):
             config = load_config()
             self.assertEqual(config["focus"], "all")
-            self.assertEqual(config["model"], "gemini-3.5-flash")
+            self.assertEqual(config["model"], "gemini-3.7-flash")
+            self.assertEqual(config["complex_model"], "gemini-3.6-flash")
             self.assertEqual(config["max_diff_length"], 4000)
             self.assertEqual(config["temperature"], 0.2)
             self.assertEqual(config["max_output_tokens"], 8192)
@@ -84,7 +85,8 @@ class TestNuntius(unittest.TestCase):
             patch.dict(os.environ, {"NUNTIUS_GEMINI_MODEL": "gemini-3.5-flash"}),
         ):
             config = load_config()
-            self.assertEqual(config["model"], "gemini-3.5-flash")
+            self.assertEqual(config["model"], "gemini-3.7-flash")
+            self.assertEqual(config["complex_model"], "gemini-3.6-flash")
 
     @patch("nuntius.nuntius.load_config")
     def test_analyze_with_gemini_success(self, mock_load_config):

@@ -29,8 +29,9 @@ gem 'nuntius-rb', require: 'nuntius'
 | Ruby | 3.3 or later |
 | Local development | Ruby 3.3.11 in `.ruby-version` |
 | Gemini API | `v1beta` Generative Language API |
-| Default model | `gemini-pro-latest` |
-| Fast model | `gemini-3.5-flash` |
+| Default model | `gemini-3.7-flash` (Flash) |
+| Fallback model | `gemini-3.6-flash` |
+| Fast / Light | `gemini-3.1-flash-lite` / `gemini-3.5-flash-lite` |
 
 <br>
 
@@ -81,14 +82,14 @@ client.generate_image_text(image, 'Describe this image')
 | `:pro_2_5` | `gemini-2.5-pro` |
 | `:flash_2_5` | `gemini-2.5-flash` |
 | `:flash_2_0` | `gemini-2.0-flash` |
-| `:pro` | `gemini-pro-latest` |
+| `:flash` | `gemini-3.7-flash` |
 | `:flash` | `gemini-3.5-flash` |
 | `:flash_lite` | `gemini-3.1-flash-lite` |
 | `:pro_2_0` | `gemini-2.0-flash` |
 
 <br>
 
-Removed aliases resolve to `:pro` with a warning.
+Retired Pro aliases (`:pro`, `:pro_latest`, `:pro_3_1_preview`, `:pro_2_5`, etc.) and removed `1.5` aliases resolve to `:flash` with a warning (Pro requires billing).
 
 <br>
 

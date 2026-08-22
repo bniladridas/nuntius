@@ -110,7 +110,7 @@ class TestClient < Minitest::Test
 
   def test_initialization_with_api_key
     assert_equal @api_key, @client.instance_variable_get(:@api_key)
-    assert_equal 'gemini-pro-latest', @client.instance_variable_get(:@model)
+    assert_equal 'gemini-3.7-flash', @client.instance_variable_get(:@model)
   end
 
   def test_initialization_does_not_print_api_key_to_stdout
@@ -169,7 +169,7 @@ class TestClient < Minitest::Test
   end
 
   def setup_rate_limiting_test
-    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=#{@api_key}")
+    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=#{@api_key}")
       .to_return(
         status: 200,
         body: { candidates: [{ content: { parts: [{ text: 'Test response' }] } }] }.to_json,
@@ -234,7 +234,7 @@ class TestClient < Minitest::Test
   def test_initialization_with_different_model
     client = Nuntius::Client.new(@api_key, model: :flash)
 
-    assert_equal 'gemini-3.5-flash', client.instance_variable_get(:@model)
+    assert_equal 'gemini-3.7-flash', client.instance_variable_get(:@model)
   end
 
   def setup_invalid_api_key_tests
@@ -398,7 +398,7 @@ class TestClient < Minitest::Test
     # Use the same API key that's used in the test client
     api_key = @client.instance_variable_get('@api_key')
 
-    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=#{api_key}")
+    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=#{api_key}")
       .with(
         headers: {
           'Accept' => '*/*',
@@ -573,7 +573,7 @@ class TestClient < Minitest::Test
 
   def make_test_chat_request
     # Stub the request with the expected parameters
-    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=#{@api_key}")
+    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=#{@api_key}")
       .with(
         body: {
           contents: [
@@ -691,7 +691,7 @@ class TestClient < Minitest::Test
 
   def test_stub_safety_settings_request
     safety_settings = default_safety_settings
-    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=#{@api_key}")
+    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=#{@api_key}")
       .with(
         headers: {
           'Accept' => '*/*',
@@ -778,7 +778,7 @@ class TestClient < Minitest::Test
       safetySettings: safety_settings.map { |s| { category: s[:category], threshold: s[:threshold] } }
     }
 
-    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=#{@api_key}")
+    stub_request(:post, "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=#{@api_key}")
       .with(
         headers: {
           'Accept' => '*/*',
@@ -807,7 +807,7 @@ class TestClient < Minitest::Test
   def assert_text_safety_settings_request_made
     # assert_requested(  # Commented out due to HTTParty stubbing
     #   :post,
-    #   "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=#{@api_key}",
+    #   "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=#{@api_key}",
     #   times: 1
     # )
   end
@@ -888,8 +888,12 @@ class TestClient < Minitest::Test
 
   def test_models_constant
     assert_kind_of Hash, Nuntius::Client::MODELS
-    assert Nuntius::Client::MODELS.key?(:pro)
     assert Nuntius::Client::MODELS.key?(:flash)
+    assert Nuntius::Client::MODELS.key?(:flash_3_7)
+    assert Nuntius::Client::MODELS.key?(:flash_3_6)
+    # Pro is retired: should be in deprecated, not in MODELS
+    refute Nuntius::Client::MODELS.key?(:pro)
+    assert Nuntius::Client::DEPRECATED_MODELS.key?(:pro)
   end
 
   def test_logger

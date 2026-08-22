@@ -62,8 +62,7 @@ def _load_canonical_models():
 
 
 _CANONICAL_MODELS = _load_canonical_models()
-# For now keep default at 3.5 for backward compat (next commit switches to canonical 3.7)
-DEFAULT_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_MODEL", "gemini-3.5-flash")
+DEFAULT_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_MODEL", _CANONICAL_MODELS.get("default", "gemini-3.7-flash"))
 FALLBACK_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL", _CANONICAL_MODELS.get("fallback", "gemini-3.6-flash"))
 
 
@@ -280,6 +279,7 @@ Provide a concise code review analysis in this format:
     default_config = {
         "focus": "all",
         "model": DEFAULT_GEMINI_MODEL,
+        "complex_model": FALLBACK_GEMINI_MODEL,
         "max_diff_length": 4000,
         "temperature": 0.2,
         "max_output_tokens": 8192,
@@ -311,14 +311,20 @@ Provide a concise code review analysis in this format:
                 config = {**default_config, **user_config}
                 if os.getenv("NUNTIUS_GEMINI_MODEL"):
                     config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+                if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+                    config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
                 return config
             except yaml.YAMLError as e:
                 logging.error(f"Error loading config.yaml: {e}")
                 if os.getenv("NUNTIUS_GEMINI_MODEL"):
                     default_config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+                if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+                    default_config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
                 return default_config
     if os.getenv("NUNTIUS_GEMINI_MODEL"):
         default_config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+    if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+        default_config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
     return default_config
 
 
