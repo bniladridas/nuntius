@@ -12,7 +12,7 @@ This repository uses GitHub Actions for tests, security checks, release tasks, s
 | E2E | `.github/workflows/e2e.yml` | Runs API-oriented checks when configured |
 | Security | `.github/workflows/security.yml` | Runs dependency and secret scans |
 | Dependencies | `.github/workflows/dependencies.yml` | Checks dependency updates |
-| Nuntius | `.github/workflows/nuntius.yml` | Reviews pull requests with Gemini-backed analysis |
+| Nuntius (Archived) | `archive/workflow/nuntius.yml` | Legacy Workflow Mode, now archived. Webhook Mode is current (`api/webhook.py`, `vercel.json`) |
 | Site | `.github/workflows/deploy-site.yml` | Publishes the static website |
 | Release | `.github/workflows/release.yml` | Handles release automation |
 | Publish Gem | `.github/workflows/publish-gem.yml` | Builds and publishes package artifacts |
