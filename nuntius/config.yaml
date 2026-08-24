@@ -73,8 +73,12 @@ rag_github_token: ""
 # Max items to fetch per RAG source when RAG is enabled
 rag_max_items: 3
 
-# AI analysis prompt template
-# Customize the prompt to change how Nuntius analyzes code
+# AI analysis prompt template (optional override)
+# Default prompt lives in nuntius/nuntius.py and is the canonical source.
+# Override here only if you need a custom review format. Both placeholder
+# styles are supported: the canonical {num_files}, {files_list}, {diff_content},
+# {focus_instruction} and the legacy {files}, {diff} used in this file.
+# If this prompt is commented out or removed, the Python default is used.
 prompt: |
   Analyze the following code changes. Focus on code quality, security, performance, and correctness.
 
