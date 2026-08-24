@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nuntius-rb (1.0.0.pre)
+    nuntius-rb (1.1.0.pre.pre)
       httparty (>= 0.21, < 0.25)
       logger
 
