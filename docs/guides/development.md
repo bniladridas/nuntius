@@ -125,10 +125,9 @@ The project uses GitHub Actions for CI/CD. Key workflows:
 
 <br>
 
-2. **Nuntius Workflow** (`.github/workflows/nuntius.yml`):
-    - Automated PR analysis and code review
-    - Comments on code quality, security, and performance
-    - Uses Gemini for PR analysis
+2. **Nuntius Workflow (Archived)** (`archive/workflow/nuntius.yml`):
+    - Legacy Workflow Mode, archived 2026-08-23. Webhook Mode (`api/webhook.py`, `vercel.json`) is current.
+    - Previously handled automated PR analysis and code review with Gemini
 
 <br>
 

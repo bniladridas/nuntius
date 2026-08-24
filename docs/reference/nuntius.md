@@ -34,25 +34,29 @@ Nuntius treats GitHub installation tokens as opaque strings. GitHub may return l
 
 <br>
 
-# Workflow Mode
+# Workflow Mode (Archived)
 
 <br>
 
-Workflow mode is legacy. Existing installs can keep using it, but new work should use webhook mode.
+Workflow Mode is archived. Files were moved to `archive/workflow/` on 2026-08-23. New installs should use Webhook Mode above. Existing installs that still use the workflow can copy from the archive at their own risk.
 
 <br>
 
-Run:
+Archived files: `archive/workflow/nuntius.yml` (workflow), `archive/workflow/setup-nuntius` (installer), and `archive/workflow/suggestions.js` (Node helper). `nuntius/manual.js` remains active for `analysis.yml`.
+
+<br>
+
+Historical setup (for reference only, not current):
 
 <br>
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/palmshed/nuntius/main/bin/setup-nuntius | bash
+curl -fsSL https://raw.githubusercontent.com/palmshed/nuntius/main/archive/workflow/setup-nuntius | bash
 ```
 
 <br>
 
-Use `--update` to update an existing install, `--dry-run` to preview changes, or `--repo URL` to use a custom source. You can also copy `nuntius/` and `.github/workflows/nuntius.yml` by hand. The repository needs `GEMINI_API_KEY`, `NUNTIUS_CLIENT_ID`, and `NUNTIUS_PRIVATE_KEY`. A pull request open or update starts the review.
+The archived workflow required `GEMINI_API_KEY`, `NUNTIUS_CLIENT_ID`, and `NUNTIUS_PRIVATE_KEY`, and ran on pull request open or update.
 
 <br>
 
@@ -105,7 +109,7 @@ Optional source keys include `NEWS_API_KEY`, `OPENWEATHER_API_KEY`, `YOUTUBE_API
 
 <br>
 
-Use `nuntius/config.yaml` for review focus, temperature, token limits, authoring settings, and the default Gemini model. The default model is `gemini-3.5-flash`; override it with `NUNTIUS_GEMINI_MODEL`.
+Use `nuntius/config.yaml` for review focus, temperature, token limits, authoring settings, and the default Gemini model. The default model is `gemini-3.7-flash` (fallback `gemini-3.6-flash` via `complex_model`). Override with `NUNTIUS_GEMINI_MODEL` (and `NUNTIUS_GEMINI_FALLBACK_MODEL`). Only the Flash family is Free-Tier verified: `gemini-3.5-flash-lite`/`3.1-flash-lite` for lightweight workloads, and `3.5-flash`/`3-flash-preview` if needed. Pro is retired until billing is enabled.
 
 <br>
 
@@ -113,7 +117,7 @@ Use `nuntius/config.yaml` for review focus, temperature, token limits, authoring
 
 <br>
 
-For workflow mode, check the GitHub Actions run, repository secrets, and pull request permissions. For webhook mode, check the Vercel project logs under Functions, GitHub webhook delivery status, environment variables, app installation, webhook URL, and webhook secret.
+For archived Workflow Mode (see `archive/workflow/`), check the GitHub Actions run, repository secrets, and pull request permissions. For Webhook Mode, check the Vercel project logs under Functions, GitHub webhook delivery status, environment variables, app installation, webhook URL, and webhook secret.
 
 <br>
 
