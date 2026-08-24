@@ -6,5 +6,6 @@
 flask
 requests
 PyGithub
-pyyaml
+python-dotenv
 google-genai
+PyYAML
