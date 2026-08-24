@@ -30,7 +30,41 @@ QUOTA_COOLDOWN_SECONDS = int(os.getenv("NUNTIUS_QUOTA_COOLDOWN_SECONDS", "1800")
 QUOTA_UNTIL_MARKER_RE = re.compile(r"nuntius-quota-until:\s*(\d+)")
 REVIEW_HISTORY_START = "<!-- nuntius-history-start -->"
 REVIEW_HISTORY_END = "<!-- nuntius-history-end -->"
-DEFAULT_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_MODEL", "gemini-3.5-flash")
+
+# Canonical model source: config/models.yaml (repository-wide single source)
+def _load_canonical_models():
+    fallback = {
+        "default": "gemini-3.7-flash",
+        "fallback": "gemini-3.6-flash",
+        "stable_baseline": "gemini-3.5-flash",
+        "lightweight": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite"],
+    }
+    try:
+        # nuntius/nuntius.py -> repo root is one level up
+        candidate_paths = [
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), "config", "models.yaml"),
+            os.path.join(os.path.dirname(__file__), "..", "config", "models.yaml"),
+            os.path.join(os.getcwd(), "config", "models.yaml"),
+        ]
+        for path in candidate_paths:
+            path = os.path.normpath(path)
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    data = yaml.safe_load(f) or {}
+                    # Ensure required keys exist
+                    for k, v in fallback.items():
+                        if k not in data:
+                            data[k] = v
+                    return data
+    except Exception as e:
+        logging.debug(f"Failed to load canonical models: {e}")
+    return fallback
+
+
+_CANONICAL_MODELS = _load_canonical_models()
+DEFAULT_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_MODEL", _CANONICAL_MODELS.get("default", "gemini-3.7-flash"))
+FALLBACK_GEMINI_MODEL = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL", _CANONICAL_MODELS.get("fallback", "gemini-3.6-flash"))
+
 
 try:
     from .rag import fetch_rag_context
@@ -245,6 +279,7 @@ Provide a concise code review analysis in this format:
     default_config = {
         "focus": "all",
         "model": DEFAULT_GEMINI_MODEL,
+        "complex_model": FALLBACK_GEMINI_MODEL,
         "max_diff_length": 4000,
         "temperature": 0.2,
         "max_output_tokens": 8192,
@@ -276,10 +311,20 @@ Provide a concise code review analysis in this format:
                 config = {**default_config, **user_config}
                 if os.getenv("NUNTIUS_GEMINI_MODEL"):
                     config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+                if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+                    config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
                 return config
             except yaml.YAMLError as e:
                 logging.error(f"Error loading config.yaml: {e}")
+                if os.getenv("NUNTIUS_GEMINI_MODEL"):
+                    default_config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+                if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+                    default_config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
                 return default_config
+    if os.getenv("NUNTIUS_GEMINI_MODEL"):
+        default_config["model"] = os.getenv("NUNTIUS_GEMINI_MODEL")
+    if os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL"):
+        default_config["complex_model"] = os.getenv("NUNTIUS_GEMINI_FALLBACK_MODEL")
     return default_config
 
 

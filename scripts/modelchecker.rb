@@ -14,7 +14,7 @@ Nuntius.load_env
 class ModelChecker
   BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models'
 
-  APP_MODEL = ENV.fetch('NUNTIUS_GEMINI_MODEL', 'gemini-3.5-flash')
+  APP_MODEL = ENV.fetch('NUNTIUS_GEMINI_MODEL', 'gemini-3.7-flash')
 
   def initialize(api_key = nil)
     @api_key = api_key || ENV.fetch('GEMINI_API_KEY', nil)

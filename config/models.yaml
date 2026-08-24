@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Palmshed
+
+# Canonical Gemini model configuration for Nuntius
+# This is the single source of truth. All other places (Ruby, Python, docs,
+# tests) must consume these values. Do not duplicate model names elsewhere.
+#
+# Flash family is Free-Tier compatible. Pro requires billing and is retired.
+
+default: gemini-3.7-flash
+fallback: gemini-3.6-flash
+stable_baseline: gemini-3.5-flash
+lightweight:
+  - gemini-3.1-flash-lite
+  - gemini-3.5-flash-lite
+
+# Optional aliases for tooling and tests. These are derived from the
+# canonical values above; do not edit directly.
+aliases:
+  flash: gemini-3.7-flash
+  flash_fallback: gemini-3.6-flash
+  flash_lite: gemini-3.1-flash-lite
+
+# Retired (unavailable without billing). Documented only, not active.
+retired:
+  - gemini-pro-latest
+  - gemini-3.1-pro-preview
+  - gemini-2.5-pro
+  - gemini-3-pro-preview

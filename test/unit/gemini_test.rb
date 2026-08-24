@@ -30,7 +30,7 @@ class GeminiTest < Minitest::Test
     client = Nuntius.new(valid_api_key, model: :flash)
 
     assert_instance_of Nuntius::Client, client
-    assert_equal 'gemini-3.5-flash', client.instance_variable_get(:@model)
+    assert_equal 'gemini-3.7-flash', client.instance_variable_get(:@model)
   end
 
   def test_load_env
