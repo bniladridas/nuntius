@@ -4,9 +4,28 @@
 # frozen_string_literal: true
 
 require 'json'
-# SimpleCov is disabled locally; coverage reporting is handled in CI via Codecov
-# require 'simplecov'
-# require 'simplecov-lcov'
+if ENV['COVERAGE'] == 'true'
+  require 'simplecov'
+  require 'simplecov-lcov'
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = 'coverage/lcov.info'
+  end
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::LcovFormatter
+  ])
+  SimpleCov.start do
+    enable_coverage :branch
+    add_filter '/test/'
+    add_filter '/config/'
+    add_filter '/vendor/'
+    add_filter '/spec/'
+    add_filter 'gems/'
+    add_group 'Lib', 'lib'
+    track_files 'lib/**/*.rb'
+  end
+end
 require 'httparty'
 # require 'webmock/minitest'
 

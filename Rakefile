@@ -58,10 +58,10 @@ def configure_test_task(task, with_coverage: true)
   ]
 end
 
-# Test task with coverage
+# Test task (respects COVERAGE env)
 Rake::TestTask.new(:test) do |t|
-  configure_test_task(t, with_coverage: false)
-  t.description = 'Run unit tests without coverage'
+  configure_test_task(t, with_coverage: ENV['COVERAGE'] == 'true')
+  t.description = 'Run unit tests (set COVERAGE=true for coverage)'
   # Only unit tests
   t.test_files = FileList[
     'test/unit/**/*.rb'
@@ -77,7 +77,10 @@ end
 # Coverage task
 desc 'Generate test coverage report'
 task :coverage do
+  # Set before invoking so test_helper enables SimpleCov in-process;
+  # avoids nested `bundle exec` which fails under Bundler 2.5 / Ruby 4.
   ENV['COVERAGE'] = 'true'
+  Rake::Task['test'].reenable
   Rake::Task['test'].invoke
 end
 

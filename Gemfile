@@ -10,6 +10,8 @@ gem 'bigdecimal', '~> 4.0'
 group :development, :test do
   # Security and development tools
   gem 'bundler-audit', '~> 0.9', require: false
+  gem 'simplecov', '~> 0.22.0', require: false
+  gem 'simplecov-lcov', '~> 0.9.0', require: false
 end
 
 gem "mocha", "~> 3.0", groups: [:development, :test]
