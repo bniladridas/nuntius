@@ -18,7 +18,7 @@ Ruby client for Gemini `generateContent`. Includes a CLI and a PR review app.
 <br>
 
 ```bash
-gem install nuntius-rb --pre
+gem install nuntius-rb
 ```
 
 <br>

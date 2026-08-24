@@ -11,7 +11,7 @@
 <br>
 
 ```bash
-gem install nuntius-rb --pre
+gem install nuntius-rb
 ```
 
 <br>

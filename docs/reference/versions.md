@@ -2,7 +2,7 @@
 
 <br>
 
-The gem is currently `1.0.0.pre`.
+The current stable version is `1.0.0`. A `1.0.0.pre` prerelease exists on RubyGems from June 2026 and remains installable via `--pre`, but `gem install nuntius-rb` now resolves to the stable release.
 
 <br>
 
