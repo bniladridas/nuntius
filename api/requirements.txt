@@ -1,3 +1,8 @@
+# Generated from pyproject.toml - do not edit manually.
+# Source of truth is pyproject.toml [project.dependencies].
+# To regenerate:
+#   pip-compile pyproject.toml -o api/requirements.txt  # deployment (unpinned)
+#   pip-compile pyproject.toml -o nuntius/requirements.lock  # pinned lock for CI
 flask
 requests
 PyGithub

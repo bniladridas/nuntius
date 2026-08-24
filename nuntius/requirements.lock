@@ -1,8 +1,12 @@
 # Pinned Nuntius Python dependencies (direct + transitive).
+# Generated from pyproject.toml - do not edit manually.
 #
-# Update process:
-# - Use a clean venv, install the Nuntius deps, then `pip freeze` into this file.
-# - Keep the workflow installing from this lock so CI runs are reproducible.
+# Source of truth is pyproject.toml [project.dependencies].
+# To regenerate (from repo root):
+#   python -m pip install -e .  # or pip-compile pyproject.toml
+#   pip freeze > nuntius/requirements.lock  # or pip-compile --generate-hashes
+# Workflow installs from this lock so CI runs are reproducible.
+# Deployment (Vercel) installs from api/requirements.txt (also generated).
 #
 # Last refreshed: 2026-04-13
 annotated-types==0.7.0
