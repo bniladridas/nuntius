@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/palmshed/nuntius/compare/nuntius-rb/v1.0.0...nuntius-rb/v1.0.1) (2026-08-24)
+
+
+### Documentation
+
+* update install instructions for stable 1.0.0 release ([d0ce00f](https://github.com/palmshed/nuntius/commit/d0ce00f9c09325c4ad073b8e15b3ef7e7b5592d1))
+
+## Changelog
+
 <br>
 
 All notable changes are tracked here.
@@ -7,7 +16,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 <br>
 
-# [1.0.0]
+## [1.0.0]
 
 <br>
 
