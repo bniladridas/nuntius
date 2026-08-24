@@ -2,7 +2,6 @@
 
 ## [1.1.0-pre](https://github.com/palmshed/nuntius/compare/nuntius-rb/v1.0.0-pre...nuntius-rb/v1.1.0-pre) (2026-08-24)
 
-
 ### Features
 
 * /analyze --force-review ([45c4f7d](https://github.com/palmshed/nuntius/commit/45c4f7d5ca2d0b220db4ec4f9cd5f3e094f7fa68))
