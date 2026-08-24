@@ -31,11 +31,11 @@ Ruby support is `>= 3.3`. `.ruby-version` is `3.3.11`. CI tests Ruby `3.3` and `
 
 <br>
 
-Gemini calls use `https://generativelanguage.googleapis.com/v1beta/models`. Nuntius defaults to `gemini-3.5-flash`; hosted runs can override with `NUNTIUS_GEMINI_MODEL`.
+Gemini calls use `https://generativelanguage.googleapis.com/v1beta/models`. Nuntius defaults to `gemini-3.7-flash` (fallback `gemini-3.6-flash`); hosted runs can override with `NUNTIUS_GEMINI_MODEL`/`NUNTIUS_GEMINI_FALLBACK_MODEL`. Only Flash family is Free-Tier verified.
 
 <br>
 
-Main Ruby aliases are `:pro -> gemini-pro-latest`, `:flash -> gemini-3.5-flash`, `:flash_lite -> gemini-3.1-flash-lite`, `:pro_2_5 -> gemini-2.5-pro`, and `:flash_2_5 -> gemini-2.5-flash`.
+Main Ruby aliases are `:flash -> gemini-3.7-flash`, `:flash_fallback -> gemini-3.6-flash`, `:flash_lite -> gemini-3.1-flash-lite`, `:flash_3_5 -> gemini-3.5-flash`, and `:flash_2_5 -> gemini-2.5-flash`. Pro (`:pro`, `:pro_3_1_preview`, `:pro_2_5`) retired, fallback to `:flash`.
 
 <br>
 
