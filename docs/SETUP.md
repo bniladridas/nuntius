@@ -69,7 +69,7 @@ openssl rand -hex 32
 Then configure it:
 
 1. Go to GitHub → your organization → **Settings** → **Developer settings** → **GitHub Apps** → **nuntius-review** → **Webhooks**.
-2. In the **Webhook secret** field, paste the generated value (or click **Regenerate** to have GitHub create one — it is shown only once, so copy it immediately).
+2. In the **Webhook secret** field, paste the generated value (or click **Regenerate** to have GitHub create one; it is shown only once, so copy it immediately).
 3. In the hosting platform (Vercel project `nuntius-review`), add an environment variable named `WEBHOOK_SECRET` with the same value.
 
 The values must match exactly, or Nuntius rejects deliveries with an `Invalid signature` error.
