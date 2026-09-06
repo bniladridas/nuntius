@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/palmshed/nuntius/compare/nuntius-rb/v1.0.0...nuntius-rb/v1.0.1) (2026-09-06)
+
+
+### Documentation
+
+* drop --pre from install command on website ([ef07591](https://github.com/palmshed/nuntius/commit/ef0759189c6678383e0ab21cbee4598293d8776a))
+
+## Changelog
+
 <br>
 
 All notable changes are tracked here.
@@ -7,7 +16,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 <br>
 
-# [1.0.0]
+## [1.0.0]
 
 <br>
 
