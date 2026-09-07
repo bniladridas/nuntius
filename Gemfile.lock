@@ -32,7 +32,7 @@ GEM
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
-    json (2.21.2)
+    json (3.0.0)
     language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -46,7 +46,7 @@ GEM
     mocha (3.1.0)
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
-    parallel (2.1.0)
+    parallel (2.2.0)
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
@@ -58,8 +58,8 @@ GEM
     redcarpet (3.6.1)
     regexp_parser (2.12.0)
     rexml (3.4.4)
-    rubocop (1.89.0)
-      json (~> 2.3)
+    rubocop (1.90.0)
+      json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
       parallel (>= 1.10)
@@ -112,7 +112,7 @@ DEPENDENCIES
   nuntius-rb!
   rake (~> 13.4.2)
   redcarpet (~> 3.6)
-  rubocop (~> 1.89.0)
+  rubocop (~> 1.90.0)
   rubocop-minitest (~> 0.40.0)
   rubocop-rake (~> 0.7.1)
   simplecov (~> 0.22.0)
